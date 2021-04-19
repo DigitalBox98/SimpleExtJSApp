@@ -2,10 +2,11 @@
 Simple ExtJS Application for DSM 7.0
 
 # Synology DSM 7.0
-The Synology DSM 7.0 client part is based on ExtJS 3.4 library
+The Synology DSM 7.0 client part is based on ExtJS 3.4 library <br><br>
 
-Synology JS lib location : /usr/syno/synoman/synoSDSjslib/sds.js
-ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/*
+Synology JS lib location : /usr/syno/synoman/synoSDSjslib/sds.js <br>
+ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/* <br>
+
 
 
 
