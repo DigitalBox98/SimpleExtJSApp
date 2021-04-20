@@ -7,7 +7,7 @@ The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsa
 The Synology DSM 7.0 client part is based on ExtJS 3.4 library <br><br>
 
 Synology JS lib location : /usr/syno/synoman/synoSDSjslib/sds.js <br>
-ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/ext-all.js <br><br>
+ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/ext-all.js <br>
 Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js <br><br>
 
 # ExtJS 3.4 framework docs
