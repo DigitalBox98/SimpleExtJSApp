@@ -3,6 +3,12 @@ Simple ExtJS Application for DSM 7.0 :<br><br>
 This part includes a test.cgi, which is verifying the authentication of the current user under DSM. <br> 
 The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br><br>
 
+The package part can be generated in the spksrc repo in the simpleextjsapp branch. <br>
+
+<img width="650" alt="screen" src="https://user-images.githubusercontent.com/57635141/115507429-66d7df80-a27c-11eb-8956-2f99eb8f7561.png">
+
+This page is to be considered as a work in progress with more information to come : ) <br><br>
+
 # Synology DSM 7.0
 The Synology DSM 7.0 client part is based on ExtJS 3.4 library <br><br>
 
