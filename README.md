@@ -5,7 +5,8 @@ The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsa
 
 The package part can be generated in the spksrc repo in the simpleextjsapp branch. <br>
 
-<img width="650" alt="screen" src="https://user-images.githubusercontent.com/57635141/115507429-66d7df80-a27c-11eb-8956-2f99eb8f7561.png">
+![synoextjs](https://user-images.githubusercontent.com/57635141/116126847-69e12e80-a6c7-11eb-8fb2-ba0f1bb5953f.png)
+
 This page is to be considered as a work in progress with more information to come : ) <br>
 
 # Synology DSM 7.0
@@ -14,8 +15,15 @@ The Synology DSM 7.0 client part is based on ExtJS 3.4 library <br><br>
 Synology JS lib location : /usr/syno/synoman/synoSDSjslib/sds.js <br>
 ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/ext-all.js <br>
 Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js <br>
-  - SYNO.ux.Button (xtype: "syno_button") <br>
-  - SYNO.ux.Checkbox (xtype: "syno_checkbox") <br>
+
+# ExtJS 3.4 framework docs
+Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
+
+# Documentation in progress :
+
+  - done : SYNO.ux.Button (xtype: "syno_button") <br>
+  - done : SYNO.ux.Checkbox (xtype: "syno_checkbox") <br>
+  - done : SYNO.ux.DisplayField (xtype: "syno_displayfield") <br>
   - SYNO.ColorField (xtype: "syno_colorfield") <br>
   - SYNO.ux.ComboBox (xtype: "syno_combobox") <br>
   - SYNO.ux.CoverPanel (xtype: "syno_coverpanel") <br>
@@ -24,7 +32,7 @@ Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-a
   - SYNO.ux.DateTimeField (xtype: "syno_datetimefield") <br>
   - SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") <br>
   - SYNO.ux.DateTimePicker (xtype: "syno_datetimepickerfield") <br>
-  - SYNO.ux.DisplayField (xtype: "syno_displayfield") <br>
+
   - SYNO.ux.EditorGridPanel (xtype: "syno_editorgrid") <br>
   - SYNO.ux.FieldSet (xtype: "syno_fieldset") <br>
   - SYNO.ux.FileButton (xtype: "syno_filebutton") <br>
@@ -47,12 +55,4 @@ Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-a
   - SYNO.ux.SearchField (xtype: "syno_searchfield") <br>
   - SYNO.ux.TimeField (xtype: "syno_timefield") <br>
   - SYNO.ux.Toolbar (xtype: "syno_toolbar") <br>
-
-
-# ExtJS 3.4 framework docs
-Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
-
-
-
-
 
