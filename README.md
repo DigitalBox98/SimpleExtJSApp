@@ -5,7 +5,12 @@ The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsa
 
 The package part can be generated in the spksrc repo in the simpleextjsapp branch. <br>
 
+Application: <br>
+
 ![synoextjs](https://user-images.githubusercontent.com/57635141/116126847-69e12e80-a6c7-11eb-8fb2-ba0f1bb5953f.png)
+
+Integrated docs: <br>
+![docs](https://user-images.githubusercontent.com/57635141/116140367-871df900-a6d7-11eb-9ba5-602bd9f5e5ba.png)
 
 This page is to be considered as a work in progress with more information to come : ) <br>
 
