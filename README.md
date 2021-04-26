@@ -5,7 +5,8 @@ The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsa
 
 The package part can be generated in the spksrc repo in the simpleextjsapp branch. <br>
 
-<img width="650" alt="screen" src="https://user-images.githubusercontent.com/57635141/115507429-66d7df80-a27c-11eb-8956-2f99eb8f7561.png">
+![synoextjs](https://user-images.githubusercontent.com/57635141/116126847-69e12e80-a6c7-11eb-8fb2-ba0f1bb5953f.png)
+
 This page is to be considered as a work in progress with more information to come : ) <br>
 
 # Synology DSM 7.0
