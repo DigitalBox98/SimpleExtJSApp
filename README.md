@@ -63,3 +63,8 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux.TimeField (xtype: "syno_timefield") |  |
 | SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
 
+# Useful links
+
+Usage of ExtJS in DSM : https://github.com/SynoCommunity/spksrc/tree/master/spk/debian-chroot/src <br>
+Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
+Example for writing API : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
