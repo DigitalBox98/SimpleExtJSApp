@@ -27,38 +27,39 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 
 # Documentation in progress :
 
-  - done : SYNO.ux.Button (xtype: "syno_button") <br>
-  - done : SYNO.ux.Checkbox (xtype: "syno_checkbox") <br>
-  - done : SYNO.ux.DisplayField (xtype: "syno_displayfield") <br>
-  - SYNO.ColorField (xtype: "syno_colorfield") <br>
-  - SYNO.ux.ComboBox (xtype: "syno_combobox") <br>
-  - SYNO.ux.CoverPanel (xtype: "syno_coverpanel") <br>
-  - SYNO.ux.GridPanel (xtype: "syno_gridpanel") <br>
-  - SYNO.ux.DateField (xtype: "syno_datefield") <br>
-  - SYNO.ux.DateTimeField (xtype: "syno_datetimefield") <br>
-  - SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") <br>
-  - SYNO.ux.DateTimePicker (xtype: "syno_datetimepickerfield") <br>
-
-  - SYNO.ux.EditorGridPanel (xtype: "syno_editorgrid") <br>
-  - SYNO.ux.FieldSet (xtype: "syno_fieldset") <br>
-  - SYNO.ux.FileButton (xtype: "syno_filebutton") <br>
-  - SYNO.ux.FormPanel (xtype: "syno_formpanel") <br>
-  - SYNO.ux.Menu (xtype: "syno_menu") <br>
-  - SYNO.ux.ModuleList (xtype: "syno_modulelist") <br>
-  - SYNO.ux.NumberField (xtype: "syno_numberfield") <br>
-  - SYNO.ux.PagingToolbar (xtype: "syno_paging") <br>
-  - SYNO.ux.Panel (xtype: "syno_panel") <br>
-  - SYNO.ux.RadioGroup (xtype: "syno_radio") <br>
-  - SYNO.ux.Radio (xtype: "syno_radio") <br>
-  - SYNO.ux.SingleSlider (xtype: "syno_singleslider") <br>
-  - SYNO.ux.SplitButton (xtype: "syno_splitbutton") <br>
-  - SYNO.ux.StateButtonGroup (xtype: "syno_statebuttongroup") <br>
-  - SYNO.ux.Switch (xtype: "syno_switch") <br>
-  - SYNO.ux.TabPanel (xtype: "syno_tabpanel") <br>
-  - SYNO.ux.TextArea (xtype: "syno_textarea") <br>
-  - SYNO.ux.TextField (xtype: "syno_textfield") <br>
-  - SYNO.ux.MacTextField (xtype: "syno_mactextfield") <br>
-  - SYNO.ux.SearchField (xtype: "syno_searchfield") <br>
-  - SYNO.ux.TimeField (xtype: "syno_timefield") <br>
-  - SYNO.ux.Toolbar (xtype: "syno_toolbar") <br>
+| Widget | Documentation |
+|----------|:-------------:|
+| SYNO.ux.Button (xtype: "syno_button") | :ok: |
+| SYNO.ux.Checkbox (xtype: "syno_checkbox") | :ok: |
+| SYNO.ux.DisplayField (xtype: "syno_displayfield") | :ok: |
+| SYNO.ColorField (xtype: "syno_colorfield") |  |
+| SYNO.ux.ComboBox (xtype: "syno_combobox") |  |
+| SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
+| SYNO.ux.GridPanel (xtype: "syno_gridpanel") |  |
+| SYNO.ux.DateField (xtype: "syno_datefield") |  |
+| SYNO.ux.DateTimeField (xtype: "syno_datetimefield") |  |
+| SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") |  |
+| SYNO.ux.DateTimePicker (xtype: "syno_datetimepickerfield") |  |
+| SYNO.ux.EditorGridPanel (xtype: "syno_editorgrid") |  |
+| SYNO.ux.FieldSet (xtype: "syno_fieldset") |  |
+| SYNO.ux.FileButton (xtype: "syno_filebutton") |  |
+| SYNO.ux.FormPanel (xtype: "syno_formpanel") |  |
+| SYNO.ux.Menu (xtype: "syno_menu") |  |
+| SYNO.ux.ModuleList (xtype: "syno_modulelist") |  |
+| SYNO.ux.NumberField (xtype: "syno_numberfield") |  |
+| SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
+| SYNO.ux.Panel (xtype: "syno_panel") |  |
+| SYNO.ux.RadioGroup (xtype: "syno_radio") |  |
+| SYNO.ux.Radio (xtype: "syno_radio") |  |
+| SYNO.ux.SingleSlider (xtype: "syno_singleslider") |  |
+| SYNO.ux.SplitButton (xtype: "syno_splitbutton") |  |
+| SYNO.ux.StateButtonGroup (xtype: "syno_statebuttongroup")|  |
+| SYNO.ux.Switch (xtype: "syno_switch") |  |
+| SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
+| SYNO.ux.TextArea (xtype: "syno_textarea") |  |
+| SYNO.ux.TextField (xtype: "syno_textfield") |  |
+| SYNO.ux.MacTextField (xtype: "syno_mactextfield") |  |
+| SYNO.ux.SearchField (xtype: "syno_searchfield")  |  |
+| SYNO.ux.TimeField (xtype: "syno_timefield") |  |
+| SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
 
