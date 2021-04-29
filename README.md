@@ -67,6 +67,7 @@ That's it ! <br>
 
 Below is an example of comments added which will be used during the documentation generation : <br>
 
+```javascript
 /**
  * @class SYNO.ux.Button
  * @extends Ext.Button
@@ -74,7 +75,7 @@ Below is an example of comments added which will be used during the documentatio
  * @xtype syno_button
  *
  */
- 
+```
 
 # Documentation in progress :
 
