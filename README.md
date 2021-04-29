@@ -32,7 +32,7 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux.Button (xtype: "syno_button") | :ok: |
 | SYNO.ux.Checkbox (xtype: "syno_checkbox") | :ok: |
 | SYNO.ux.DisplayField (xtype: "syno_displayfield") | :ok: |
-| SYNO.ColorField (xtype: "syno_colorfield") |  |
+| SYNO.ux.ColorField (xtype: "syno_colorfield") |  |
 | SYNO.ux.ComboBox (xtype: "syno_combobox") |  |
 | SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
 | SYNO.ux.GridPanel (xtype: "syno_gridpanel") |  |
@@ -85,8 +85,18 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux._TabPanelARIA |  |
 | SYNO.ux._CheckboxARIA |  |
 | SYNO.ux.HistoryRecorder |  |
-| xxx |  |
-
+| SYNO.ux.BackNextBtnGroup (xtype: "syno_backnextbtngroup") |  |
+| SYNO.ux.FleXcroll.ComboBox |  |
+| SYNO.ux.CompositeField (xtype: "syno_compositefield") |  |
+| SYNO.ux.DDGridPanel (xtype: "syno_dd_gridpanel") |  |
+| SYNO.ux.DataViewAnimation |  |
+| SYNO.ux.DataViewMask |  |
+| SYNO.ux.DateTime.SubMenu (xtype: "syno_datetime_submenu") |  |
+| SYNO.ux.DateTimeMenu |  |
+| SYNO.ux.EnableColumn |  |
+| SYNO.ux.InverseFieldSet (xtype: "syno_inversefieldset") |  |
+| SYNO.ux.HorizontalGridPanel (xtype: "syno_h_gridpanel") |  |
+| SYNO.ux.FixColGrid (xtype: "syno_fixedcolumn_grid") |  |
 
 
 # Useful links
