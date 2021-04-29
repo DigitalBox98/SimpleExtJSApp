@@ -63,8 +63,18 @@ The steps to enrich the API documentation is as below :
 - If so, copy the corresponding ExtJS 3.4 source file from the "ext-3.4.1/src/" directory to the "syno/scripts/ext-3.4/src/" directory by applying the same directory structure
 - Follow the next steps described in "how the documentation is generated"
 
-That's it !
+That's it ! <br>
 
+Below is an example of comments added which will be used during the documentation generation : <br>
+
+/**
+ * @class SYNO.ux.Button
+ * @extends Ext.Button
+ * Simple Button class
+ * @xtype syno_button
+ *
+ */
+ 
 
 # Documentation in progress :
 
