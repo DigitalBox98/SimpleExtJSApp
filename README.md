@@ -7,8 +7,8 @@ The package part can be generated in the spksrc repo in the simpleextjsapp branc
 
 Application: <br>
 
-![simpleextjs](https://user-images.githubusercontent.com/57635141/116385964-9f962c80-a819-11eb-99c1-caf220dca97e.png)
-
+![GUI1](https://user-images.githubusercontent.com/57635141/116535086-a38e8100-a8e3-11eb-9fb2-883a69d384ce.png) <br>
+![GUI2](https://user-images.githubusercontent.com/57635141/116535121-ad17e900-a8e3-11eb-9293-7ed15f171059.png) <br>
 
 Integrated docs: <br>
 ![docs](https://user-images.githubusercontent.com/57635141/116140367-871df900-a6d7-11eb-9ba5-602bd9f5e5ba.png)
