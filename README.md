@@ -1,8 +1,8 @@
 # SimpleExtJSApp
 The aim of this sample application is to demonstrate the usage of the DSM framework based on ExtJS<br><br>
 This part includes :
-- A test.cgi : this program - inspired from the DSM Developper's Guide - will verify the authentication of the current user under DSM before executing itself 
-- A tar of the API docs : to document the usage of each UI component under DSM
+- A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide)
+- A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
 
 This repo doesn't include :
 - The SPK package for SimpleExtJSApp (for that check at the SimpleExtJSApp source at the end of this document)
