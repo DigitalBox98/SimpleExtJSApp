@@ -65,6 +65,28 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux.FleXcroll.DataView (xtype: "syno_flexcroll_dataview") |  |
 | SYNO.ux.ExpandableListView |  |
 | SYNO.ux.OperatableListView |  |
+| SYNO.ux.FleXcroll.grid.GridView |  |
+| SYNO.ux.FleXcroll.grid.BufferView |  |
+| SYNO.ux.grid.GridView.SplitDragZone |  |
+| SYNO.ux.FleXcroll.grid.HorizontalGridView |  |
+| SYNO.ux.DatePicker |  |
+| SYNO.ux.DateMenu |  |
+| SYNO.ux.GroupingView |  |
+| SYNO.ux.FloatLayout |  |
+| SYNO.ux.AriaComponent |  |
+| SYNO.ux._ComponentARIA |  |
+| SYNO.ux._ButtonARIA |  |
+| SYNO.ux._ComboboxARIA |  |
+| SYNO.ux._DataViewARIA |  |
+| SYNO.ux._GridPanelARIA |  |
+| SYNO.ux._MenuARIA |  |
+| SYNO.ux._TreePanelARIA |  |
+| SYNO.ux._SliderARIA |  |
+| SYNO.ux._TabPanelARIA |  |
+| SYNO.ux._CheckboxARIA |  |
+| SYNO.ux.HistoryRecorder |  |
+| xxx |  |
+
 
 
 # Useful links
