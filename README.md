@@ -28,97 +28,98 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 # Documentation in progress :
 | Widget | Documentation |
 |----------|:-------------:|
+| SYNO.ux.AriaComponent |  |
+| SYNO.ux.BackNextBtnGroup (xtype: "syno_backnextbtngroup") |  |
 | SYNO.ux.Button (xtype: "syno_button") | :ok: |
 | SYNO.ux.Checkbox (xtype: "syno_checkbox") | :ok: |
-| SYNO.ux.DisplayField (xtype: "syno_displayfield") | :ok: |
 | SYNO.ux.ColorField (xtype: "syno_colorfield") |  |
 | SYNO.ux.ComboBox (xtype: "syno_combobox") |  |
-| SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
-| SYNO.ux.GridPanel (xtype: "syno_gridpanel") |  |
-| SYNO.ux.DateField (xtype: "syno_datefield") |  |
-| SYNO.ux.DateTimeField (xtype: "syno_datetimefield") |  |
-| SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") |  |
-| SYNO.ux.DateTimePicker (xtype: "syno_datetimepickerfield") |  |
-| SYNO.ux.EditorGridPanel (xtype: "syno_editorgrid") |  |
-| SYNO.ux.FieldSet (xtype: "syno_fieldset") |  |
-| SYNO.ux.FileButton (xtype: "syno_filebutton") |  |
-| SYNO.ux.FormPanel (xtype: "syno_formpanel") |  |
-| SYNO.ux.Menu (xtype: "syno_menu") |  |
-| SYNO.ux.ModuleList (xtype: "syno_modulelist") |  |
-| SYNO.ux.NumberField (xtype: "syno_numberfield") |  |
-| SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
-| SYNO.ux.Panel (xtype: "syno_panel") |  |
-| SYNO.ux.RadioGroup (xtype: "syno_radio") |  |
-| SYNO.ux.Radio (xtype: "syno_radio") |  |
-| SYNO.ux.SingleSlider (xtype: "syno_singleslider") |  |
-| SYNO.ux.SplitButton (xtype: "syno_splitbutton") |  |
-| SYNO.ux.StateButtonGroup (xtype: "syno_statebuttongroup")|  |
-| SYNO.ux.Switch (xtype: "syno_switch") |  |
-| SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
-| SYNO.ux.TextArea (xtype: "syno_textarea") |  |
-| SYNO.ux.TextField (xtype: "syno_textfield") |  |
-| SYNO.ux.MacTextField (xtype: "syno_mactextfield") |  |
-| SYNO.ux.SearchField (xtype: "syno_searchfield")  |  |
-| SYNO.ux.TimeField (xtype: "syno_timefield") |  |
-| SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
-| SYNO.ux.FleXcroll.DataView (xtype: "syno_flexcroll_dataview") |  |
-| SYNO.ux.ExpandableListView |  |
-| SYNO.ux.OperatableListView |  |
-| SYNO.ux.FleXcroll.grid.GridView |  |
-| SYNO.ux.FleXcroll.grid.BufferView |  |
-| SYNO.ux.grid.GridView.SplitDragZone |  |
-| SYNO.ux.FleXcroll.grid.HorizontalGridView |  |
-| SYNO.ux.DatePicker |  |
-| SYNO.ux.DateMenu |  |
-| SYNO.ux.GroupingView |  |
-| SYNO.ux.FloatLayout |  |
-| SYNO.ux.AriaComponent |  |
-| SYNO.ux._ComponentARIA |  |
-| SYNO.ux._ButtonARIA |  |
-| SYNO.ux._ComboboxARIA |  |
-| SYNO.ux._DataViewARIA |  |
-| SYNO.ux._GridPanelARIA |  |
-| SYNO.ux._MenuARIA |  |
-| SYNO.ux._TreePanelARIA |  |
-| SYNO.ux._SliderARIA |  |
-| SYNO.ux._TabPanelARIA |  |
-| SYNO.ux._CheckboxARIA |  |
-| SYNO.ux.HistoryRecorder |  |
-| SYNO.ux.BackNextBtnGroup (xtype: "syno_backnextbtngroup") |  |
-| SYNO.ux.FleXcroll.ComboBox |  |
 | SYNO.ux.CompositeField (xtype: "syno_compositefield") |  |
+| SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
 | SYNO.ux.DDGridPanel (xtype: "syno_dd_gridpanel") |  |
 | SYNO.ux.DataViewAnimation |  |
 | SYNO.ux.DataViewMask |  |
+| SYNO.ux.DateField (xtype: "syno_datefield") |  |
+| SYNO.ux.DateMenu |  |
+| SYNO.ux.DatePicker |  |
 | SYNO.ux.DateTime.SubMenu (xtype: "syno_datetime_submenu") |  |
+| SYNO.ux.DateTimeField (xtype: "syno_datetimefield") |  |
 | SYNO.ux.DateTimeMenu |  |
+| SYNO.ux.DateTimePicker (xtype: "syno_datetimepickerfield") |  |
+| SYNO.ux.DisplayField (xtype: "syno_displayfield") | :ok: |
+| SYNO.ux.EditorGridPanel (xtype: "syno_editorgrid") |  |
 | SYNO.ux.EnableColumn |  |
-| SYNO.ux.InverseFieldSet (xtype: "syno_inversefieldset") |  |
-| SYNO.ux.HorizontalGridPanel (xtype: "syno_h_gridpanel") |  |
+| SYNO.ux.ExpandableListView |  |
+| SYNO.ux.FieldSet (xtype: "syno_fieldset") |  |
+| SYNO.ux.FileButton (xtype: "syno_filebutton") |  |
 | SYNO.ux.FixColGrid (xtype: "syno_fixedcolumn_grid") |  |
-| SYNO.ux.plugin.StyledGrid |  |
+| SYNO.ux.FleXcroll.ComboBox |  |
+| SYNO.ux.FleXcroll.DataView (xtype: "syno_flexcroll_dataview") |  |
+| SYNO.ux.FleXcroll.grid.BufferView |  |
+| SYNO.ux.FleXcroll.grid.GridView |  |
+| SYNO.ux.FleXcroll.grid.HorizontalGridView |  |
 | SYNO.ux.FleXcroll.grid.TreeView |  |
-| SYNO.ux.plugin.GroupHeaderGrid |  |
+| SYNO.ux.FloatLayout |  |
+| SYNO.ux.FormPanel (xtype: "syno_formpanel") |  |
+| SYNO.ux.GridPanel (xtype: "syno_gridpanel") |  |
+| SYNO.ux.GroupingView |  |
+| SYNO.ux.HistoryRecorder |  |
+| SYNO.ux.HorizontalGridPanel (xtype: "syno_h_gridpanel") |  |
 | SYNO.ux.InvalidQuickTip (xtype: "syno_invalidquicktip") |  |
+| SYNO.ux.InverseFieldSet (xtype: "syno_inversefieldset") |  |
+| SYNO.ux.MacTextField (xtype: "syno_mactextfield") |  |
+| SYNO.ux.Menu (xtype: "syno_menu") |  |
+| SYNO.ux.ModuleList (xtype: "syno_modulelist") |  |
+| SYNO.ux.NumberField (xtype: "syno_numberfield") |  |
+| SYNO.ux.OperatableListView |  |
 | SYNO.ux.PageLessToolbar (xtype: "syno_pageless") |  |
 | SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
+| SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
+| SYNO.ux.Panel (xtype: "syno_panel") |  |
+| SYNO.ux.Radio (xtype: "syno_radio") |  |
+| SYNO.ux.RadioGroup (xtype: "syno_radio") |  |
 | SYNO.ux.ScheduleField (xtype: "syno_schedulefield") |  |
 | SYNO.ux.ScheduleSelector |  |
-| SYNO.ux.ScheduleTableField |  |
 | SYNO.ux.ScheduleTable |  |
+| SYNO.ux.ScheduleTableField |  |
+| SYNO.ux.SearchField (xtype: "syno_searchfield")  |  |
+| SYNO.ux.SingleSlider (xtype: "syno_singleslider") |  |
 | SYNO.ux.SliderField (xtype: "syno_sliderfield") |  |
 | SYNO.ux.SplitButton (xtype: "syno_splitbutton") |  |
+| SYNO.ux.SplitButton (xtype: "syno_splitbutton") |  |
+| SYNO.ux.StateButtonGroup (xtype: "syno_statebuttongroup")|  |
 | SYNO.ux.StateButtonGroup |  |
 | SYNO.ux.StatusProxy |  |
 | SYNO.ux.SuperBoxSelect (xtype: "syno_superboxselect") |  |
 | SYNO.ux.SuperBoxSelectItem |  |
+| SYNO.ux.Switch (xtype: "syno_switch") |  |
 | SYNO.ux.SwitchColumn (xtype: "syno_swtichcolumn") |  |
+| SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
+| SYNO.ux.TextArea (xtype: "syno_textarea") |  |
+| SYNO.ux.TextField (xtype: "syno_textfield") |  |
 | SYNO.ux.TextFilter (xtype: "syno_textfilter") |  |
-| SYNO.ux.data.TreeReader |  |
+| SYNO.ux.TimeField (xtype: "syno_timefield") |  |
+| SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") |  |
+| SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
 | SYNO.ux.TreePanel |  |
 | SYNO.ux.TriModeCheckbox |  |
 | SYNO.ux.WhiteQuickTip |  |
 | SYNO.ux.WhiteTipIcon |  |
+| SYNO.ux._ButtonARIA |  |
+| SYNO.ux._CheckboxARIA |  |
+| SYNO.ux._ComboboxARIA |  |
+| SYNO.ux._ComponentARIA |  |
+| SYNO.ux._DataViewARIA |  |
+| SYNO.ux._GridPanelARIA |  |
+| SYNO.ux._MenuARIA |  |
+| SYNO.ux._SliderARIA |  |
+| SYNO.ux._TabPanelARIA |  |
+| SYNO.ux._TreePanelARIA |  |
+| SYNO.ux.data.TreeReader |  |
+| SYNO.ux.grid.GridView.SplitDragZone |  |
+| SYNO.ux.plugin.GroupHeaderGrid |  |
+| SYNO.ux.plugin.StyledGrid |  |
+
 
 
 
