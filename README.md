@@ -1,29 +1,44 @@
 # SimpleExtJSApp
-Simple ExtJS Application for DSM 7.0 :<br><br>
-This part includes a test.cgi, which is verifying the authentication of the current user under DSM. <br> 
-The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
+The aim of this sample application is to demonstrate the usage of the DSM framework based on ExtJS<br><br>
+This part includes :
+- A test.cgi : this program - inspired from the DSM Developper's Guide - will verify the authentication of the current user under DSM before executing itself 
+- A tar of the API docs : to document the usage of each UI component under DSM
 
-The package part can be generated in the spksrc repo in the simpleextjsapp branch. <br>
+This repo doesn't include :
+- The SPK package for SimpleExtJSApp (for that check at the SimpleExtJSApp source at the end of this document)
 
-Application: <br>
+Notes : 
+- The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
+- Once the SPK is installed on the NAS, the test.cgi will be located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
+- The package part can be generated via SPKSRC
+
+Demo Application: <br>
 
 ![GUI1](https://user-images.githubusercontent.com/57635141/116535086-a38e8100-a8e3-11eb-9fb2-883a69d384ce.png) <br>
 ![GUI2](https://user-images.githubusercontent.com/57635141/116535121-ad17e900-a8e3-11eb-9293-7ed15f171059.png) <br>
 
-Integrated docs: <br>
+Integrated API docs: <br>
 ![docs](https://user-images.githubusercontent.com/57635141/116140367-871df900-a6d7-11eb-9ba5-602bd9f5e5ba.png)
 
 This page is to be considered as a work in progress with more information to come : ) <br>
 
-# Synology DSM 7.0
-The Synology DSM 7.0 client part is based on ExtJS 3.4 library <br><br>
+# Synology DSM info
+The Synology DSM client part is based on ExtJS 3.4 library <br><br>
 
 Synology JS lib location : /usr/syno/synoman/synoSDSjslib/sds.js <br>
 ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/ext-all.js <br>
 Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js <br>
 
-# ExtJS 3.4 framework docs
+# ExtJS 3.4 framework info
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
+
+# Useful links
+
+Usage of ExtJS in DSM : https://github.com/SynoCommunity/spksrc/tree/master/spk/debian-chroot/src <br>
+Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
+Example for writing API : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
+SimpleExtJSApp source : https://github.com/DigitalBox98/spksrc/tree/simpleextjsapp/spk/simpleextjsapp/src/app <br>
+
 
 # Documentation in progress :
 
@@ -136,12 +151,3 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.SDS.AppInstance |  |
 
 <br>
-
-
-
-# Useful links
-
-Usage of ExtJS in DSM : https://github.com/SynoCommunity/spksrc/tree/master/spk/debian-chroot/src <br>
-Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
-Example for writing API : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
-SimpleExtJSApp source : https://github.com/DigitalBox98/spksrc/tree/simpleextjsapp/spk/simpleextjsapp/src/app <br>
