@@ -25,9 +25,14 @@ This page is to be considered as a work in progress with more information to com
 # Synology DSM info
 The Synology DSM client part is based on ExtJS 3.4 library <br><br>
 
-Synology JS lib location : /usr/syno/synoman/synoSDSjslib/sds.js <br>
-ExtJS 3.4 location : /usr/syno/synoman/scripts/ext-3.4/ext-all.js <br>
-Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js <br>
+Below is the location of each part of the DSM client framework :<br> 
+
+| Widget | Location on NAS |
+|----------|:-------------:|
+| Synology JS lib | /usr/syno/synoman/synoSDSjslib/sds.js |
+| Synology ExtJS UX widgets | /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js |
+| ExtJS 3.4 | /usr/syno/synoman/scripts/ext-3.4/ext-all.js |
+
 
 # ExtJS 3.4 framework info
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
