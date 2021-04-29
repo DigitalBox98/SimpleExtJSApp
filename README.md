@@ -26,7 +26,6 @@ Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-a
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 
 # Documentation in progress :
-
 | Widget | Documentation |
 |----------|:-------------:|
 | SYNO.ux.Button (xtype: "syno_button") | :ok: |
@@ -97,6 +96,30 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux.InverseFieldSet (xtype: "syno_inversefieldset") |  |
 | SYNO.ux.HorizontalGridPanel (xtype: "syno_h_gridpanel") |  |
 | SYNO.ux.FixColGrid (xtype: "syno_fixedcolumn_grid") |  |
+| SYNO.ux.plugin.StyledGrid |  |
+| SYNO.ux.FleXcroll.grid.TreeView |  |
+| SYNO.ux.plugin.GroupHeaderGrid |  |
+| SYNO.ux.InvalidQuickTip (xtype: "syno_invalidquicktip") |  |
+| SYNO.ux.PageLessToolbar (xtype: "syno_pageless") |  |
+| SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
+| SYNO.ux.ScheduleField (xtype: "syno_schedulefield") |  |
+| SYNO.ux.ScheduleSelector |  |
+| SYNO.ux.ScheduleTableField |  |
+| SYNO.ux.ScheduleTable |  |
+| SYNO.ux.SliderField (xtype: "syno_sliderfield") |  |
+| SYNO.ux.SplitButton (xtype: "syno_splitbutton") |  |
+| SYNO.ux.StateButtonGroup |  |
+| SYNO.ux.StatusProxy |  |
+| SYNO.ux.SuperBoxSelect (xtype: "syno_superboxselect") |  |
+| SYNO.ux.SuperBoxSelectItem |  |
+| SYNO.ux.SwitchColumn (xtype: "syno_swtichcolumn") |  |
+| SYNO.ux.TextFilter (xtype: "syno_textfilter") |  |
+| SYNO.ux.data.TreeReader |  |
+| SYNO.ux.TreePanel |  |
+| SYNO.ux.TriModeCheckbox |  |
+| SYNO.ux.WhiteQuickTip |  |
+| SYNO.ux.WhiteTipIcon |  |
+
 
 
 # Useful links
