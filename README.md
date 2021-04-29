@@ -26,6 +26,9 @@ Synology ExtJS additional UX widgets : /usr/syno/synoman/scripts/ext-3.4/ux/ux-a
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 
 # Documentation in progress :
+
+- UX part :<br><br>
+
 | Widget | Documentation |
 |----------|:-------------:|
 | SYNO.ux.AriaComponent |  |
@@ -120,6 +123,19 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux.plugin.GroupHeaderGrid |  |
 | SYNO.ux.plugin.StyledGrid |  |
 
+
+- SDS part : <br><br>
+
+| Component | Documentation |
+|----------|:-------------:|
+| SYNO.SDS.AbstractWindow |  |
+| SYNO.SDS.BaseWindow |  |
+| SYNO.SDS.Window |  |
+| SYNO.SDS.ModalWindow |  |
+| SYNO.SDS.AppWindow |  |
+| SYNO.SDS.AppInstance |  |
+
+<br>
 
 
 
