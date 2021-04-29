@@ -44,6 +44,27 @@ Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
 Example for writing API : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
 SimpleExtJSApp source : https://github.com/DigitalBox98/spksrc/tree/simpleextjsapp/spk/simpleextjsapp/src/app <br>
 
+# How the documentation is generated :
+
+The original/commented files are inside the docs/synoextjsdocs-source.tar.gz file.
+JSduck is required to generate the documentation
+
+To generate the documentation, the steps are quite simple :
+- tar -xvf synoextjsdocs-source.tar.gz file
+- cd SynoExtJSDocs
+- jsduck syno/ --output docs
+
+# How the documentation is enriched :
+
+The steps to enrich the API documentation is as below : 
+- If possible, before enriching the documentation, the SimpleExtJSApp application will be updated to contain the additional GUI component
+- Add comments for the desired DSM component in the corresponding source file in the "syno" directory 
+- Identify if this component extends from ExtJS 3.4 component 
+- If so, copy the corresponding ExtJS 3.4 source file from the "ext-3.4.1/src/" directory to the "syno/scripts/ext-3.4/src/" directory by applying the same directory structure
+- Follow the next steps described in "how the documentation is generated"
+
+That's it !
+
 
 # Documentation in progress :
 
