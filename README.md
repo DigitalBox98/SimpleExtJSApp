@@ -62,6 +62,10 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 | SYNO.ux.SearchField (xtype: "syno_searchfield")  |  |
 | SYNO.ux.TimeField (xtype: "syno_timefield") |  |
 | SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
+| SYNO.ux.FleXcroll.DataView (xtype: "syno_flexcroll_dataview") |  |
+| SYNO.ux.ExpandableListView |  |
+| SYNO.ux.OperatableListView |  |
+
 
 # Useful links
 
