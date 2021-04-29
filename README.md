@@ -5,7 +5,7 @@ This part includes :
 - A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
 
 This repo doesn't include :
-- The SPK package for SimpleExtJSApp (for that check at the SimpleExtJSApp source at the end of this document)
+- The SPK package for SimpleExtJSApp (for that check at the SimpleExtJSApp source in the useful links part)
 
 Notes : 
 - The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
