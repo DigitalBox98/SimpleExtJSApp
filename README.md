@@ -88,8 +88,8 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.Button (xtype: "syno_button") | :ok: |
 | SYNO.ux.Checkbox (xtype: "syno_checkbox") | :ok: |
 | SYNO.ux.ColorField (xtype: "syno_colorfield") |  |
-| SYNO.ux.ComboBox (xtype: "syno_combobox") |  |
-| SYNO.ux.CompositeField (xtype: "syno_compositefield") |  |
+| SYNO.ux.ComboBox (xtype: "syno_combobox") | :ok: |
+| SYNO.ux.CompositeField (xtype: "syno_compositefield") | :ok: |
 | SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
 | SYNO.ux.DDGridPanel (xtype: "syno_dd_gridpanel") |  |
 | SYNO.ux.DataViewAnimation |  |
@@ -108,7 +108,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.FieldSet (xtype: "syno_fieldset") |  |
 | SYNO.ux.FileButton (xtype: "syno_filebutton") |  |
 | SYNO.ux.FixColGrid (xtype: "syno_fixedcolumn_grid") |  |
-| SYNO.ux.FleXcroll.ComboBox |  |
+| SYNO.ux.FleXcroll.ComboBox | :ok: |
 | SYNO.ux.FleXcroll.DataView (xtype: "syno_flexcroll_dataview") |  |
 | SYNO.ux.FleXcroll.grid.BufferView |  |
 | SYNO.ux.FleXcroll.grid.GridView |  |
