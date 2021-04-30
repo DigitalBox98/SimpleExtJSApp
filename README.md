@@ -151,7 +151,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.SwitchColumn (xtype: "syno_swtichcolumn") |  |
 | SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
 | SYNO.ux.TextArea (xtype: "syno_textarea") |  |
-| SYNO.ux.TextField (xtype: "syno_textfield") |  |
+| SYNO.ux.TextField (xtype: "syno_textfield") | :ok: |
 | SYNO.ux.TextFilter (xtype: "syno_textfilter") |  |
 | SYNO.ux.TimeField (xtype: "syno_timefield") |  |
 | SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") |  |
