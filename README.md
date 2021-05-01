@@ -5,20 +5,27 @@ This part includes :
 - A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
 
 This repo doesn't include :
-- The SPK package for SimpleExtJSApp (for that check at the SimpleExtJSApp source in the useful links part)
+- The SPK package for SimpleExtJSApp (for that check the SimpleExtJSApp source in the useful links section)
 
 Notes : 
-- The CGI must be called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
+- The test CGI is called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
 - Once the SPK is installed on the NAS, the test.cgi will be located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
 - The package part can be generated via SPKSRC
 
 Demo Application: <br>
 
-![GUI1](https://user-images.githubusercontent.com/57635141/116535086-a38e8100-a8e3-11eb-9fb2-883a69d384ce.png) <br>
-![GUI2](https://user-images.githubusercontent.com/57635141/116535121-ad17e900-a8e3-11eb-9293-7ed15f171059.png) <br>
+Shortcut to application or to API docs :<br>
+<img width="324" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/116785451-eb570900-aa99-11eb-9393-3e8ef9dce0ed.png">
+
+Server calls include : C CGI, Perl CGI, Python CGI or Bash CGI : <br>
+<img width="586" alt="GUI1" src="https://user-images.githubusercontent.com/57635141/116785399-a632d700-aa99-11eb-816e-255f865733b5.png"> <br>
+
+Widgets samples : <br>
+<img width="585" alt="GUI2" src="https://user-images.githubusercontent.com/57635141/116785435-cfebfe00-aa99-11eb-88f5-e441c23baa2e.png"> <br>
 
 Integrated API docs: <br>
-![docs](https://user-images.githubusercontent.com/57635141/116140367-871df900-a6d7-11eb-9ba5-602bd9f5e5ba.png)
+<img width="788" alt="docs" src="https://user-images.githubusercontent.com/57635141/116785494-20fbf200-aa9a-11eb-9d47-9c9e186c634c.png">
+
 
 This page is to be considered as a work in progress with more information to come : ) <br>
 
