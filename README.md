@@ -86,6 +86,7 @@ Below is an example of comments added which will be used during the documentatio
 
 # Documentation in progress :
 
+<br>
 - UX part :<br><br>
 
 | Widget | Documentation |
@@ -157,7 +158,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.Switch (xtype: "syno_switch") |  |
 | SYNO.ux.SwitchColumn (xtype: "syno_swtichcolumn") |  |
 | SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
-| SYNO.ux.TextArea (xtype: "syno_textarea") |  |
+| SYNO.ux.TextArea (xtype: "syno_textarea") | :ok: |
 | SYNO.ux.TextField (xtype: "syno_textfield") | :ok: |
 | SYNO.ux.TextFilter (xtype: "syno_textfilter") |  |
 | SYNO.ux.TimeField (xtype: "syno_timefield") |  |
@@ -182,7 +183,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.plugin.GroupHeaderGrid |  |
 | SYNO.ux.plugin.StyledGrid |  |
 
-
+<br>
 - SDS part : <br><br>
 
 | Component | Documentation |
@@ -192,8 +193,8 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.API.InfoObject |  |
 | SYNO.API.QueryAPI |  |
 | SYNO.SDS.AboutWindow |  |
-| SYNO.SDS.AbstractWindow |  |
-| SYNO.SDS.AppWindow |  |
+| SYNO.SDS.AbstractWindow | :ok:  |
+| SYNO.SDS.AppWindow | :ok: |
 | SYNO.SDS.Background |  |
 | SYNO.SDS.CacheConfirmMessage |  |
 | SYNO.SDS.CustomizeLogo |  |
@@ -248,5 +249,14 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.MessageComboBox |  |
 | SYNO.ux.PasswordField |  |
 | SYNO.ux.StorageComboBox |  |
+
+<br>
+- 3rdparty part : <br><br>
+
+| Application | Documentation |
+|----------|:-------------:|
+| DiagnosisTool | partial |
+| FileBrowser |  |
+| USBCopy |  |
 
 <br>
