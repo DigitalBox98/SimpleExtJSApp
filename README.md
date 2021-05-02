@@ -87,7 +87,7 @@ Below is an example of comments added which will be used during the documentatio
 # Documentation in progress :
 
 <br>
-- UX part :<br>
+- UX part :<br><br>
 
 | Widget | Documentation |
 |----------|:-------------:|
@@ -184,7 +184,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.plugin.StyledGrid |  |
 
 <br>
-- SDS part : <br>
+- SDS part : <br><br>
 
 | Component | Documentation |
 |----------|:-------------:|
@@ -251,7 +251,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.StorageComboBox |  |
 
 <br>
-- 3rdparty part : <br>
+- 3rdparty part : <br><br>
 
 | Application | Documentation |
 |----------|:-------------:|
