@@ -255,8 +255,8 @@ Below is an example of comments added which will be used during the documentatio
 
 | Application | Documentation |
 |----------|:-------------:|
-| DiagnosisTool | partial |
+| DiagnosisTool |  |
 | FileBrowser |  |
-| USBCopy |  |
+| USBCopy | partial |
 
 <br>
