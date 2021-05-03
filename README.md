@@ -195,6 +195,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.SDS.AboutWindow |  |
 | SYNO.SDS.AbstractWindow | :ok:  |
 | SYNO.SDS.AppWindow | :ok: |
+| SYNO.SDS.AppMgr |  |
 | SYNO.SDS.Background |  |
 | SYNO.SDS.CacheConfirmMessage |  |
 | SYNO.SDS.CustomizeLogo |  |
