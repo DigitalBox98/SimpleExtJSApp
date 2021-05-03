@@ -253,6 +253,14 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.StorageComboBox |  |
 
 <br>
+- modules part : <br><br>
+
+| Application | Documentation |
+|----------|:-------------:|
+| AdminCenter |  |
+| Widgets |  |
+
+<br>
 - 3rdparty part : <br><br>
 
 | Application | Documentation |
