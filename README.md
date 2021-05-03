@@ -17,8 +17,8 @@ Demo Application: <br>
 Shortcut to application or to API docs :<br>
 <img width="324" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/116785451-eb570900-aa99-11eb-9393-3e8ef9dce0ed.png">
 
-Server calls include : C CGI, Perl CGI, Python CGI or Bash CGI : <br>
-<img width="586" alt="GUI1" src="https://user-images.githubusercontent.com/57635141/116785399-a632d700-aa99-11eb-816e-255f865733b5.png"> <br>
+Server calls include : CGI (C, Perl, Python or Bash) or Syno API : <br>
+![dsmui](https://user-images.githubusercontent.com/57635141/116911026-a2908300-ac46-11eb-903e-c584e7375b83.png) <br>
 
 Widgets samples : <br>
 <img width="585" alt="GUI2" src="https://user-images.githubusercontent.com/57635141/116785435-cfebfe00-aa99-11eb-88f5-e441c23baa2e.png"> <br>
