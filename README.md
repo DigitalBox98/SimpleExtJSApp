@@ -311,7 +311,7 @@ Below is an example of comments added which will be used during the documentatio
 | Utils |  |  
 | VideoPlayer2 |  |  
 | WelcomeApp |  |  
-| Widgets |  |
+| Widgets | partial |
 
 <br>
 - 3rdparty part : <br><br>
