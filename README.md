@@ -39,7 +39,8 @@ Below is the location of each part of the DSM client framework :<br>
 | Synology JS lib | /usr/syno/synoman/synoSDSjslib/sds.js |
 | Synology ExtJS UX widgets | /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js |
 | ExtJS 3.4 | /usr/syno/synoman/scripts/ext-3.4/ext-all.js |
-
+| DSM modules | /usr/syno/synoman/webman/modules |
+| DSM 3rd party | /usr/syno/synoman/webman/3rdparty |
 
 # ExtJS 3.4 framework info
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
