@@ -265,8 +265,36 @@ Below is an example of comments added which will be used during the documentatio
 
 | Application | Documentation |
 |----------|:-------------:|
+| ActiveInsight |  |
+| AudioStation |  |
+| CloudDownloader |  |
 | DiagnosisTool |  |
+| Docker |  |
+| DockerShortcut |  |
+| DownloadStation |  |
 | FileBrowser |  |
+| FileTaskMonitor |  |
+| Git |  |
+| HybridShare |  |
+| HyperBackup |  |
+| LogCenter |  |
+| MariaDB10 |  |
+| OAuthService |  |
+| PlexMediaServer |  |
+| ScsiTarget |  |
+| SecureSignIn |  |
+| SMBService |  |
+| Spreadsheet |  |
+| SynoFinder |  |
+| SynologyApplicationService |  |
+| SynologyDrive |  |
+| SynologyDrive-Drive |  |
+| SynologyDrive-ShareSync |  |
+| SynologyPhotos |  |
+| TextEditor |  |
 | USBCopy | partial |
+| VideoStation |  |
+| WebService |  |
+| WebStation |  |
 
 <br>
