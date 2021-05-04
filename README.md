@@ -57,6 +57,7 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 
 Usage of ExtJS in DSM : https://github.com/SynoCommunity/spksrc/tree/master/spk/debian-chroot/src <br>
 Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
+Application written in ExtJS + NodeJS : https://github.com/filebot/filebot-node
 Tentative to API writing : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
 SimpleExtJSApp source : https://github.com/DigitalBox98/spksrc/tree/simpleextjsapp/spk/simpleextjsapp/src/app <br>
 
