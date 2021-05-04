@@ -35,7 +35,7 @@ Integrated apps docs: <br>
 <br>
 
 
-This page is to be considered as a work in progress with more information to come : ) <br>
+This page is to be considered as a work in progress for advanced users : ) <br>
 
 # Synology DSM info
 The Synology DSM client part is based on ExtJS 3.4 library <br><br>
