@@ -68,7 +68,7 @@ JSduck is required to generate the documentation
 To generate the documentation, the steps are quite simple :
 - tar -xvf synoextjsdocs-source.tar.gz 
 - cd SynoExtJSDocs
-- jsduck syno/ --output docs
+- jsduck syno/ --output docs --welcome=welcome_page.html --guides=guides.json
 
 To generate the apps documentation, the steps are as below :
 - tar -xvf synoappsdocs-source.tar.gz
