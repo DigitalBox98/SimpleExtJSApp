@@ -47,8 +47,8 @@ Below is the location of each part of the DSM client framework :<br>
 | Synology JS lib | /usr/syno/synoman/synoSDSjslib/sds.js |
 | Synology ExtJS UX widgets | /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js |
 | ExtJS 3.4 | /usr/syno/synoman/scripts/ext-3.4/ext-all.js |
-| DSM modules | /usr/syno/synoman/webman/modules |
-| DSM 3rd party | /usr/syno/synoman/webman/3rdparty |
+| DSM apps (modules) | /usr/syno/synoman/webman/modules |
+| DSM apps (3rd party) | /usr/syno/synoman/webman/3rdparty |
 
 # ExtJS 3.4 framework info
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
@@ -104,7 +104,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.BackNextBtnGroup (xtype: "syno_backnextbtngroup") |  |
 | SYNO.ux.Button (xtype: "syno_button") | :ok: |
 | SYNO.ux.Checkbox (xtype: "syno_checkbox") | :ok: |
-| SYNO.ux.ColorField (xtype: "syno_colorfield") |  |
+| SYNO.ux.ColorField (xtype: "syno_colorfield") | :ok: |
 | SYNO.ux.ComboBox (xtype: "syno_combobox") | :ok: |
 | SYNO.ux.CompositeField (xtype: "syno_compositefield") | :ok: |
 | SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
@@ -148,7 +148,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
 | SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
 | SYNO.ux.Panel (xtype: "syno_panel") |  |
-| SYNO.ux.Radio (xtype: "syno_radio") |  |
+| SYNO.ux.Radio (xtype: "syno_radio") | :ok: |
 | SYNO.ux.RadioGroup (xtype: "syno_radio") |  |
 | SYNO.ux.ScheduleField (xtype: "syno_schedulefield") |  |
 | SYNO.ux.ScheduleSelector |  |
@@ -164,13 +164,13 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.StatusProxy |  |
 | SYNO.ux.SuperBoxSelect (xtype: "syno_superboxselect") |  |
 | SYNO.ux.SuperBoxSelectItem |  |
-| SYNO.ux.Switch (xtype: "syno_switch") |  |
+| SYNO.ux.Switch (xtype: "syno_switch") | :ok: |
 | SYNO.ux.SwitchColumn (xtype: "syno_swtichcolumn") |  |
 | SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
 | SYNO.ux.TextArea (xtype: "syno_textarea") | :ok: |
 | SYNO.ux.TextField (xtype: "syno_textfield") | :ok: |
 | SYNO.ux.TextFilter (xtype: "syno_textfilter") |  |
-| SYNO.ux.TimeField (xtype: "syno_timefield") |  |
+| SYNO.ux.TimeField (xtype: "syno_timefield") | :ok: |
 | SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") |  |
 | SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
 | SYNO.ux.TreePanel |  |
@@ -319,7 +319,7 @@ Below is an example of comments added which will be used during the documentatio
 | Utils |  |  
 | VideoPlayer2 |  |  
 | WelcomeApp |  |  
-| Widgets | partial |
+| Widgets | ok |
 
 <br>
 - 3rdparty part : <br><br>
@@ -329,7 +329,7 @@ Below is an example of comments added which will be used during the documentatio
 | ActiveInsight |  |
 | AudioStation |  |
 | CloudDownloader |  |
-| DiagnosisTool |  |
+| DiagnosisTool | :ok: |
 | Docker |  |
 | DockerShortcut |  |
 | DownloadStation |  |
@@ -353,7 +353,7 @@ Below is an example of comments added which will be used during the documentatio
 | SynologyDrive-ShareSync |  |
 | SynologyPhotos |  |
 | TextEditor |  |
-| USBCopy | partial |
+| USBCopy | :ok: |
 | VideoStation |  |
 | WebService |  |
 | WebStation |  |
