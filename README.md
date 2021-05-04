@@ -298,7 +298,6 @@ Below is an example of comments added which will be used during the documentatio
 | Indexer |  |  
 | LegacyApps |  |  
 | LogCenter |  |  
-| login.cgi |  |  
 | LoginNotify |  |  
 | MyDSCenter |  |  
 | OTPWizard |  |  
