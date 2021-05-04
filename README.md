@@ -3,28 +3,36 @@ The aim of this sample application is to demonstrate the usage of the DSM framew
 This part includes :
 - A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide)
 - A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
+- A tar of the apps/modules docs : to document how apps are using the UI components and framework (in the docs folder)
 
 This repo doesn't include :
 - The SPK package for SimpleExtJSApp (for that check the SimpleExtJSApp source in the useful links section)
 
 Notes : 
-- The test CGI is called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
-- Once the SPK is installed on the NAS, the test.cgi will be located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
-- The package part can be generated via SPKSRC
+- The test CGI is called via an Ajax request (to "/webman/3rdparty/simpleextjsapp/test.cgi" URL) <br>
+- Once the SPK is installed on the NAS, the test.cgi is located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
+- The package part is generated via SPKSRC
 
 Demo Application: <br>
 
-Shortcut to application or to API docs :<br>
-<img width="324" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/116785451-eb570900-aa99-11eb-9393-3e8ef9dce0ed.png">
+Shortcut to application, API docs or Apps docs:<br>
+<img width="478" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/117018890-3a4caa80-acf5-11eb-94bc-9b81b11d4b44.png">
+<br>
 
 Server calls include : CGI (C, Perl, Python or Bash) or Syno API : <br>
 ![dsmui](https://user-images.githubusercontent.com/57635141/116911026-a2908300-ac46-11eb-903e-c584e7375b83.png) <br>
 
 Widgets samples : <br>
-<img width="585" alt="GUI2" src="https://user-images.githubusercontent.com/57635141/116785435-cfebfe00-aa99-11eb-88f5-e441c23baa2e.png"> <br>
+<img width="557" alt="dsmui2" src="https://user-images.githubusercontent.com/57635141/117019212-80a20980-acf5-11eb-8e7d-5b61d5db3402.png">
+<br>
 
 Integrated API docs: <br>
-<img width="788" alt="docs" src="https://user-images.githubusercontent.com/57635141/116785494-20fbf200-aa9a-11eb-9d47-9c9e186c634c.png">
+<img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
+<br>
+
+Integrated apps docs: <br>
+<img width="844" alt="apps" src="https://user-images.githubusercontent.com/57635141/117019545-c8c12c00-acf5-11eb-91be-8a4f2319b93a.png">
+<br>
 
 
 This page is to be considered as a work in progress with more information to come : ) <br>
@@ -39,8 +47,8 @@ Below is the location of each part of the DSM client framework :<br>
 | Synology JS lib | /usr/syno/synoman/synoSDSjslib/sds.js |
 | Synology ExtJS UX widgets | /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js |
 | ExtJS 3.4 | /usr/syno/synoman/scripts/ext-3.4/ext-all.js |
-| DSM modules | /usr/syno/synoman/webman/modules |
-| DSM 3rd party | /usr/syno/synoman/webman/3rdparty |
+| DSM apps (modules) | /usr/syno/synoman/webman/modules |
+| DSM apps (3rd party) | /usr/syno/synoman/webman/3rdparty |
 
 # ExtJS 3.4 framework info
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
@@ -58,9 +66,15 @@ The original/commented files are inside the docs/synoextjsdocs-source.tar.gz fil
 JSduck is required to generate the documentation
 
 To generate the documentation, the steps are quite simple :
-- tar -xvf synoextjsdocs-source.tar.gz file
+- tar -xvf synoextjsdocs-source.tar.gz 
 - cd SynoExtJSDocs
-- jsduck syno/ --output docs
+- jsduck syno/ --output docs --welcome=welcome_page.html --guides=guides.json
+
+To generate the apps documentation, the steps are as below :
+- tar -xvf synoappsdocs-source.tar.gz
+- cd SynoApps
+- jsduck 3rdparty/ modules/ --output docs --welcome=welcome_page.html --guides=guides.json
+
 
 # How the documentation is enriched :
 
@@ -96,7 +110,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.BackNextBtnGroup (xtype: "syno_backnextbtngroup") |  |
 | SYNO.ux.Button (xtype: "syno_button") | :ok: |
 | SYNO.ux.Checkbox (xtype: "syno_checkbox") | :ok: |
-| SYNO.ux.ColorField (xtype: "syno_colorfield") |  |
+| SYNO.ux.ColorField (xtype: "syno_colorfield") | :ok: |
 | SYNO.ux.ComboBox (xtype: "syno_combobox") | :ok: |
 | SYNO.ux.CompositeField (xtype: "syno_compositefield") | :ok: |
 | SYNO.ux.CoverPanel (xtype: "syno_coverpanel")|  |
@@ -140,7 +154,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
 | SYNO.ux.PagingToolbar (xtype: "syno_paging") |  |
 | SYNO.ux.Panel (xtype: "syno_panel") |  |
-| SYNO.ux.Radio (xtype: "syno_radio") |  |
+| SYNO.ux.Radio (xtype: "syno_radio") | :ok: |
 | SYNO.ux.RadioGroup (xtype: "syno_radio") |  |
 | SYNO.ux.ScheduleField (xtype: "syno_schedulefield") |  |
 | SYNO.ux.ScheduleSelector |  |
@@ -156,13 +170,13 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.StatusProxy |  |
 | SYNO.ux.SuperBoxSelect (xtype: "syno_superboxselect") |  |
 | SYNO.ux.SuperBoxSelectItem |  |
-| SYNO.ux.Switch (xtype: "syno_switch") |  |
+| SYNO.ux.Switch (xtype: "syno_switch") | :ok: |
 | SYNO.ux.SwitchColumn (xtype: "syno_swtichcolumn") |  |
 | SYNO.ux.TabPanel (xtype: "syno_tabpanel") |  |
 | SYNO.ux.TextArea (xtype: "syno_textarea") | :ok: |
 | SYNO.ux.TextField (xtype: "syno_textfield") | :ok: |
 | SYNO.ux.TextFilter (xtype: "syno_textfilter") |  |
-| SYNO.ux.TimeField (xtype: "syno_timefield") |  |
+| SYNO.ux.TimeField (xtype: "syno_timefield") | :ok: |
 | SYNO.ux.TimePickerField (xtype: "syno_timepickerfield") |  |
 | SYNO.ux.Toolbar (xtype: "syno_toolbar") |  |
 | SYNO.ux.TreePanel |  |
@@ -311,7 +325,7 @@ Below is an example of comments added which will be used during the documentatio
 | Utils |  |  
 | VideoPlayer2 |  |  
 | WelcomeApp |  |  
-| Widgets | partial |
+| Widgets | :ok: |
 
 <br>
 - 3rdparty part : <br><br>
@@ -321,7 +335,7 @@ Below is an example of comments added which will be used during the documentatio
 | ActiveInsight |  |
 | AudioStation |  |
 | CloudDownloader |  |
-| DiagnosisTool |  |
+| DiagnosisTool | :ok: |
 | Docker |  |
 | DockerShortcut |  |
 | DownloadStation |  |
@@ -345,7 +359,7 @@ Below is an example of comments added which will be used during the documentatio
 | SynologyDrive-ShareSync |  |
 | SynologyPhotos |  |
 | TextEditor |  |
-| USBCopy | partial |
+| USBCopy | :ok: |
 | VideoStation |  |
 | WebService |  |
 | WebStation |  |
