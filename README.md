@@ -3,19 +3,21 @@ The aim of this sample application is to demonstrate the usage of the DSM framew
 This part includes :
 - A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide)
 - A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
+- A tar of the apps/modules docs : to document how apps are using the UI components and framework (in the docs folder)
 
 This repo doesn't include :
 - The SPK package for SimpleExtJSApp (for that check the SimpleExtJSApp source in the useful links section)
 
 Notes : 
-- The test CGI is called via an Ajax request to the "/webman/3rdparty/simpleextjsapp/test.cgi" URL <br>
-- Once the SPK is installed on the NAS, the test.cgi will be located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
-- The package part can be generated via SPKSRC
+- The test CGI is called via an Ajax request (to "/webman/3rdparty/simpleextjsapp/test.cgi" URL) <br>
+- Once the SPK is installed on the NAS, the test.cgi is located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
+- The package part is generated via SPKSRC
 
 Demo Application: <br>
 
-Shortcut to application or to API docs :<br>
-<img width="324" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/116785451-eb570900-aa99-11eb-9393-3e8ef9dce0ed.png">
+Shortcut to application, API docs or App docs:<br>
+<img width="478" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/117018890-3a4caa80-acf5-11eb-94bc-9b81b11d4b44.png">
+<br>
 
 Server calls include : CGI (C, Perl, Python or Bash) or Syno API : <br>
 ![dsmui](https://user-images.githubusercontent.com/57635141/116911026-a2908300-ac46-11eb-903e-c584e7375b83.png) <br>
