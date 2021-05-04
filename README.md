@@ -17,8 +17,8 @@ Demo Application: <br>
 Shortcut to application or to API docs :<br>
 <img width="324" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/116785451-eb570900-aa99-11eb-9393-3e8ef9dce0ed.png">
 
-Server calls include : C CGI, Perl CGI, Python CGI or Bash CGI : <br>
-<img width="586" alt="GUI1" src="https://user-images.githubusercontent.com/57635141/116785399-a632d700-aa99-11eb-816e-255f865733b5.png"> <br>
+Server calls include : CGI (C, Perl, Python or Bash) or Syno API : <br>
+![dsmui](https://user-images.githubusercontent.com/57635141/116911026-a2908300-ac46-11eb-903e-c584e7375b83.png) <br>
 
 Widgets samples : <br>
 <img width="585" alt="GUI2" src="https://user-images.githubusercontent.com/57635141/116785435-cfebfe00-aa99-11eb-88f5-e441c23baa2e.png"> <br>
@@ -39,7 +39,8 @@ Below is the location of each part of the DSM client framework :<br>
 | Synology JS lib | /usr/syno/synoman/synoSDSjslib/sds.js |
 | Synology ExtJS UX widgets | /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js |
 | ExtJS 3.4 | /usr/syno/synoman/scripts/ext-3.4/ext-all.js |
-
+| DSM modules | /usr/syno/synoman/webman/modules |
+| DSM 3rd party | /usr/syno/synoman/webman/3rdparty |
 
 # ExtJS 3.4 framework info
 Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
@@ -195,6 +196,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.SDS.AboutWindow |  |
 | SYNO.SDS.AbstractWindow | :ok:  |
 | SYNO.SDS.AppWindow | :ok: |
+| SYNO.SDS.AppMgr |  |
 | SYNO.SDS.Background |  |
 | SYNO.SDS.CacheConfirmMessage |  |
 | SYNO.SDS.CustomizeLogo |  |
@@ -251,12 +253,101 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.StorageComboBox |  |
 
 <br>
+- modules part : <br><br>
+
+| Application | Documentation |
+|----------|:-------------:|
+| AdminCenter |  |
+| AppNotify |  |
+| AudioPlayer |  |
+| BackgroundTaskMonitor |  |
+| BandwidthControl |  |
+| C3 |  |
+| Chooser |  |
+| ClipBoardJS |  |
+| ConfigBackup |  |
+| DataDrivenDocuments |  |  
+| DisableAdminNotification |  |  
+| DiskMessageHandler |  |  
+| DSMMobile |  |  
+| DSMNotify |  |  
+| DSMUpdateNotify |  |  
+| Echarts |  |  
+| ExternalDevices |  |  
+| FileBrowser |  |  
+| FileChooser |  |  
+| FileChooserV6 |  |  
+| FileSharing |  |  
+| HelpBrowser |  |  
+| HotkeyManager |  |  
+| Indexer |  |  
+| LegacyApps |  |  
+| LogCenter |  |  
+| login.cgi |  |  
+| LoginNotify |  |  
+| MyDSCenter |  |  
+| OTPWizard |  |  
+| PersonalNotification |  |  
+| PersonalSettings |  |  
+| PhotoViewer |  |  
+| PkgManApp |  |  
+| PollingTask |  |  
+| PortEnable |  |  
+| ResetAdminApp |  |  
+| ResourceMonitor |  |  
+| SecurityScan |  |  
+| Share |  |  
+| SharingManager |  |  
+| StorageManager |  |  
+| SupportForm |  |  
+| SynologyAccount |  |  
+| SystemInfoApp |  |  
+| SystemStatusChecker |  |  
+| TaskSchedulerUtils |  |  
+| TaskSchedulerWidget |  |  
+| ThumbConvertProgress |  |  
+| TinyMCE |  |  
+| UpdateMaskApp |  |  
+| Utils |  |  
+| VideoPlayer2 |  |  
+| WelcomeApp |  |  
+| Widgets | partial |
+
+<br>
 - 3rdparty part : <br><br>
 
 | Application | Documentation |
 |----------|:-------------:|
-| DiagnosisTool | partial |
+| ActiveInsight |  |
+| AudioStation |  |
+| CloudDownloader |  |
+| DiagnosisTool |  |
+| Docker |  |
+| DockerShortcut |  |
+| DownloadStation |  |
 | FileBrowser |  |
-| USBCopy |  |
+| FileTaskMonitor |  |
+| Git |  |
+| HybridShare |  |
+| HyperBackup |  |
+| LogCenter |  |
+| MariaDB10 |  |
+| OAuthService |  |
+| PlexMediaServer |  |
+| ScsiTarget |  |
+| SecureSignIn |  |
+| SMBService |  |
+| Spreadsheet |  |
+| SynoFinder |  |
+| SynologyApplicationService |  |
+| SynologyDrive |  |
+| SynologyDrive-Drive |  |
+| SynologyDrive-ShareSync |  |
+| SynologyPhotos |  |
+| TextEditor |  |
+| USBCopy | partial |
+| VideoStation |  |
+| WebService |  |
+| WebStation |  |
 
 <br>
