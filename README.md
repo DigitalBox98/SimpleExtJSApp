@@ -319,7 +319,7 @@ Below is an example of comments added which will be used during the documentatio
 | Utils |  |  
 | VideoPlayer2 |  |  
 | WelcomeApp |  |  
-| Widgets | ok |
+| Widgets | :ok: |
 
 <br>
 - 3rdparty part : <br><br>
