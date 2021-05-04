@@ -66,9 +66,15 @@ The original/commented files are inside the docs/synoextjsdocs-source.tar.gz fil
 JSduck is required to generate the documentation
 
 To generate the documentation, the steps are quite simple :
-- tar -xvf synoextjsdocs-source.tar.gz file
+- tar -xvf synoextjsdocs-source.tar.gz 
 - cd SynoExtJSDocs
 - jsduck syno/ --output docs
+
+To generate the apps documentation, the steps are as below :
+- tar -xvf synoappsdocs-source.tar.gz
+- cd SynoApps
+- jsduck 3rdparty/ modules/ --output docs --welcome=welcome_page.html --guides=guides.json
+
 
 # How the documentation is enriched :
 
