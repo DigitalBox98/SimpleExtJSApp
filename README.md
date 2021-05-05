@@ -26,7 +26,7 @@ Three shortcut are available in DSM :
 Current application features : 
 
 - Server calls demo : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
-![call](https://user-images.githubusercontent.com/57635141/117196590-f8039600-ade6-11eb-99e0-61421c3bbae1.png)
+![call](https://user-images.githubusercontent.com/57635141/117197233-dce55600-ade7-11eb-949b-0dd2eeba4b8f.png)
 <br>
 
 - Widgets samples accessible via several tabs : <br>
