@@ -35,7 +35,7 @@ Integrated apps docs: <br>
 <br>
 
 
-This page is to be considered as a work in progress with more information to come : ) <br>
+This page is to be considered as a work in progress for advanced users : ) <br>
 
 # Synology DSM info
 The Synology DSM client part is based on ExtJS 3.4 library <br><br>
@@ -57,6 +57,7 @@ Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
 
 Usage of ExtJS in DSM : https://github.com/SynoCommunity/spksrc/tree/master/spk/debian-chroot/src <br>
 Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
+Application written in ExtJS + NodeJS : https://github.com/filebot/filebot-node <br>
 Tentative to API writing : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
 SimpleExtJSApp source : https://github.com/DigitalBox98/spksrc/tree/simpleextjsapp/spk/simpleextjsapp/src/app <br>
 
@@ -297,7 +298,6 @@ Below is an example of comments added which will be used during the documentatio
 | Indexer |  |  
 | LegacyApps |  |  
 | LogCenter |  |  
-| login.cgi |  |  
 | LoginNotify |  |  
 | MyDSCenter |  |  
 | OTPWizard |  |  
@@ -337,7 +337,6 @@ Below is an example of comments added which will be used during the documentatio
 | CloudDownloader |  |
 | DiagnosisTool | :ok: |
 | Docker |  |
-| DockerShortcut |  |
 | DownloadStation |  |
 | FileBrowser |  |
 | FileTaskMonitor |  |
@@ -361,7 +360,6 @@ Below is an example of comments added which will be used during the documentatio
 | TextEditor |  |
 | USBCopy | :ok: |
 | VideoStation |  |
-| WebService |  |
 | WebStation |  |
 
 <br>
