@@ -32,7 +32,8 @@ Current application features :
 - Widgets samples accessible via several tabs : <br>
 ![tabs](https://user-images.githubusercontent.com/57635141/117197034-93950680-ade7-11eb-8e2b-ccc85ddcc47d.png)
 <br>
-![screen](https://user-images.githubusercontent.com/57635141/117197077-a9a2c700-ade7-11eb-9092-435b66dc994e.png)
+![screen](https://user-images.githubusercontent.com/57635141/117197375-0b633100-ade8-11eb-8840-ad6e080c10d9.png)
+
 <br>
 
 - Integrated API docs: <br>
