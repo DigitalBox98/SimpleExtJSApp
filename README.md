@@ -337,7 +337,6 @@ Below is an example of comments added which will be used during the documentatio
 | CloudDownloader |  |
 | DiagnosisTool | :ok: |
 | Docker |  |
-| DockerShortcut |  |
 | DownloadStation |  |
 | FileBrowser |  |
 | FileTaskMonitor |  |
@@ -361,7 +360,6 @@ Below is an example of comments added which will be used during the documentatio
 | TextEditor |  |
 | USBCopy | :ok: |
 | VideoStation |  |
-| WebService |  |
 | WebStation |  |
 
 <br>
