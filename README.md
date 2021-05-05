@@ -210,6 +210,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.API.QueryAPI |  |
 | SYNO.SDS.AboutWindow |  |
 | SYNO.SDS.AbstractWindow | :ok:  |
+| SYNO.SDS.AppInstance | :ok:  |
 | SYNO.SDS.AppWindow | :ok: |
 | SYNO.SDS.AppMgr |  |
 | SYNO.SDS.Background |  |
