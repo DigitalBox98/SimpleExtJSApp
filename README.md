@@ -272,10 +272,10 @@ Below is an example of comments added which will be used during the documentatio
 
 | Application | Documentation |
 |----------|:-------------:|
-| AdminCenter |  |
-| AppNotify |  |
-| AudioPlayer |  |
-| BackgroundTaskMonitor |  |
+| AdminCenter | :ok: |
+| AppNotify | :ok: |
+| AudioPlayer | :ok: |
+| BackgroundTaskMonitor | :ok: |
 | BandwidthControl |  |
 | C3 |  |
 | Chooser |  |
@@ -315,7 +315,7 @@ Below is an example of comments added which will be used during the documentatio
 | StorageManager |  |  
 | SupportForm |  |  
 | SynologyAccount |  |  
-| SystemInfoApp |  |  
+| SystemInfoApp | :ok: |  
 | SystemStatusChecker |  |  
 | TaskSchedulerUtils |  |  
 | TaskSchedulerWidget |  |  
