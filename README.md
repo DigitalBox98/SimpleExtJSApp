@@ -223,6 +223,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.SDS.EnforceOTPWizard.QRcodeStep.EditDialog |  |
 | SYNO.SDS.EnforceOTPWizard.WelcomeStep |  |
 | SYNO.SDS.FullScreenToolbar |  |
+| SYNO.SDS.IconBadge |  |
 | SYNO.SDS.JSLoader |  |
 | SYNO.SDS.MessageBoxV5 |  |
 | SYNO.SDS.ModalWindow |  |
