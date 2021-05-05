@@ -6,7 +6,7 @@ This part includes :
 - A tar of the apps/modules docs : to document how apps are using the UI components and framework (in the docs folder)
 
 This repo doesn't include :
-- The SPK package for SimpleExtJSApp. For that refer to the SimpleExtJSApp source in the useful links section available in the [Synology DSM info](wiki/Synology-DSM-info) page 
+- The SPK package for SimpleExtJSApp. For that refer to the SimpleExtJSApp source in the useful links section available in the [Synology DSM info](https://github.com/DigitalBox98/SimpleExtJSApp/wiki/Synology-DSM-info) page 
 
 Notes : 
 - The test CGI is called via an Ajax request (to "/webman/3rdparty/simpleextjsapp/test.cgi" URL) <br>
