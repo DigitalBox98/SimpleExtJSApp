@@ -13,6 +13,8 @@ Notes :
 - Once the SPK is installed on the NAS, the test.cgi is located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
 - The package part is generated via SPKSRC
 
+For more information, please refer to the [SimpleExtJSApp Wiki] (https://github.com/DigitalBox98/SimpleExtJSApp/wiki) page.
+
 # Demo Application
 
 Three shortcut are available in DSM :
