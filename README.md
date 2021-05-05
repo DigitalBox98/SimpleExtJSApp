@@ -332,15 +332,15 @@ Below is an example of comments added which will be used during the documentatio
 
 | Application | Documentation |
 |----------|:-------------:|
-| ActiveInsight |  |
-| AudioStation |  |
-| CloudDownloader |  |
+| ActiveInsight | :ok: |
+| AudioStation | :ok: |
+| CloudDownloader | :ok: |
 | DiagnosisTool | :ok: |
-| Docker |  |
-| DownloadStation |  |
-| FileBrowser |  |
-| FileTaskMonitor |  |
-| Git |  |
+| Docker | :ok: |
+| DownloadStation | :ok: |
+| FileBrowser | :ok: |
+| FileTaskMonitor | :ok: |
+| Git | :ok: |
 | HybridShare |  |
 | HyperBackup |  |
 | LogCenter |  |
@@ -357,9 +357,9 @@ Below is an example of comments added which will be used during the documentatio
 | SynologyDrive-Drive |  |
 | SynologyDrive-ShareSync |  |
 | SynologyPhotos |  |
-| TextEditor |  |
+| TextEditor | :ok: |
 | USBCopy | :ok: |
 | VideoStation |  |
-| WebStation |  |
+| WebStation | :ok: |
 
 <br>
