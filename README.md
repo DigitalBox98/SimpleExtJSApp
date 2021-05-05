@@ -147,7 +147,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.ux.InvalidQuickTip (xtype: "syno_invalidquicktip") |  |
 | SYNO.ux.InverseFieldSet (xtype: "syno_inversefieldset") |  |
 | SYNO.ux.MacTextField (xtype: "syno_mactextfield") |  |
-| SYNO.ux.Menu (xtype: "syno_menu") |  |
+| SYNO.ux.Menu (xtype: "syno_menu") | :ok: |
 | SYNO.ux.ModuleList (xtype: "syno_modulelist") |  |
 | SYNO.ux.NumberField (xtype: "syno_numberfield") |  |
 | SYNO.ux.OperatableListView |  |
