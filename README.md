@@ -40,7 +40,7 @@ Current application features :
 <br>
 
 
-- Integrated API docs: <br>
+- Integrated API docs (UX widgets & components): <br>
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
 <br>
 
@@ -49,6 +49,6 @@ Current application features :
 <br>
 
 
-This page is to be considered as a work in progress and is to be considered for advanced users : ) <br>
+This page is a work in progress and is to be considered for advanced users : ) <br>
 
 
