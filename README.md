@@ -13,14 +13,19 @@ Notes :
 - Once the SPK is installed on the NAS, the test.cgi is located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
 - The package part is generated via SPKSRC
 
-Demo Application: <br>
+# Demo Application
 
-Shortcut to application, API docs or Apps docs:<br>
+Three shortcut are available in DSM :
+- Application launch
+- Link to API docs
+- Link to Apps docs
+<br>
 <img width="478" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/117018890-3a4caa80-acf5-11eb-94bc-9b81b11d4b44.png">
 <br>
 
-Server calls include : CGI (C, Perl, Python or Bash) or Syno API : <br>
-![dsmui](https://user-images.githubusercontent.com/57635141/116911026-a2908300-ac46-11eb-903e-c584e7375b83.png) <br>
+Inside the application, the server calls include : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
+![call](https://user-images.githubusercontent.com/57635141/117196590-f8039600-ade6-11eb-99e0-61421c3bbae1.png)
+<br>
 
 Widgets samples : <br>
 <img width="557" alt="dsmui2" src="https://user-images.githubusercontent.com/57635141/117019212-80a20980-acf5-11eb-8e7d-5b61d5db3402.png">
