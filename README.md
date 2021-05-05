@@ -37,29 +37,6 @@ Integrated apps docs: <br>
 
 This page is to be considered as a work in progress for advanced users : ) <br>
 
-# Synology DSM info
-The Synology DSM client part is based on ExtJS 3.4 library <br><br>
-
-Below is the location of each part of the DSM client framework :<br> 
-
-| DSM client part | Location on NAS |
-|----------|:-------------:|
-| Synology JS lib | /usr/syno/synoman/synoSDSjslib/sds.js |
-| Synology ExtJS UX widgets | /usr/syno/synoman/scripts/ext-3.4/ux/ux-all.js |
-| ExtJS 3.4 | /usr/syno/synoman/scripts/ext-3.4/ext-all.js |
-| DSM apps (modules) | /usr/syno/synoman/webman/modules |
-| DSM apps (3rd party) | /usr/syno/synoman/webman/3rdparty |
-
-# ExtJS 3.4 framework info
-Available at : http://cdn.sencha.com/ext/gpl/3.4.1.1/release-notes.html<br>
-
-# Useful links
-
-Usage of ExtJS in DSM : https://github.com/SynoCommunity/spksrc/tree/master/spk/debian-chroot/src <br>
-Usage of ExtJS + API in DSM : https://github.com/Rutorai/syno-library/wiki <br>
-Application written in ExtJS + NodeJS : https://github.com/filebot/filebot-node <br>
-Tentative to API writing : https://github.com/Rutorai/syno-library/tree/develop/package/ <br>
-SimpleExtJSApp source : https://github.com/DigitalBox98/spksrc/tree/simpleextjsapp/spk/simpleextjsapp/src/app <br>
 
 # How the documentation is generated :
 
