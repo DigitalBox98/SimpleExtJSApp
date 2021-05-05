@@ -214,6 +214,7 @@ Below is an example of comments added which will be used during the documentatio
 | SYNO.SDS.AppWindow | :ok: |
 | SYNO.SDS.AppMgr |  |
 | SYNO.SDS.Background |  |
+| SYNO.SDS.BaseWindow |  |
 | SYNO.SDS.CacheConfirmMessage |  |
 | SYNO.SDS.CustomizeLogo |  |
 | SYNO.SDS.EnforceOTPWizard |  |
