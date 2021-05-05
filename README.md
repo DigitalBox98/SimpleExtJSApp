@@ -23,23 +23,27 @@ Three shortcut are available in DSM :
 <img width="478" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/117018890-3a4caa80-acf5-11eb-94bc-9b81b11d4b44.png">
 <br>
 
-Inside the application, the server calls include : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
+Current application features : 
+
+- Server calls demo : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
 ![call](https://user-images.githubusercontent.com/57635141/117196590-f8039600-ade6-11eb-99e0-61421c3bbae1.png)
 <br>
 
-Widgets samples can be accessed via several tabs : <br>
-<img width="557" alt="dsmui2" src="https://user-images.githubusercontent.com/57635141/117019212-80a20980-acf5-11eb-8e7d-5b61d5db3402.png">
+- Widgets samples accessible via several tabs : <br>
+![tabs](https://user-images.githubusercontent.com/57635141/117197034-93950680-ade7-11eb-8e2b-ccc85ddcc47d.png)
+<br>
+![screen](https://user-images.githubusercontent.com/57635141/117197077-a9a2c700-ade7-11eb-9092-435b66dc994e.png)
 <br>
 
-Integrated API docs: <br>
+- Integrated API docs: <br>
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
 <br>
 
-Integrated apps docs: <br>
+- Integrated Apps docs (3rdparty/modules) : <br>
 <img width="844" alt="apps" src="https://user-images.githubusercontent.com/57635141/117019545-c8c12c00-acf5-11eb-91be-8a4f2319b93a.png">
 <br>
 
 
-This page is to be considered as a work in progress for advanced users : ) <br>
+This page is to be considered as a work in progress and is to be considered for advanced users : ) <br>
 
 
