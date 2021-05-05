@@ -33,6 +33,11 @@ Current application features :
 ![tabs](https://user-images.githubusercontent.com/57635141/117197034-93950680-ade7-11eb-8e2b-ccc85ddcc47d.png)
 <br>
 
+Each tab display the corresponding GUI components : <br>
+![screen](https://user-images.githubusercontent.com/57635141/117197587-48c7be80-ade8-11eb-8fbe-5da66a46c14f.png)
+
+
+
 - Integrated API docs: <br>
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
 <br>
