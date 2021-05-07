@@ -22,7 +22,7 @@ Three shortcuts are available under DSM :
 - Link to API docs
 
 <br>
-![shortcuts](https://user-images.githubusercontent.com/57635141/117481737-af251c00-af63-11eb-9e52-a1fe77a63ffe.png)
+![shortcuts](https://user-images.githubusercontent.com/57635141/117481775-be0bce80-af63-11eb-927a-49bf98d08dd4.png)
 
 <br>
 
