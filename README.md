@@ -20,9 +20,10 @@ For more information, please refer to the [SimpleExtJSApp Wiki](https://github.c
 Three shortcuts are available under DSM :
 - Application launch
 - Link to API docs
-- Link to Apps docs
+
 <br>
-<img width="478" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/117018890-3a4caa80-acf5-11eb-94bc-9b81b11d4b44.png">
+![shortcuts](https://user-images.githubusercontent.com/57635141/117481737-af251c00-af63-11eb-9e52-a1fe77a63ffe.png)
+
 <br>
 
 Current application features : 
