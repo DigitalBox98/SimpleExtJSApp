@@ -21,7 +21,6 @@ Three shortcuts are available under DSM :
 - Application launch
 - Link to API docs
 
-<br>
 ![shortcuts](https://user-images.githubusercontent.com/57635141/117481775-be0bce80-af63-11eb-927a-49bf98d08dd4.png)
 
 <br>
