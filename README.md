@@ -44,10 +44,6 @@ Current application features :
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
 <br>
 
-- Integrated Apps docs (3rdparty/modules) : <br>
-<img width="844" alt="apps" src="https://user-images.githubusercontent.com/57635141/117019545-c8c12c00-acf5-11eb-91be-8a4f2319b93a.png">
-<br>
-
 
 This page is a work in progress and is to be considered for advanced users : ) <br>
 
