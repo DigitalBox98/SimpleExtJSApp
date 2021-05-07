@@ -17,7 +17,7 @@ For more information, please refer to the [SimpleExtJSApp Wiki](https://github.c
 
 # Demo Application
 
-Three shortcuts are available under DSM :
+Two shortcuts are available under DSM :
 - Application launch
 - Link to API docs
 
