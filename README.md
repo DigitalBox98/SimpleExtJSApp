@@ -17,12 +17,12 @@ For more information, please refer to the [SimpleExtJSApp Wiki](https://github.c
 
 # Demo Application
 
-Three shortcuts are available under DSM :
+Two shortcuts are available under DSM :
 - Application launch
 - Link to API docs
-- Link to Apps docs
-<br>
-<img width="478" alt="shortcuts" src="https://user-images.githubusercontent.com/57635141/117018890-3a4caa80-acf5-11eb-94bc-9b81b11d4b44.png">
+
+![shortcuts](https://user-images.githubusercontent.com/57635141/117481775-be0bce80-af63-11eb-927a-49bf98d08dd4.png)
+
 <br>
 
 Current application features : 
@@ -42,10 +42,6 @@ Current application features :
 
 - Integrated API docs (UX widgets & components): <br>
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
-<br>
-
-- Integrated Apps docs (3rdparty/modules) : <br>
-<img width="844" alt="apps" src="https://user-images.githubusercontent.com/57635141/117019545-c8c12c00-acf5-11eb-91be-8a4f2319b93a.png">
 <br>
 
 
