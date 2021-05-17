@@ -34,7 +34,7 @@ int main(int argc, char **argv)
   printf("Content-Type: text/html\r\n\r\n"); 
 
   if (IsUserLogin(user, sizeof(user)) == 1) {
-    printf("User is authenticated. Name: %s\n", user); } 
+    printf("User is authenticated (%s)\n", user); } 
   else {
     printf("User is not authenticated.\n"); 
   }
