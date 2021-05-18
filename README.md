@@ -3,7 +3,6 @@ The aim of this sample application is to demonstrate the usage of the DSM framew
 This part includes :
 - A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide)
 - A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
-- A tar of the apps/modules docs : to document how apps are using the UI components and framework (in the docs folder)
 
 This repo doesn't include :
 - The SPK package for SimpleExtJSApp. For that refer to the SimpleExtJSApp source in the useful links section available in the [Synology DSM info](https://github.com/DigitalBox98/SimpleExtJSApp/wiki/Synology-DSM-info) page 
