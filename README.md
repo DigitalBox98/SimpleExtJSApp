@@ -16,7 +16,7 @@ For more information, please refer to the [SimpleExtJSApp Wiki](https://github.c
 
 # Demo Application
 
-To have access to the demo application on DSM 7.0, add the below repo to your packages source : 
+To have access to the demo application on DSM 7.0, add the below repo to your packages source : <br>
 http://digital.box.free.fr/dsm7/
 
 Two shortcuts are available under DSM :
