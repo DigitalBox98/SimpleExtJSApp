@@ -24,7 +24,6 @@ Two shortcuts are available under DSM :
 - Link to API docs
 
 ![shortcuts](https://user-images.githubusercontent.com/57635141/117481775-be0bce80-af63-11eb-927a-49bf98d08dd4.png)
-<img width="177" alt="App-Docs" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/83ed547b-44f4-4aee-821c-7c1a27d7d7ac">
 
 <br>
 
