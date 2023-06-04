@@ -19,10 +19,9 @@ For more information, please refer to the [SimpleExtJSApp Wiki](https://github.c
 To have access to the demo application on DSM 7.0, add the below repo to your packages source : <br>
 https://digitalbox.go.zd.fr/
 
-Three shortcuts are available under DSM :
+Two shortcuts are available under DSM :
 - Application launch
 - Link to API docs
-- Link to DSM Applications docs
 
 ![shortcuts](https://user-images.githubusercontent.com/57635141/117481775-be0bce80-af63-11eb-927a-49bf98d08dd4.png)
 <img width="177" alt="App-Docs" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/83ed547b-44f4-4aee-821c-7c1a27d7d7ac">
@@ -49,10 +48,6 @@ Current application features :
 
 - Integrated API docs (UX widgets & components): <br>
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
-<br>
-
-- Integrated DSM Applications docs (to understand how these applications are written): <br>
-<img width="992" alt="Task-Scheduler" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/6e91617b-6c84-4ee8-9651-47cd8f420c8e">
 <br>
 
 This page is a work in progress and is to be considered for advanced users : ) <br>
