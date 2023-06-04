@@ -43,6 +43,9 @@ Current application features :
 ![screen](https://user-images.githubusercontent.com/57635141/117197587-48c7be80-ade8-11eb-8fbe-5da66a46c14f.png)
 <br>
 
+- Usage of JSonStore to call Syno API or customized CGI : <br>
+<img width="986" alt="JSonStore" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/2d97f30a-5bbe-4b6d-817c-ac42489ea226">
+<br>
 
 - Integrated API docs (UX widgets & components): <br>
 <img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
@@ -50,7 +53,7 @@ Current application features :
 
 - Integrated DSM Applications docs (to understand how these applications are written): <br>
 <img width="992" alt="Task-Scheduler" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/6e91617b-6c84-4ee8-9651-47cd8f420c8e">
-
+<br>
 
 This page is a work in progress and is to be considered for advanced users : ) <br>
 
