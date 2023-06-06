@@ -52,3 +52,17 @@ Current application features :
 This page is a work in progress and is to be considered for advanced users : ) <br>
 
 
+# Demo Widget
+
+
+Once installed this demo widget is available under the name "Customized" in the widget menu :
+![widget-access](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/f91da440-c8e3-4fbc-a9be-d2626bd69521)
+
+This widget is only displaying a message and the name of your NAS :
+![widget](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/612a654d-5ebb-482b-a33a-edd9c5bd53a3)
+
+Details of the widget code is available at : 
+
+https://github.com/DigitalBox98/spksrc/tree/simpleextjswidget/spk/simpleextjswidget/src/app
+
+
