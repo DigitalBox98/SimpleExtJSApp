@@ -55,13 +55,15 @@ This page is a work in progress and is to be considered for advanced users : ) <
 # Demo Widget
 
 
-Once installed this demo widget is available under the name "Customized" in the widget menu :
+Once installed this demo widget is available under the name "Customized" in the widget menu : <br>
 ![widget-access](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/f91da440-c8e3-4fbc-a9be-d2626bd69521)
+<br>
 
-This widget is only displaying a message and the name of your NAS :
+This widget is only displaying a message and the name of your NAS :<br>
 ![widget](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/612a654d-5ebb-482b-a33a-edd9c5bd53a3)
+<br>
 
-Details of the widget code is available at : 
+Details of the widget code is available at : <br>
 
 https://github.com/DigitalBox98/spksrc/tree/simpleextjswidget/spk/simpleextjswidget/src/app
 
