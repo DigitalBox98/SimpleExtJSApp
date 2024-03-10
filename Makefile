@@ -2,10 +2,7 @@ SPK_NAME = rr-manager
 SPK_VERS = 1.0
 SPK_REV = 14
 SPK_ICON = src/rr-manager.png
-# WIZARDS_DIR = WIZARD_UIFILES
 DSM_UI_DIR = app
-
-DEPENDS = cross/$(SPK_NAME)
 WHEELS = src/requirements.txt
 
 PYTHON_PACKAGE = python311
