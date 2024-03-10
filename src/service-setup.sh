@@ -10,7 +10,7 @@ service_postinst ()
 
     echo ${separator}
     install_python_wheels
-    /bin/sqlite3 /usr/syno/etc/esynoscheduler/esynoscheduler.db <${SYNOPKG_PKGDEST}/app/createsqlitedata.sql
+    # /bin/sqlite3 /usr/syno/etc/esynoscheduler/esynoscheduler.db <${SYNOPKG_PKGDEST}/app/createsqlitedata.sql
 
     echo ${separator}
     echo "Install packages to the app/libs folder"
