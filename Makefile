@@ -63,7 +63,7 @@ generated-wizards:
 rr-manager_extra_install:
 	install -m 755 -d $(STAGING_DIR)/share $(STAGING_DIR)/var
 	install -m 755 -d $(STAGING_DIR)/share/wheelhouse/
-	install -m 644 src/requirements.txt $(STAGING_DIR)/share/wheelhouse/requirements.txt
+	install -m 644 src/requirements2.txt $(STAGING_DIR)/share/wheelhouse/requirements.txt
 
 	install -m 755 -d $(STAGING_DIR)/app/
 	install -m 755 -d $(STAGING_DIR)/app/libs/
