@@ -25,7 +25,6 @@ SERVICE_USER   = auto
 SERVICE_SETUP  = src/service-setup.sh
 SSS_SCRIPT = src/dsm-control.sh
 STARTABLE = yes
-SPK_COMMANDS = env/bin/beet
 
 POST_STRIP_TARGET = rr-manager_extra_install
 
