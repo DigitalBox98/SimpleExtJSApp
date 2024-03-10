@@ -9,12 +9,12 @@ jobs:
       matrix:
         target:
         - "x64-7.0"
-        # - "aarch64-7.0"
-        # include:
-        # - target: x64-7.0
-        #   dsm_ver: 7.0
-        # - target: aarch64-7.0
-        #   dsm_ver: 7.0
+        - "aarch64-7.0"
+        include:
+        - target: x64-7.0
+          dsm_ver: 7.0
+        - target: aarch64-7.0
+          dsm_ver: 7.0
     steps:
       - uses: actions/checkout@v4
       - name: Checkout SynoCommunity Source and Docker Image
