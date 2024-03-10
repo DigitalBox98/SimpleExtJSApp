@@ -14,9 +14,9 @@ jobs:
         - target: x64-7.0
           dsm_ver: 7.0
           go_arch: amd64
-        - target: aarch64-7.0
-          dsm_ver: 7.0
-          go_arch: arm64
+        # - target: aarch64-7.0
+        #   dsm_ver: 7.0
+        #   go_arch: arm64
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go
