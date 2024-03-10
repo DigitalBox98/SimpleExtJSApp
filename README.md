@@ -1,70 +1,42 @@
-# SimpleExtJSApp
-The aim of this sample application is to demonstrate the usage of the DSM framework based on ExtJS<br><br>
-This part includes :
-- A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide)
-- A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
+# What is that?
+![Main Screen](img/main.png)
+RRManager is a Redpill Recovery DSM application aimed to provide the ability to configure/update RR without booting to RR recovery. This package is for experienced users. 
 
-This repo doesn't include :
-- The SPK package for SimpleExtJSApp. For that refer to the SimpleExtJSApp source in the useful links section available in the [Synology DSM info](https://github.com/DigitalBox98/SimpleExtJSApp/wiki/Synology-DSM-info) page 
+❗❗❗ Required `RR v.24.2.4`
 
-Notes : 
-- The test CGI is called via an Ajax request (to "/webman/3rdparty/simpleextjsapp/test.cgi" URL) <br>
-- Once the SPK is installed on the NAS, the test.cgi is located in "/usr/syno/synoman/webman/3rdparty/simpleextjsapp/test.cgi"
-- The package part is generated via SPKSRC
+### Features
+ - [x] upload and install update from the DSM
+ - [x] run custom jobs with ui(`clean_system_disk.cgi`, etc..)
+ - [ ] manage addons (in progress)
 
-For more information, please refer to the [SimpleExtJSApp Wiki](https://github.com/DigitalBox98/SimpleExtJSApp/wiki) page.
+That app is built on the `DSM` UI framework: `Ext.Js 3.4`.
+I didn't find documentaion regarding that framework, so I spent a lot of time to reserch how to build ui and call DSM actions utilyzing that approach. That is why the ui is so unperfect))
 
-# Demo Application
-
-To have access to the demo application on DSM 7.0, add the below repo to your packages source : <br>
-https://digitalbox.go.zd.fr/
-
-Two shortcuts are available under DSM :
-- Application launch
-- Link to API docs
-
-![shortcuts](https://user-images.githubusercontent.com/57635141/117481775-be0bce80-af63-11eb-927a-49bf98d08dd4.png)
-
-<br>
-
-Current application features : 
-
-- Server calls demo : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
-![call](https://user-images.githubusercontent.com/57635141/117197233-dce55600-ade7-11eb-949b-0dd2eeba4b8f.png)
-<br>
-
-- Widgets samples accessible via several tabs : <br>
-![tabs](https://user-images.githubusercontent.com/57635141/117197034-93950680-ade7-11eb-8e2b-ccc85ddcc47d.png)
-<br>
-
-- Each tab is displaying the corresponding GUI components (standard/advanced) : <br>
-![screen](https://user-images.githubusercontent.com/57635141/117197587-48c7be80-ade8-11eb-8fbe-5da66a46c14f.png)
-<br>
-
-- Usage of JSonStore to call Syno API or customized CGI : <br>
-<img width="986" alt="JSonStore" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/2d97f30a-5bbe-4b6d-817c-ac42489ea226">
-<br>
-
-- Integrated API docs (UX widgets & components): <br>
-<img width="724" alt="API" src="https://user-images.githubusercontent.com/57635141/117019518-c19a1e00-acf5-11eb-87a7-b0559fe10ee9.png">
-<br>
-
-This page is a work in progress and is to be considered for advanced users : ) <br>
+# Instalation
+1. Download RR Manager spk file from github
+2. Install SPK
+3. Setup tasks
+4. Run `SetRootPrivsToRrManager` taks to add root privilages to the `RR Manager`.
 
 
-# Demo Widget
+# How to setup tasks
+Create folowing tasks manually that must be runned behalf of `root`:
 
+- RunRrUpdate:
+```bash
+. /var/packages/rr-manager/target/app/config.txt
+/usr/bin/rr-update.sh updateRR "$UPLOAD_DIR_PATH$RR_TMP_DIR"/update.zip /tmp/rr_update_progress
+```
 
-Once installed this demo widget is available under the name "Customized" in the widget menu : <br>
-![widget-access](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/f91da440-c8e3-4fbc-a9be-d2626bd69521)
-<br>
+- SetRootPrivsToRrManager:
+```bash
+sed -i 's/package/root/g' /var/packages/rr-manager/conf/privilege
+synopkg restart rr-manager
+```
 
-This widget is only displaying a message and the name of your NAS :<br>
-![widget](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/612a654d-5ebb-482b-a33a-edd9c5bd53a3)
-<br>
+## How does it works?
+That app using `/downloads` folder to upload the update.zip. Then the script of the that was made by RR maintainer will be runned. `RR Manager` is implementing only UI for the update process.
 
-Details of the widget code is available at : <br>
-
-https://github.com/DigitalBox98/spksrc/tree/simpleextjswidget/spk/simpleextjswidget/src/app
-
-
+## TODO:
+- [ ] fix ui
+- [ ] remove manual steps to create task

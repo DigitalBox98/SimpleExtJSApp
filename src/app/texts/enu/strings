@@ -1,0 +1,33 @@
+[app]
+app_name = "RR Manager"
+description = "RR Manager"
+index_title = "Help documentation"
+
+[ui]
+greetings_text = "Welcome to RR Manager!"
+tab_general = "General"
+tab_addons = "Addons"
+
+lb_select_update_file = "Please select the update file:"
+upload_update_file_form_validation_invalid_msg = "Please select the update/updateAll file before start uploading."
+alt_confirm = "Confirm"
+update_rr_progress_msg = "Update RR in progress: {0}. Status: {1}."
+update_rr_completed = "The RR has been successfully updated. Please restart the PC."
+update_rr_error_msg = "Unable to update RR. Status code: {0}, Reason: {1}"
+update_rr_confirmation = "Curent RR version: {0}. Update file version: {1}"
+update_rr_confirmation_title = "Confirm update"
+confirm_system_clean_up_msg = "Would you like to run clean up sustem partition script?"
+confirm_system_clean_up_title = "Confirm system cleanup"
+
+unable_update_rr_msg= "Unable to update RR: {0}. Please upload the file and try againe."
+upload_file_dialog_title = "Upload File"
+
+select_file = "Select File"
+loading_text = "Loading..."
+system_info= "🖥️System Info:"
+
+rr_actions = "RR Loader Actions"
+required_tasks_is_missing = "❗❗❗The following required tasks {0} are missing in the system. It will require entering your password. Do you want to create them?"
+tasks_created_msg = "The tasks have been successfully created. Please restart the RR Manager app."
+
+save_addons_changes = "Save addons changes"
