@@ -51,9 +51,9 @@ jobs:
         run: |
           workdir=$(pwd)
           docker run -v /home/runner/work/spksrc:/spksrc \
-              -v $workdir:/spksrc/spk/simplepermissionmanager \
+              -v $workdir:/spksrc/spk/rr-manager \
               -v $workdir/packages:/spksrc/packages \
-              -w /spksrc/spk/simplepermissionmanager \
+              -w /spksrc/spk/rr-manager \
               ghcr.io/synocommunity/spksrc \
               make arch-${{ matrix.target }}
       - name: Release
