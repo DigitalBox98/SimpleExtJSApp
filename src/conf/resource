@@ -17,10 +17,9 @@
         }
       ]
     },
-    "portals": [],
     "pkg_dir_prepare": [
       {
-        "source": "/var/packages/rr-manager/target/web/docs/",
+        "source": "/var/packages/rr-manager/target/app",
         "target": "rr-manager",
         "mode": "0755",
         "user": "sc-rr-manager",

@@ -1,6 +1,6 @@
 SPK_NAME = rr-manager
 SPK_VERS = 1.0
-SPK_REV = 18
+SPK_REV = 19
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
@@ -12,7 +12,7 @@ SPK_DEPENDS = "python311>=3.11.5-8"
 MAINTAINER = T-REX-XP
 
 DESCRIPTION = RR Manager is a Redpill Recovery DSM application aimed to provide the ability to configure/update RR without booting to RR recovery. This package is for experienced users.
-STARTABLE = no
+STARTABLE = yes
 DISPLAY_NAME = RR Manager
 
 HOMEPAGE = https://github.com/T-REX-XP/RRManager
