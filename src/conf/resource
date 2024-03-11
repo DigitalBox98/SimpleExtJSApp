@@ -6,15 +6,14 @@
         "display_name": "RR Manager",
         "type": "static",
         "root": "rr-manager",
-        "backend": 2,
         "icon": "app/images/rr-manager-{0}.png"
       }
     ],
     "migrate": {
       "root": [
         {
-          "old": "rr-manager",
-          "new": "rr-manager"
+          "old": "sc-rr-manager",
+          "new": "sc-rr-manager"
         }
       ]
     },

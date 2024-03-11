@@ -1,8 +1,10 @@
 SPK_NAME = rr-manager
 SPK_VERS = 1.0
-SPK_REV = 16
+SPK_REV = 18
 SPK_ICON = src/rr-manager.png
+
 DSM_UI_DIR = app
+DSM_UI_CONFIG = src/app/config
 
 PYTHON_PACKAGE = python311
 SPK_DEPENDS = "python311>=3.11.5-8"
@@ -30,7 +32,6 @@ POST_STRIP_TARGET = rr-manager_extra_install
 include ../../mk/spksrc.common.mk
 include ../../mk/spksrc.directories.mk
 SERVICE_WIZARD_SHARE = wizard_download_dir
-DSM_UI_CONFIG = src/app/config
 WIZARDS_DIR = $(WORK_DIR)/generated-wizards
 WIZARDS = install_uifile upgrade_uifile
 SUPPORTED_LANGUAGES = fre
