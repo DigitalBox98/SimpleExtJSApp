@@ -7,6 +7,7 @@ RRManager is a Redpill Recovery DSM application aimed to provide the ability to 
 ### Features
  - [x] upload and install update from the DSM
  - [x] run custom jobs with ui(`clean_system_disk.cgi`, etc..)
+ - [x] no more marked as virus 
  - [ ] manage addons (in progress)
 
 That app is built on the `DSM` UI framework: `Ext.Js 3.4`.
@@ -14,10 +15,8 @@ I didn't find documentaion regarding that framework, so I spent a lot of time to
 
 # Instalation
 1. Download RR Manager spk file from github
-    - For fome reason the spk marked as a `virus` on windows. I will investigate the reason.
-![Main Screen](img/virus_warning.png)
-1. Install SPK, specify the path to store RR artifacts
-2. Follow the guide to create necessary resources
+2. Install SPK, specify the path to store RR artifacts
+3. Follow the guide to create necessary resources
 
 ## How does it work?
 During the app install, you can specify the folders to store the RR artifacts during the update process. You can also select the folders and shares created during the installation or populate existing shares.
@@ -29,5 +28,6 @@ Please note that you need to upload `updateX.zip(updateall-24.3.0)`, not `rr-23.
  I will add that validation in the future.
 
 ## TODO:
-- [ ] fix ui
+- [ ] Fix ui to make it responsive
+- [ ] Add localizations
 
