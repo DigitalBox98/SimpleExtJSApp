@@ -544,8 +544,10 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
 
         },
         createRunRrUpdateTask: function (token, callback) {
+            let that = this;
+            let task_name = "RunRrUpdate"
             params = {
-                task_name: "RunRrUpdate",
+                task_name: task_name,
                 owner: { 0: "root" },
                 event: "bootup",
                 enable: false,
@@ -554,8 +556,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 notify_mail: "",
                 notify_if_error: false,
                 operation_type: "script",
-                operation:
-                    ". /var/packages/rr-manager/target/app/config.txt\n/usr/bin/rr-update.sh updateRR \"$UPLOAD_DIR_PATH$RR_TMP_DIR\"/update.zip /tmp/rr_update_progress",
+                operation: that['rrManagerConfig'][`${task_name}_TASK`]
             };
 
             if (token != "") {
@@ -584,8 +585,10 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             this.sendWebAPI(args);
         },
         createRunSetPriviledgeForRRTask: function (token) {
+            let that = this;
+            let task_name = "SetRootPrivsToRrManager"
             params = {
-                task_name: "SetRootPrivsToRrManager",
+                task_name: task_name,
                 owner: { 0: "root" },
                 event: "bootup",
                 enable: false,
@@ -594,9 +597,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 notify_mail: "",
                 notify_if_error: false,
                 operation_type: "script",
-                operation:
-                    "sed -i 's/package/root/g' /var/packages/rr-manager/conf/privilege && synopkg restart rr-manager",
-            };
+                operation: that['rrManagerConfig'][`${task_name}_TASK`]            };
 
             if (token != "") {
                 params.SynoConfirmPWToken = token
@@ -756,7 +757,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 }, 1500);
             }
             that.showPrompt(formatString(_V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
-                _V('ui','update_rr_confirmation_title'), runUpdate);
+                _V('ui', 'update_rr_confirmation_title'), runUpdate);
         }).catch(error => {
             that.showMsg('title', `Error. ${error}`);
         });
