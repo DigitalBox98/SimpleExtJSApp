@@ -1,5 +1,5 @@
 # What is that?
-![Main Screen](img/main.png)
+![Main Screen](img/main.gif)
 RRManager is a Redpill Recovery DSM application aimed to provide the ability to configure/update RR without booting to RR recovery. This package is for experienced users. 
 
 ❗❗❗ Required `RR v.24.2.4`
@@ -14,29 +14,20 @@ I didn't find documentaion regarding that framework, so I spent a lot of time to
 
 # Instalation
 1. Download RR Manager spk file from github
-2. Install SPK
-3. Setup tasks
-4. Run `SetRootPrivsToRrManager` taks to add root privilages to the `RR Manager`.
+    - For fome reason the spk marked as a `virus` on windows. I will investigate the reason.
+![Main Screen](img/virus_warning.png)
+1. Install SPK, specify the path to store RR artifacts
+2. Follow the guide to create necessary resources
 
+## How does it work?
+During the app install, you can specify the folders to store the RR artifacts during the update process. You can also select the folders and shares created during the installation or populate existing shares.
 
-# How to setup tasks
-Create folowing tasks manually that must be runned behalf of `root`:
+In my case the share is `rr` and the temp folder is `tmp`.
+So the RR Manager will upload the updated file to the `/volumeX/rr/tmp/update.zip`.
 
-- RunRrUpdate:
-```bash
-. /var/packages/rr-manager/target/app/config.txt
-/usr/bin/rr-update.sh updateRR "$UPLOAD_DIR_PATH$RR_TMP_DIR"/update.zip /tmp/rr_update_progress
-```
-
-- SetRootPrivsToRrManager:
-```bash
-sed -i 's/package/root/g' /var/packages/rr-manager/conf/privilege
-synopkg restart rr-manager
-```
-
-## How does it works?
-That app using `/downloads` folder to upload the update.zip. Then the script of the that was made by RR maintainer will be runned. `RR Manager` is implementing only UI for the update process.
+Please note that you need to upload `updateX.zip(updateall-24.3.0)`, not `rr-23.11.1.img.zip`.
+ I will add that validation in the future.
 
 ## TODO:
 - [ ] fix ui
-- [ ] remove manual steps to create task
+
