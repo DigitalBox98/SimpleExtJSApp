@@ -313,7 +313,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     },
                     success: function (response) {
                         // if response text is string need to decode it
-                        if (typeof response?.responseText === 'string' && response?.responseText !="") {
+                        if (typeof response?.responseText === 'string' && response?.responseText != "") {
                             resolve(Ext.decode(response?.responseText));
                         } else {
                             resolve(response?.responseText);
@@ -546,6 +546,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         createRunRrUpdateTask: function (token, callback) {
             let that = this;
             let task_name = "RunRrUpdate"
+            let operation = ".%20%2Fvar%2Fpackages%2Frr-manager%2Ftarget%2Fapp%2Fconfig.txt%20%26%26%20%2Fusr%2Fbin%2Frr-update.sh%20updateRR%20%22%24UPLOAD_DIR_PATH%24RR_TMP_DIR%22%2Fupdate.zip%20%2Ftmp%2Frr_update_progress"
             params = {
                 task_name: task_name,
                 owner: { 0: "root" },
@@ -556,7 +557,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 notify_mail: "",
                 notify_if_error: false,
                 operation_type: "script",
-                operation: that['rrManagerConfig'][`${task_name}_TASK`]
+                operation: decodeURIComponent(operation)
             };
 
             if (token != "") {
@@ -587,6 +588,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         createRunSetPriviledgeForRRTask: function (token) {
             let that = this;
             let task_name = "SetRootPrivsToRrManager"
+            let operation = "sed%20-i%20's%2Fpackage%2Froot%2Fg'%20%2Fvar%2Fpackages%2Frr-manager%2Fconf%2Fprivilege%20%26%26%20synopkg%20restart%20rr-manager";
             params = {
                 task_name: task_name,
                 owner: { 0: "root" },
@@ -597,7 +599,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 notify_mail: "",
                 notify_if_error: false,
                 operation_type: "script",
-                operation: that['rrManagerConfig'][`${task_name}_TASK`]
+                operation: decodeURIComponent(operation)
             };
 
             if (token != "") {
@@ -727,7 +729,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         this.API.getUpdateFileInfo(that.updateFileRealPath()).then((responseText) => {
             if (!responseText.success) {
                 tabs?.getEl()?.unmask();
-                that.showMsg('title', formatString(_V('ui', 'unable_update_rr_msg'), responseText?.error ??"No response from the readUpdateFile.cgi script."));
+                that.showMsg('title', formatString(_V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
                 return;
             }
 
@@ -742,13 +744,13 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 that.API.runTask('RunRrUpdate');
                 var maxCountOfRefreshUpdateStatus = 250;
                 var countUpdatesStatusAttemp = 0;
-                
+
                 var updateStatusInterval = setInterval(async function () {
                     var checksStatusResponse = await that.API.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
-                    if(!checksStatusResponse?.success){
+                    if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
                         that?.getEl()?.unmask();
-                        that.showMsg('title',checksStatusResponse?.status);
+                        that.showMsg('title', checksStatusResponse?.status);
                     }
                     var response = checksStatusResponse.result;
                     tabs.getEl().mask(formatString(_V('ui', 'update_rr_progress_msg'), response?.progress, response?.progressmsg), 'x-mask-loading');
