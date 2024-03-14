@@ -742,7 +742,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 //show the spinner
                 tabs.getEl().mask(_T("common", "loading"), "x-mask-loading");
                 that.API.runTask('RunRrUpdate');
-                var maxCountOfRefreshUpdateStatus = 250;
+                var maxCountOfRefreshUpdateStatus = 350;
                 var countUpdatesStatusAttemp = 0;
 
                 var updateStatusInterval = setInterval(async function () {
@@ -753,7 +753,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                         that.showMsg('title', checksStatusResponse?.status);
                     }
                     var response = checksStatusResponse.result;
-                    tabs.getEl().mask(formatString(_V('ui', 'update_rr_progress_msg'), response?.progress, response?.progressmsg), 'x-mask-loading');
+                    tabs.getEl().mask(formatString(_V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
                     countUpdatesStatusAttemp++;
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
