@@ -40,23 +40,27 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             allTabs.push({
                 title: _V("ui", "tab_general"),
                 id: "tabGeneral",
-                cls: 'tab',
-                height: '100%',
+                layout: "vbox",
+                cls: "blue-border",
+                layoutConfig: {
+                    align: "stretch"
+                },
                 items: [
                     //this.createSystemInfoPannel(),
                     this.createGeneralSection(),
                     this.createActionsSection(),
-                    // this.createDisplayExternalAPI()
                 ]
             });
 
             allTabs.push({
                 title: _V("ui", "tab_addons"),
-                layout: 'fit',
                 id: "tabAddons",
-                cls: 'tab',
+                layout: "vbox",
+                cls: "blue-border",
+                layoutConfig: {
+                    align: "stretch"
+                },
                 items: [
-                    // this.createSynoStore(),
                     this.createAddonsStore()
                 ]
             });
@@ -70,8 +74,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             maximizable: true,
             minimizable: true,
             width: 640,
-            height: 640,
-            cls: 'mainWindow',
+            height: 640, 
             items: [
                 {
                     xtype: 'syno_tabpanel',
@@ -227,54 +230,31 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     // Create the display of API calls
     createActionsSection: function () {
         return new SYNO.ux.FieldSet({
-            title: _V('ui', 'rr_actions'),
-            cls: 'panel-with-border',
-            collapsible: false,
-            items:
-                [
-                    {
-                        xtype: 'syno_compositefield',
-                        hideLabel: true,
-                        items: [{
-                            xtype: 'syno_displayfield',
-                            value: 'Run Update: ',
-                            width: 140
-                        }, {
-                            xtype: 'syno_button',
-                            btnStyle: 'green',
-                            text: _V('ui', 'upload_file_dialog_title'),
-                            handler: this.showUpdateUploadDialog.bind(this)
-                        }]
-                    },
-                    // {
-                    //     xtype: 'syno_compositefield',
-                    //     hideLabel: true,
-                    //     items: [{
-                    //         xtype: 'syno_displayfield',
-                    //         value: 'Clean up system partition:',
-                    //         width: 140
-                    //     }, {
-                    //         xtype: 'syno_button',
-                    //         btnStyle: 'red',
-                    //         text: 'Run Clean Up',
-                    //         handler: this.onRunCleanUpSystemPartition.bind(this)
-                    //     }]
-                    // },
-                    // {
-                    //     xtype: 'syno_compositefield',
-                    //     hideLabel: true,
-                    //     items: [{
-                    //         xtype: 'syno_displayfield',
-                    //         value: '(TEST)Create SQL test',
-                    //         width: 140
-                    //     }, {
-                    //         xtype: 'syno_button',
-                    //         btnStyle: 'red',
-                    //         text: 'Run Create SQL',
-                    //         handler: this.onRunCreateSQL.bind(this)
-                    //     }]
-                    // }
-                ]
+            items: [
+                {
+                    xtype: 'syno_panel',
+                    cls: 'panel-with-border',
+                    activeTab: 0,
+                    plain: true,
+                    items: [
+                        {
+                            xtype: 'syno_compositefield',
+                            hideLabel: true,
+                            items: [{
+                                xtype: 'syno_displayfield',
+                                value: 'Run Update: ',
+                                width: 140
+                            }, {
+                                xtype: 'syno_button',
+                                btnStyle: 'green',
+                                text: _V('ui', 'upload_file_dialog_title'),
+                                handler: this.showUpdateUploadDialog.bind(this)
+                            }]
+                        },
+                    ],
+                    deferredRender: true
+                },
+            ]
         });
     },
     API: {
@@ -810,17 +790,21 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     // Create the display of SQL Store
     createAddonsStore: function () {
         return new SYNO.ux.FieldSet({
-            // title: 'Addons',
-            collapsible: false,
-            autoHeight: true,
-            cls: 'panel-with-border',
-            items: [{
-                xtype: 'syno_compositefield',
-                hideLabel: true,
-                items: [
-                    this.createAddonsGrid()
-                ]
-            }
+            items: [
+                {
+                    xtype: 'syno_panel',
+                    layout: "vbox",
+                    cls: "blue-border",
+                    layoutConfig: {
+                        align: "stretch"
+                    },
+                    activeTab: 0,
+                    plain: true,
+                    items: [
+                        this.createAddonsGrid()
+                    ],
+                    deferredRender: true
+                },
             ]
         });
     },
