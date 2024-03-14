@@ -749,7 +749,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     var checksStatusResponse = await that.API.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
-                        that?.getEl()?.unmask();
+                        tabs?.getEl()?.unmask();
                         that.showMsg('title', checksStatusResponse?.status);
                     }
                     var response = checksStatusResponse.result;
@@ -757,10 +757,10 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     countUpdatesStatusAttemp++;
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
-                        that?.getEl()?.unmask();
+                        tabs?.getEl()?.unmask();
                         that.showMsg('title', formatString(_V('ui'), response?.progress, response?.progressmsg));
                     } else if (response?.progress == '100') {
-                        that?.getEl()?.unmask();
+                        tabs?.getEl()?.unmask();
                         clearInterval(updateStatusInterval);
                         that.showMsg('title', _V('ui', 'update_rr_completed'));
                     }
