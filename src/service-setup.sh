@@ -1,6 +1,6 @@
 PYTHON_DIR="/var/packages/python311/target/bin"
 PATH="${SYNOPKG_PKGDEST}/env/bin:${SYNOPKG_PKGDEST}/bin:${SYNOPKG_PKGDEST}/usr/bin:${PYTHON_DIR}:${PATH}"
-TMP_DIR="${SYNOPKG_PKGDEST}/../../@tmp"
+TMP_DIR="${SYNOPKG_PKGDEST}/../../tmp"
 PACKAGE="rr-manager"
 
 service_postinst ()
@@ -41,5 +41,5 @@ preupgrade ()
 postupgrade ()
 {
     # Restore package config
-    mv ${TMP_DIR}/${PACKAGE}/config.txt "${SYNOPKG_PKGDEST}/app/config.txt"
+    mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
 }
