@@ -313,7 +313,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     },
                     success: function (response) {
                         // if response text is string need to decode it
-                        if (typeof response?.responseText === 'string') {
+                        if (typeof response?.responseText === 'string' && response?.responseText !="") {
                             resolve(Ext.decode(response?.responseText));
                         } else {
                             resolve(response?.responseText);
@@ -723,9 +723,11 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     },
     onRunRrUpdateManuallyClick: function () {
         that = this;
+        var tabs = Ext.getCmp('tabsControl');
         this.API.getUpdateFileInfo(that.updateFileRealPath()).then((responseText) => {
             if (!responseText.success) {
-                that.showMsg('title', formatString(_V('ui', 'unable_update_rr_msg'), responseText?.error));
+                tabs?.getEl()?.unmask();
+                that.showMsg('title', formatString(_V('ui', 'unable_update_rr_msg'), responseText?.error ??"No response from the readUpdateFile.cgi script."));
                 return;
             }
 
@@ -736,15 +738,20 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
 
             async function runUpdate() {
                 //show the spinner
-                that.getEl().mask(_T("common", "loading"), "x-mask-loading");
+                tabs.getEl().mask(_T("common", "loading"), "x-mask-loading");
                 that.API.runTask('RunRrUpdate');
                 var maxCountOfRefreshUpdateStatus = 250;
                 var countUpdatesStatusAttemp = 0;
-
+                
                 var updateStatusInterval = setInterval(async function () {
                     var checksStatusResponse = await that.API.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
+                    if(!checksStatusResponse?.success){
+                        clearInterval(updateStatusInterval);
+                        that?.getEl()?.unmask();
+                        that.showMsg('title',checksStatusResponse?.status);
+                    }
                     var response = checksStatusResponse.result;
-                    that.getEl().mask(formatString(_V('ui', 'update_rr_progress_msg'), response?.progress, response?.progressmsg), 'x-mask-loading');
+                    tabs.getEl().mask(formatString(_V('ui', 'update_rr_progress_msg'), response?.progress, response?.progressmsg), 'x-mask-loading');
                     countUpdatesStatusAttemp++;
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
@@ -1072,7 +1079,8 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                             that.showMsg('error', _V('ui', 'upload_update_file_form_validation_invalid_msg'));
                             return;
                         }
-                        that.getEl().mask(_T("common", "loading"), "x-mask-loading");
+                        var tabs = Ext.getCmp('tabsControl');
+                        tabs.getEl().mask(_V('ui', "uploading_file"), "x-mask-loading");
                         that.onUploadFile(fileObject, that);
                         Ext.getCmp("upload_file_dialog")?.close();
                     }
@@ -1121,7 +1129,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             if (!downloadsShareMetadata) {
                 var msg = formatString(_V('ui', 'share_notfound_msg'), that['rrManagerConfig']['SHARE_NAME']);
                 var tabs = Ext.getCmp('tabsControl');
-                tabs.getEl().mask(msg, "x-mask-loading");
+                tabs.getEl().mask(msg, 'x-mask-loading');
                 this.showMsg('error', msg);
                 return;
             }
@@ -1145,9 +1153,9 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             let response = await that.API.getTaskList();
             var tasks = response.data.tasks;
             var tasksToCreate = requiredTasks.filter(task => !tasks.find(x => x.name === task.name));
-
+            var tabs = Ext.getCmp('tabsControl');
             if (tasksToCreate.length > 0) {
-                that?.getEl().mask(formatString(_V('ui', 'required_components_missing_spinner_msg'), tasksToCreate), "x-mask-loading");
+                tabs?.getEl().mask(formatString(_V('ui', 'required_components_missing_spinner_msg'), tasksToCreate), "x-mask-loading");
                 let tasksNames = tasksToCreate.map(task => task.name).join(', ');
                 that.showPrompt(formatString(_V('ui', 'required_tasks_is_missing'), tasksNames), _V('ui', 'required_components_missing'),
                     async function (a) {
@@ -1159,7 +1167,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                         }
                         // After all tasks have been created, you might want to notify the user.
                         that.showMsg('title', _V('ui', 'tasks_created_msg'));
-                        that?.getEl()?.unmask();
+                        tabs?.getEl()?.unmask();
                     });
             }
         } catch (error) {

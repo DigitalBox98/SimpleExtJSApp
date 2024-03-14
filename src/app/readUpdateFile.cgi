@@ -17,11 +17,14 @@ response['success'] = False
 def read_update_info(fileName):
     try:
         with zipfile.ZipFile(fileName, mode="r") as zif:
-            for lines in zif.read("RR_VERSION").split(b"\r\n"):
-                response['updateVersion'] = lines.strip().decode('utf-8')
-                response['success'] = True
-    except:
-        response["error"] = 'File ' +fileName +' not found.'
+            if "RR_VERSION" in zif.namelist():
+                for lines in zif.read("RR_VERSION").split(b"\r\n"):
+                    response['updateVersion'] = lines.strip().decode('utf-8')
+                    response['success'] = True
+            else:
+                raise Exception("'RR_VERSION' file not found in the zip file.")
+    except Exception as e:
+        response["error"] = str(e)
 
 # Authenticate the user
 f = os.popen('/usr/syno/synoman/webman/modules/authenticate.cgi', 'r')
@@ -37,7 +40,7 @@ if len(user) > 0:
     query_params = parse_qs(query_string)
     file_name_encoded = query_params.get('file', [None])[0]
     file_name = unquote(file_name_encoded)
-    response["file_from_params"] = file_name
+    # response["file_from_params"] = file_name
     read_update_info(file_name)
 else:
     response["status"] = "not authenticated"

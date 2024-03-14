@@ -31,8 +31,8 @@ required_tasks_is_missing = "❗❗❗The following required tasks {0} are missi
 tasks_created_msg = "The tasks have been successfully created. Please restart the RR Manager app."
 share_notfound_msg = "❗❗❗Attention! The {0} folder not found. Please create the share/folder and restart the app."
 required_components_missing-title = "Required components missing"
-required_components_missing_spinner_msg = "It seems like some of the tasks are missing in the system: {0}. Please complete the onboarding process before start using RR Manager."
+required_components_missing_spinner_msg = "❗❗❗It seems like some of the tasks are missing in the system: {0}. Please complete the onboarding process before start using RR Manager."
 file_uploading_succesfull_msg = "File has been successfully uploaded. Would you like to run update procedure?"
 update_confirm_title = "Confirm update"
-
+uploading_file = "Uploading file..."
 save_addons_changes = "Save addons changes"
