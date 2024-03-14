@@ -597,7 +597,8 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 notify_mail: "",
                 notify_if_error: false,
                 operation_type: "script",
-                operation: that['rrManagerConfig'][`${task_name}_TASK`]            };
+                operation: that['rrManagerConfig'][`${task_name}_TASK`]
+            };
 
             if (token != "") {
                 params.SynoConfirmPWToken = token
@@ -718,7 +719,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         window.open();
     },
     updateFileRealPath: function () {
-        return `${this?.rrManagerConfig?.UPLOAD_DIR_PATH}/${this?.rrManagerConfig?.RR_TMP_DIR}/${this.opts.params.filename}`;
+        return `${this?.rrManagerConfig?.UPLOAD_DIR_PATH}${this?.rrManagerConfig?.RR_TMP_DIR}/${this.opts.params.filename}`;
     },
     onRunRrUpdateManuallyClick: function () {
         that = this;
@@ -1118,14 +1119,12 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             var sharesList = x.data.shares;
             var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName);
             if (!downloadsShareMetadata) {
-                var msg = `❗❗❗Attention! The "${that['rrManagerConfig']['SHARE_NAME']}" share not found. Please create the share and restart the app.`;
+                var msg = formatString(_V('ui', 'share_notfound_msg'), that['rrManagerConfig']['SHARE_NAME']);
                 var tabs = Ext.getCmp('tabsControl');
                 tabs.getEl().mask(msg, "x-mask-loading");
                 this.showMsg('error', msg);
                 return;
             }
-            //TODO: populate from the config.txt
-            that.downloadFolderRealPath = downloadsShareMetadata?.additional?.real_path;
             if (callback) callback();
         });
     },
@@ -1148,8 +1147,9 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             var tasksToCreate = requiredTasks.filter(task => !tasks.find(x => x.name === task.name));
 
             if (tasksToCreate.length > 0) {
+                that?.getEl().mask(formatString(_V('ui', 'required_components_missing_spinner_msg'), tasksToCreate), "x-mask-loading");
                 let tasksNames = tasksToCreate.map(task => task.name).join(', ');
-                that.showPrompt(formatString(_V('ui', 'required_tasks_is_missing'), tasksNames), "Required components missing",
+                that.showPrompt(formatString(_V('ui', 'required_tasks_is_missing'), tasksNames), _V('ui', 'required_components_missing'),
                     async function (a) {
                         for (let task of tasksToCreate) {
                             if (task.createTaskCallback) {
@@ -1159,6 +1159,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                         }
                         // After all tasks have been created, you might want to notify the user.
                         that.showMsg('title', _V('ui', 'tasks_created_msg'));
+                        that?.getEl()?.unmask();
                     });
             }
         } catch (error) {
@@ -1248,8 +1249,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 uploadData: n,
                 success: (x) => {
                     that?.getEl()?.unmask();
-                    this.showPrompt(`File has been successfully uploaded to the downloads folder.
-                                Would you like to run update procedure?`, "Confirm update", x => this.onRunRrUpdateManuallyClick());
+                    this.showPrompt(_V('ui', 'file_uploading_succesfull_msg'), _V('ui', 'update_confirm_title'), x => this.onRunRrUpdateManuallyClick());
                 },
                 failure: (x) => {
                     that?.getEl()?.unmask();
@@ -1263,7 +1263,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     MAX_POST_FILESIZE: Ext.isWebKit ? -1 : window.console && window.console.firebug ? 20971521 : 4294963200,
     onUploadFile: function (e, that) {
         //create rr tmp folder
-        SYNO.API.currentManager.requestAPI("SYNO.FileStation.CreateFolder", "create", "2", {
+        SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
             folder_path: `/${that['rrManagerConfig']['SHARE_NAME']}`,
             name: that['rrManagerConfig']['RR_TMP_DIR'],
             force_parent: false

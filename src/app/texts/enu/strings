@@ -19,15 +19,20 @@ update_rr_confirmation_title = "Confirm update"
 confirm_system_clean_up_msg = "Would you like to run clean up sustem partition script?"
 confirm_system_clean_up_title = "Confirm system cleanup"
 
-unable_update_rr_msg= "Unable to update RR: {0}. Please upload the file and try againe."
+unable_update_rr_msg = "Unable to update RR: {0}. Please upload the file and try againe."
 upload_file_dialog_title = "Upload File"
 
 select_file = "Select File"
 loading_text = "Loading..."
-system_info= "🖥️System Info:"
+system_info = "🖥️System Info:"
 
 rr_actions = "RR Loader Actions"
 required_tasks_is_missing = "❗❗❗The following required tasks {0} are missing in the system. It will require entering your password. Do you want to create them?"
 tasks_created_msg = "The tasks have been successfully created. Please restart the RR Manager app."
+share_notfound_msg = "❗❗❗Attention! The {0} folder not found. Please create the share/folder and restart the app."
+required_components_missing-title = "Required components missing"
+required_components_missing_spinner_msg = "It seems like some of the tasks are missing in the system: {0}. Please complete the onboarding process before start using RR Manager."
+file_uploading_succesfull_msg = "File has been successfully uploaded. Would you like to run update procedure?"
+update_confirm_title = "Confirm update"
 
 save_addons_changes = "Save addons changes"
