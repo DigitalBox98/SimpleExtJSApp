@@ -1,6 +1,6 @@
 SPK_NAME = rr-manager
 SPK_VERS = 1.0
-SPK_REV = 25
+SPK_REV = 26
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
@@ -68,6 +68,7 @@ rr-manager_extra_install:
 	install -m 755 -d $(STAGING_DIR)/app/libs/
 	install -m 755 src/app/getConfig.cgi $(STAGING_DIR)/app/getConfig.cgi
 	install -m 755 src/app/config.txt $(STAGING_DIR)/app/config.txt
+	install -m 755 src/app/style.css $(STAGING_DIR)/app/style.css
 	install -m 755 src/app/getAddons.cgi $(STAGING_DIR)/app/getAddons.cgi
 	install -m 755 src/app/getModules.cgi $(STAGING_DIR)/app/getModules.cgi
 	install -m 755 src/app/readUpdateFile.cgi $(STAGING_DIR)/app/readUpdateFile.cgi

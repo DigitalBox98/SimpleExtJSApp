@@ -1,0 +1,2706 @@
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status {
+  font-family: Verdana, Arial, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-TW) {
+  font-family: Verdana, Arial, Microsoft JhengHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-CN) {
+  font-family: Verdana, Arial, Microsoft YaHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(ja) {
+  font-family: Verdana, Arial, Meiryo, sans-serif;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block
+  .health-text-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-info,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-no-title,
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .title,
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .title,
+.syno-app-iscsi .host-details-title {
+  font-weight: 700;
+}
+.iscsi-note {
+  color: #00a6a6;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status {
+  font-family: Verdana, Arial, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-TW) {
+  font-family: Verdana, Arial, Microsoft JhengHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-CN) {
+  font-family: Verdana, Arial, Microsoft YaHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(ja) {
+  font-family: Verdana, Arial, Meiryo, sans-serif;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block
+  .health-text-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-info,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-no-title,
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .title,
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .title,
+.syno-app-iscsi .host-details-title {
+  font-weight: 700;
+}
+.syno-app-iscsi .iscsi-note {
+  color: #00a6a6;
+}
+.syno-app-iscsi .iscsi-general-list-icon {
+  background-image: url("../../../synoSDSjslib/images/1x/components/sprite/exgrid_icn_storage.png?v=ed3c16c679c4d2a5c92872076d8cd564");
+  background-repeat: no-repeat no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-general-list-icon {
+    background-image: url("../../../synoSDSjslib/images/2x/components/sprite/exgrid_icn_storage.png?v=dee253f8712d5f1ac35b42d6b35b440b");
+    background-size: 32px 480px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-general-list-icon {
+    background-image: url("../../../synoSDSjslib/images/2x/components/sprite/exgrid_icn_storage.png?v=dee253f8712d5f1ac35b42d6b35b440b");
+    background-size: 32px 480px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-list-status-icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  display: inline-block;
+  top: 27px;
+  left: 27px;
+}
+.syno-app-iscsi .iscsi-list-status-icon-acting {
+  background-image: url("../../../synoSDSjslib/images/1x/components/g_icon_xxxing.gif");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-list-status-icon-acting {
+    background-image: url("images/default/2x/g_icon_xxxing.gif?v=no_image_found");
+    background-size: 20px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-list-status-icon-acting {
+    background-image: url("images/default/2x/g_icon_xxxing.gif?v=no_image_found");
+    background-size: 20px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-list-status-icon-crashed {
+  background-image: url("images/default/1x/g_icon_error.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-list-status-icon-crashed {
+    background-image: url("images/default/2x/g_icon_error.png?v=524b5839bda0763c165709fc07857fc2");
+    background-size: 20px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-list-status-icon-crashed {
+    background-image: url("images/default/2x/g_icon_error.png?v=524b5839bda0763c165709fc07857fc2");
+    background-size: 20px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-list-status-icon-warning {
+  background-image: url("images/default/1x/g_icon_warning.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-list-status-icon-warning {
+    background-image: url("images/default/2x/g_icon_warning.png?v=fda3b766f966bfcda9801753ef93e5e8");
+    background-size: 20px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-list-status-icon-warning {
+    background-image: url("images/default/2x/g_icon_warning.png?v=fda3b766f966bfcda9801753ef93e5e8");
+    background-size: 20px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-grid-section-header {
+  line-height: 20px;
+  font-size: 13px;
+  margin-top: 8px;
+}
+.syno-app-iscsi .iscsi-grid-section-header-bold {
+  font-weight: bold;
+}
+.syno-app-iscsi .iscsi-grid-list {
+  margin-top: 4px;
+}
+.syno-app-iscsi .iscsi-grid-list-header {
+  color: #fff;
+  border-radius: 4px 4px 0 0;
+  background-color: rgba(50, 60, 70, 0.5);
+  line-height: 28px;
+}
+.syno-app-iscsi .iscsi-grid-list-body {
+  background-color: #fff;
+  border-left: 1px solid rgba(50, 60, 70, 0.5);
+  border-right: 1px solid rgba(50, 60, 70, 0.5);
+  border-bottom: 1px solid rgba(50, 60, 70, 0.5);
+  border-radius: 0px 0px 4px 4px;
+}
+.syno-app-iscsi .iscsi-grid-list-row {
+  padding-left: 8px;
+}
+.syno-app-iscsi .iscsi-grid-list-column {
+  line-height: 20px;
+  float: left;
+  white-space: normal;
+  word-wrap: break-word;
+  padding: 6px 8px 6px 0px;
+}
+.syno-app-iscsi .iscsi-progress {
+  position: absolute;
+  top: 8px;
+  right: 48px;
+  width: 200px;
+  color: #414b55;
+}
+.syno-app-iscsi .iscsi-progress-bg {
+  position: absolute;
+  top: 20px;
+  width: 200px;
+  height: 8px;
+  background-color: #cdd7e1;
+}
+.syno-app-iscsi .iscsi-progress-bar {
+  height: 8px;
+  background-image: linear-gradient(to right, #00aaff, #2e7ae5);
+  background-image: linear-gradient(to right, #00aaff, #2e7ae5);
+  background-image: linear-gradient(to right, #00aaff, #2e7ae5);
+  background-image: linear-gradient(to right, #00aaff, #2e7ae5);
+  background-image: linear-gradient(to right, #00aaff, #2e7ae5);
+}
+.syno-app-iscsi .iscsi-progress-hide {
+  display: none;
+}
+.syno-app-iscsi .iscsi-progress-show {
+  display: block;
+}
+.syno-app-iscsi .iscsi-item-title-progress-show {
+  padding-right: 232px;
+}
+.syno-app-iscsi .iscsi-grid-property-name {
+  line-height: 20px;
+  color: #414b55;
+  font-size: 13px;
+  float: left;
+  width: calc(40% - 8px);
+  padding-right: 8px;
+}
+.syno-app-iscsi .iscsi-grid-property-value {
+  line-height: 20px;
+  color: #414b55;
+  font-size: 13px;
+  white-space: normal;
+  word-wrap: break-word;
+  float: left;
+  width: 60%;
+}
+.syno-app-iscsi .iscsi-grid-property-icon {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+.syno-app-iscsi .iscsi-grid-property-icon-info {
+  background-image: url("../../../synoSDSjslib/images/1x/components/icon_information_mini.png");
+  background-repeat: no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-grid-property-icon-info {
+    background-image: url("../../../synohdpack/images/dsm/resources/images/components/icon_information_mini.png?v=no_image_found");
+    background-size: 24px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-grid-property-icon-info {
+    background-image: url("../../../synohdpack/images/dsm/resources/images/components/icon_information_mini.png?v=no_image_found");
+    background-size: 24px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-snapshot-lock-icon {
+  height: 28px;
+  background-position: center -0px;
+  background-image: url("images/default/1x/icon_encrypted.png?v=6e189395f099f721f3deb948ff2590f4");
+  background-repeat: no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-snapshot-lock-icon {
+    background-image: url("images/default/2x/icon_encrypted.png?v=8091092e5480fd3100e7412e118751d3");
+    background-size: 28px 56px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-snapshot-lock-icon {
+    background-image: url("images/default/2x/icon_encrypted.png?v=8091092e5480fd3100e7412e118751d3");
+    background-size: 28px 56px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-snapshot-worm-lock-icon {
+  height: 28px;
+  background-position: center center;
+  background-image: url("images/default/1x/icon_high_security_protection.png?v=bf1aa870a9f84bb819a1b0d2ea146aff");
+  background-repeat: no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-snapshot-worm-lock-icon {
+    background-image: url("images/default/2x/icon_high_security_protection.png?v=f5d828958c4f6f9e91d60de5d3037ee9");
+    background-size: 16px 16px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-snapshot-worm-lock-icon {
+    background-image: url("images/default/2x/icon_high_security_protection.png?v=f5d828958c4f6f9e91d60de5d3037ee9");
+    background-size: 16px 16px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-usage {
+  color: #414b55;
+}
+.syno-app-iscsi .iscsi-storage-console-icon {
+  height: 64px;
+  width: 64px;
+  background-image: url("images/default/1x/promote_storage_console.png?v=6641f96c9784119cfa163c19089ff248");
+  background-repeat: no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-storage-console-icon {
+    background-image: url("images/default/2x/promote_storage_console.png?v=b132f3a28900bdee3f3ffb3c535390e7");
+    background-size: 64px 64px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-storage-console-icon {
+    background-image: url("images/default/2x/promote_storage_console.png?v=b132f3a28900bdee3f3ffb3c535390e7");
+    background-size: 64px 64px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-usage-box {
+  padding-top: 8px;
+  position: absolute;
+  top: 0px;
+  right: 52px;
+  width: 22%;
+  line-height: 20px;
+}
+.syno-app-iscsi .iscsi-remove-sort-icon .x-grid3-sort-icon {
+  display: none;
+}
+.syno-app-iscsi .iscsi-usage-bg,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-bar {
+  margin-top: 8px;
+  border-radius: 3px;
+  background: rgba(80, 90, 100, 0.15);
+  height: 6px;
+}
+.syno-app-iscsi .iscsi-usage-bar,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-sizespace-bar
+  .iscsi-sizespace-bar-progress {
+  border: none;
+  height: 6px;
+  background-color: #057feb;
+  background-image: none;
+  border-radius: 3px;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title {
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status {
+  font-weight: unset;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-summary .item-status {
+  padding-top: 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-status {
+  word-break: break-all;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-detail {
+  padding-right: 16px;
+}
+.syno-app-iscsi .iscsi-retention-descpanel {
+  background: rgba(5, 127, 235, 0.08);
+  border-radius: 5px;
+  border-width: 0px;
+  line-height: 18px;
+  padding: 10px 20px;
+}
+.syno-app-iscsi .syno-ux-whitetip-icon.iscsi-grid-property-icon {
+  margin-top: 0px;
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-root-node {
+  width: 212px;
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon {
+  background-position: 0 0;
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-overview {
+  background-image: url("images/default/1x/cate_icn_overview.png?v=34caecaafbad3539f0e49d53ee5dfdfc");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-overview {
+    background-image: url("images/default/2x/cate_icn_overview.png?v=59e4999dd892e512903b3b94a26a622b");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-overview {
+    background-image: url("images/default/2x/cate_icn_overview.png?v=59e4999dd892e512903b3b94a26a622b");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-iscsi-target {
+  background-image: url("images/default/1x/cate_icn_iscsi_target.png?v=74ac076329f79eb1fd6c4d35ebe9d31c");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-iscsi-target {
+    background-image: url("images/default/2x/cate_icn_iscsi_target.png?v=2e705e999972a3c57d213f58e571a54d");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-iscsi-target {
+    background-image: url("images/default/2x/cate_icn_iscsi_target.png?v=2e705e999972a3c57d213f58e571a54d");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-fc-target {
+  background-image: url("images/default/1x/cate_icn_fibre.png?v=5c99e8d98b4585c5fd9f01db59100079");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-fc-target {
+    background-image: url("images/default/2x/cate_icn_fibre.png?v=94613c73b0da99c92a2f5c4e46df42bc");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-fc-target {
+    background-image: url("images/default/2x/cate_icn_fibre.png?v=94613c73b0da99c92a2f5c4e46df42bc");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-iscsi-lun {
+  background-image: url("images/default/1x/cate_icn_lun.png?v=f57ac9a7c5aa89755dde0342ef10ca68");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-iscsi-lun {
+    background-image: url("images/default/2x/cate_icn_lun.png?v=21eb779550c070e447b2103b5c47814c");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-iscsi-lun {
+    background-image: url("images/default/2x/cate_icn_lun.png?v=21eb779550c070e447b2103b5c47814c");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-host {
+  background-image: url("images/default/1x/cate_icn_host.png?v=ad3a3ca87c5636d14b71a85bcaa066e5");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-host {
+    background-image: url("images/default/2x/cate_icn_host.png?v=f60a45ced0c8ac54978f7f75f667c114");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-host {
+    background-image: url("images/default/2x/cate_icn_host.png?v=f60a45ced0c8ac54978f7f75f667c114");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-snapshot {
+  background-image: url("images/default/1x/cate_icn_snapshots.png?v=21c6083d5a5b95ec1265c19bc1c5a2a9");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-snapshot {
+    background-image: url("images/default/2x/cate_icn_snapshots.png?v=27d5686faeb4a5573d0a670bd10e61a3");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-snapshot {
+    background-image: url("images/default/2x/cate_icn_snapshots.png?v=27d5686faeb4a5573d0a670bd10e61a3");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-settings {
+  background-image: url("images/default/1x/cate_icn_setting.png?v=ca5f7aa7f8060b9c8f5122ca08b9d57e");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-settings {
+    background-image: url("images/default/2x/cate_icn_setting.png?v=1342f71e7ccbdf2ce0d7db7ee6a3960e");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-settings {
+    background-image: url("images/default/2x/cate_icn_setting.png?v=1342f71e7ccbdf2ce0d7db7ee6a3960e");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-log {
+  background-image: url("images/default/1x/cate_icn_log.png?v=6fb1fd1781613d89c33e9234d14e6fde");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .syno-ux-modulelist .x-tree-node-icon.icon-log {
+    background-image: url("images/default/2x/cate_icn_log.png?v=4506e4dfbd6f672734e217d37a73b6f9");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .syno-ux-modulelist
+    .x-tree-node-icon.icon-log {
+    background-image: url("images/default/2x/cate_icn_log.png?v=4506e4dfbd6f672734e217d37a73b6f9");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .syno-ux-modulelist .x-tree-node-over .x-tree-node-icon {
+  background-position: 0px -0px;
+}
+.syno-app-iscsi
+  .x-window-body
+  > .x-panel:not(.syno-ux-modulelist)
+  > .x-panel-bwrap
+  > .x-panel-body
+  > .x-panel.blue-border,
+.syno-app-iscsi
+  .x-window-body
+  > .x-panel:not(.syno-ux-modulelist)
+  > .x-tab-panel.blue-border {
+  top: 0px;
+  left: 0px;
+  background: #ffffff;
+  position: absolute;
+  width: calc(100% - 40px - 2px) !important;
+  height: calc(100% - 32px - 2px) !important;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-width: 1px;
+  border-color: rgba(198, 212, 224, 0.4);
+}
+.syno-app-iscsi
+  .x-window-body
+  > .x-panel:not(.syno-ux-modulelist)
+  > .x-panel-bwrap
+  > .x-panel-body
+  > .x-panel.blue-border
+  > .x-panel-bwrap,
+.syno-app-iscsi
+  .x-window-body
+  > .x-panel:not(.syno-ux-modulelist)
+  > .x-tab-panel.blue-border
+  > .x-panel-bwrap {
+  padding: 0px 20px;
+}
+.syno-app-iscsi
+  .x-window-body
+  > .x-panel:not(.syno-ux-modulelist)
+  > .x-panel-bwrap
+  > .x-panel-body
+  > .x-panel.blue-border
+  > .x-panel-bwrap
+  > .x-panel-body,
+.syno-app-iscsi
+  .x-window-body
+  > .x-panel:not(.syno-ux-modulelist)
+  > .x-tab-panel.blue-border
+  > .x-panel-bwrap
+  > .x-panel-body {
+  width: 100% !important;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox-click
+  .statusbox-titlebar,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox:hover
+  .statusbox-titlebar {
+  background-color: #009e05;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox-click
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox-click
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox:hover
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox:hover
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text {
+  color: #009e05;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox-click
+  .statusbox-titlebar,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox:hover
+  .statusbox-titlebar {
+  background-color: #ff7b00;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox-click
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox-click
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox:hover
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox:hover
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text {
+  color: #ff7b00;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox-click
+  .statusbox-titlebar,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox:hover
+  .statusbox-titlebar {
+  background-color: #d94141;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox-click
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox-click
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox:hover
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox:hover
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text {
+  color: #d94141;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox-unclick
+  .statusbox-titlebar {
+  background-color: #74cf64;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox-unclick
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-healthy.iscsi-overview-statusbox-unclick
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text {
+  color: #74cf64;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox-unclick
+  .statusbox-titlebar {
+  background-color: #f3ab64;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox-unclick
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-warning.iscsi-overview-statusbox-unclick
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text {
+  color: #f3ab64;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox-unclick
+  .statusbox-titlebar {
+  background-color: #e48a8b;
+}
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox-unclick
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-statusbox-error.iscsi-overview-statusbox-unclick
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text {
+  color: #e48a8b;
+}
+.syno-app-iscsi .iscsi-overview-statusbox-fctarget .statusbox-title {
+  background-image: url("images/default/1x/cate_icn_fibre.png?v=5c99e8d98b4585c5fd9f01db59100079");
+  background-position: 0 0px;
+  height: 22px;
+  width: 22px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .iscsi-overview-statusbox-fctarget
+    .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_fibre.png?v=94613c73b0da99c92a2f5c4e46df42bc");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-overview-statusbox-fctarget
+    .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_fibre.png?v=94613c73b0da99c92a2f5c4e46df42bc");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-statusbox-target .statusbox-title {
+  background-image: url("images/default/1x/cate_icn_iscsi_target.png?v=74ac076329f79eb1fd6c4d35ebe9d31c");
+  background-position: 0 0px;
+  height: 22px;
+  width: 22px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .iscsi-overview-statusbox-target
+    .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_iscsi_target.png?v=2e705e999972a3c57d213f58e571a54d");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-overview-statusbox-target
+    .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_iscsi_target.png?v=2e705e999972a3c57d213f58e571a54d");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-statusbox-lun .statusbox-title {
+  background-image: url("images/default/1x/cate_icn_lun.png?v=f57ac9a7c5aa89755dde0342ef10ca68");
+  background-position: 0 0px;
+  height: 22px;
+  width: 22px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-statusbox-lun .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_lun.png?v=21eb779550c070e447b2103b5c47814c");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-overview-statusbox-lun
+    .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_lun.png?v=21eb779550c070e447b2103b5c47814c");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-statusbox-event .statusbox-title {
+  background-image: url("images/default/1x/cate_icn_log.png?v=6fb1fd1781613d89c33e9234d14e6fde");
+  background-position: 0 0;
+  height: 22px;
+  width: 22px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-statusbox-event .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_log.png?v=4506e4dfbd6f672734e217d37a73b6f9");
+    background-size: 22px 44px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-overview-statusbox-event
+    .statusbox-title {
+    background-image: url("images/default/2x/cate_icn_log.png?v=4506e4dfbd6f672734e217d37a73b6f9");
+    background-size: 22px 44px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-panel {
+  background: #f4f8fa !important;
+  margin-left: 1px;
+}
+.syno-app-iscsi .iscsi-overview-status-panel {
+  height: 154px;
+}
+.syno-app-iscsi .iscsi-overview-status-panel .iscsi-overview-statusbox-block {
+  height: calc(100% - 6px);
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox {
+  height: calc(100% - 3px);
+  min-width: 200px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-titlebar {
+  width: 100%;
+  height: 6px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box {
+  max-height: 120px;
+  height: 92px;
+  padding: 10px 12px 16px 12px;
+  border-radius: 0px 0px 3px 3px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title {
+  float: left;
+  color: #414b55;
+  margin: auto 0px auto 4px;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  height: 24px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title
+  h3 {
+  white-space: nowrap;
+  font-size: 13px;
+  line-height: 24px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right {
+  float: right;
+  color: #414b55;
+  height: 24px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right
+  h3 {
+  font-size: 13px;
+  line-height: 18px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-padding {
+  padding-bottom: 6px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-block
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left
+  .statusbox-number,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right
+  .statusbox-number {
+  line-height: 40px;
+  text-align: center;
+  font-size: 40px;
+  margin: 0 0 2px 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-block
+  .statusbox-text,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left
+  .statusbox-text,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right
+  .statusbox-text {
+  text-align: center;
+  line-height: 20px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right {
+  position: absolute;
+  width: calc((100% - 17px - 24px) / 2);
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left.statusbox-block-error,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right.statusbox-block-error {
+  color: #d94141;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left.statusbox-block-warning,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right.statusbox-block-warning {
+  color: #ff7b00;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left.statusbox-block-healthy,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right.statusbox-block-healthy {
+  color: #1eb300;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-left {
+  border-right: 1px solid #e6e6e6;
+  padding-right: 8px;
+  padding-left: 12px;
+  left: 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-halfblock-right {
+  padding-left: 8px;
+  padding-right: 12px;
+  right: 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox:hover {
+  background-color: #fff;
+  cursor: pointer;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox:hover
+  .statusbox-box {
+  border: 1px solid #cecece;
+  border-top: 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-unclick {
+  margin-top: 10px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-unclick
+  .statusbox-box {
+  border: 1px solid #cecece;
+  background-color: #f5f8fa;
+  border-top: 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-click {
+  margin-top: 6px;
+  background-color: #fff;
+  border-bottom: 3px solid #057feb;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-click:after {
+  content: "";
+  width: 0px;
+  height: 0px;
+  border-width: 8.3px;
+  border-color: transparent transparent #057feb transparent;
+  border-style: dashed dashed solid dashed;
+  position: relative;
+  left: calc(50% - 8.3px);
+  top: 2px;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-click
+  .statusbox-box {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-click.iscsi-overview-statusbox-error
+  .statusbox-box {
+  border: 2px solid #d94141;
+  border-top: 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-click.iscsi-overview-statusbox-warning
+  .statusbox-box {
+  border: 2px solid #ff7b00;
+  border-top: 0;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox.iscsi-overview-statusbox-click.iscsi-overview-statusbox-healthy
+  .statusbox-box {
+  border: 2px solid #1eb300;
+  border-top: 0;
+}
+.syno-app-iscsi .iscsi-overview-health-panel {
+  width: 100%;
+}
+.syno-app-iscsi .iscsi-overview-health-panel .health-icon-block {
+  display: inline-block;
+}
+.syno-app-iscsi .iscsi-overview-health-panel .health-icon-block .health-icon {
+  height: 60px;
+  width: 60px;
+  position: relative;
+  margin: 32px 24px 34px 12px;
+  background-size: 60px;
+  background-image: url("images/default/1x/overview_status.png?v=feab042158df11f86e351f648c2cde7d");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .iscsi-overview-health-panel
+    .health-icon-block
+    .health-icon {
+    background-image: url("images/default/2x/overview_status.png?v=21862432ca5041025534a70877674621");
+    background-size: 60px 240px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-overview-health-panel
+    .health-icon-block
+    .health-icon {
+    background-image: url("images/default/2x/overview_status.png?v=21862432ca5041025534a70877674621");
+    background-size: 60px 240px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-icon-block
+  .health-icon.normal {
+  background-position: 0px -120px;
+}
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-icon-block
+  .health-icon.warning {
+  background-position: 0px 0px;
+}
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-icon-block
+  .health-icon.error {
+  background-position: 0px -60px;
+}
+.syno-app-iscsi .iscsi-overview-health-panel .health-text-block {
+  display: inline-block;
+}
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block {
+  max-width: 300px;
+}
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block
+  .health-text-title {
+  position: relative;
+  font-size: 22px;
+  line-height: 32px;
+  padding-top: 34px;
+  padding-right: 16px;
+  color: #414b55;
+}
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .health-text-content {
+  position: relative;
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn .x-btn-ml,
+.syno-app-iscsi .iscsi-overview-health-prev-btn .x-btn-mr,
+.syno-app-iscsi .iscsi-overview-health-next-btn .x-btn-ml,
+.syno-app-iscsi .iscsi-overview-health-next-btn .x-btn-mr {
+  display: none;
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn .x-btn-mc,
+.syno-app-iscsi .iscsi-overview-health-next-btn .x-btn-mc {
+  height: 19px;
+  width: 20px;
+  background-position: 0 0px !important;
+  background-repeat: repeat-x;
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn {
+  background-image: url("images/default/1x/bt_prev_next.png?v=10383caa3e7e8b04ae4abbd134e9971f");
+  border-radius: 3px 0px 0px 3px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-health-prev-btn {
+    background-image: url("images/default/2x/bt_prev_next.png?v=ff93bea10c940f6778dd8493a5091e3e");
+    background-size: 48px 48px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-overview-health-prev-btn {
+    background-image: url("images/default/2x/bt_prev_next.png?v=ff93bea10c940f6778dd8493a5091e3e");
+    background-size: 48px 48px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-health-next-btn {
+  background-image: url("images/default/1x/bt_prev_next.png?v=10383caa3e7e8b04ae4abbd134e9971f");
+  border-radius: 3px 0px 0px 3px;
+  transform: scaleX(-1);
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-health-next-btn {
+    background-image: url("images/default/2x/bt_prev_next.png?v=ff93bea10c940f6778dd8493a5091e3e");
+    background-size: 48px 48px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-overview-health-next-btn {
+    background-image: url("images/default/2x/bt_prev_next.png?v=ff93bea10c940f6778dd8493a5091e3e");
+    background-size: 48px 48px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn.x-btn-over .x-btn-mc,
+.syno-app-iscsi .iscsi-overview-health-next-btn.x-btn-over .x-btn-mc {
+  background-position: 0 -19px !important;
+}
+.syno-app-iscsi
+  .iscsi-overview-health-prev-btn.x-btn-over.x-btn-click
+  .x-btn-mc,
+.syno-app-iscsi
+  .iscsi-overview-health-next-btn.x-btn-over.x-btn-click
+  .x-btn-mc {
+  background-position: 0 -38px !important;
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn.x-item-disabled .x-btn-mc,
+.syno-app-iscsi .iscsi-overview-health-next-btn.x-item-disabled .x-btn-mc {
+  background-position: 0 -57px !important;
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn.x-btn button {
+  padding: 0px !important;
+}
+.syno-app-iscsi .iscsi-overview-health-next-btn.x-btn button {
+  padding: 0px !important;
+}
+.syno-app-iscsi .iscsi-overview-health-prev-btn.x-btn,
+.syno-app-iscsi .iscsi-overview-health-next-btn.x-btn {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  height: 24px;
+  width: 24px !important;
+  top: 18px !important;
+}
+.syno-app-iscsi .iscsi-overview-detail-top-border {
+  border-top: 1px solid rgba(198, 212, 224, 0.4);
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  > .x-tab-panel-bwrap
+  > .x-tab-panel-body {
+  padding-top: 0px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  > .x-tab-panel-bwrap
+  > .x-tab-panel-body
+  > .x-panel {
+  padding-top: 0px;
+}
+.syno-app-iscsi .iscsi-overview-detail.syno-ux-tab-panel .x-tab-strip-wrap {
+  height: 0px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail.syno-ux-tab-panel
+  .x-tab-strip-wrap
+  > .x-tab-strip-top {
+  height: 0px;
+}
+.syno-app-iscsi .iscsi-overview-detail .x-tab-edge .x-tab-strip-text {
+  border: 0px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary {
+  overflow: auto;
+  min-height: 38px;
+  padding-right: 8px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 13px;
+  left: 16px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-icon-status {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 27px;
+  left: 30px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title {
+  color: #414b55;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  display: inherit;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title {
+  color: #414b55;
+  font-size: 13px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  padding-top: 8px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-grayout.iscsi-maptrg-title {
+  color: #dbe0e5;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-title {
+  padding-right: 8px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-title.iscsi-title-no-status
+  .item-title {
+  padding-top: 9px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-title.iscsi-title-no-status
+  .item-status {
+  display: none;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-desc {
+  font-size: 13px;
+  line-height: 20px;
+  padding-top: 4px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-overview-detail-healthy
+  .item-status,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-overview-detail-healthy
+  .iscsi-desc {
+  color: #1eb300;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-overview-detail-warning
+  .item-status,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-overview-detail-warning
+  .iscsi-desc {
+  color: #ff7b00;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-overview-detail-error
+  .item-status,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-overview-detail-error
+  .iscsi-desc {
+  color: #d94141;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-title-area {
+  float: left;
+  width: 22%;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-desc-area {
+  position: relative;
+  float: right;
+  width: 78%;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-mapping-wrap {
+  float: left;
+  width: 33%;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-mapping-wrap-ex {
+  float: left;
+  width: 67%;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-wrap {
+  width: 33%;
+  float: left;
+  padding-right: 8px;
+  box-sizing: border-box;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-size {
+  padding-right: 16px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-space {
+  padding-right: 8px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-info {
+  font-size: 13px;
+  line-height: 20px;
+  padding-top: 8px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-sizespace-info
+  .iscsi-sizespace-title {
+  float: left;
+  color: #414b55;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-sizespace-info
+  .iscsi-sizespace-number {
+  float: right;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-sizespace-info.iscsi-grayout
+  .iscsi-sizespace-title {
+  color: #dbe0e5;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-sizespace-info.iscsi-grayout
+  .iscsi-sizespace-number {
+  display: none;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-bar {
+  margin-top: 9px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-trg-iqn {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 20px;
+  padding-top: 2px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maplun {
+  width: 100%;
+  overflow: hidden;
+  line-height: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-top: 2px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-title {
+  float: left;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-title-icon {
+  background-image: url("images/default/1x/dropdown.png?v=514ed19acdeac7e622b86e0bffeb0fa0");
+  width: 8px;
+  height: 8px;
+  float: left;
+  margin: 15px 0 0 5px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-title-icon {
+    background-image: url("images/default/2x/dropdown.png?v=92fdad1246f8fc42e2aec430bb791a1a");
+    background-size: 8px 16px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-overview-detail
+    .iscsi-maptrg-title-icon {
+    background-image: url("images/default/2x/dropdown.png?v=92fdad1246f8fc42e2aec430bb791a1a");
+    background-size: 8px 16px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-title-icon:hover {
+  cursor: pointer;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-grayout.iscsi-maptrg-title-icon {
+  background-position: 0 -8px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-title-wrap {
+  width: 100%;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-no-title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  color: #737e87;
+  font-size: 13px;
+  line-height: 18px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-icon {
+  background-position: 0 0;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-icon {
+  background-position: 0 -16px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-icon {
+  background-position: 0 -32px;
+}
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .iscsi-maptrg-rx.iscsi-grayout
+  .iscsi-maptrg-icon {
+  background-position: 0 -48px;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-number {
+  color: #158fe3;
+}
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-number {
+  color: #6cb808;
+}
+.syno-app-iscsi .iscsi-overview-detail-icon {
+  background-image: url("images/default/1x/exgrid_icn_storage.png?v=0007a47e7978734f14e7ed3f8e71d8f2");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-detail-icon {
+    background-image: url("images/default/2x/exgrid_icn_storage.png?v=843eba51c840e64b44388d7230442730");
+    background-size: 32px 128px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-overview-detail-icon {
+    background-image: url("images/default/2x/exgrid_icn_storage.png?v=843eba51c840e64b44388d7230442730");
+    background-size: 32px 128px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-detail-icon-fctarget {
+  background-position: 0 0px;
+}
+.syno-app-iscsi .iscsi-overview-detail-icon-target {
+  background-position: 0 -32px;
+}
+.syno-app-iscsi .iscsi-overview-detail-icon-lun {
+  background-position: 0 -96px;
+}
+.syno-app-iscsi .iscsi-overview-detail-status {
+  background-image: url("images/default/1x/exgrid_status.png?v=d5dd0e6c31ea91e83bada6087fc30444");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-overview-detail-status {
+    background-image: url("images/default/2x/exgrid_status.png?v=1904fa31d62a20d06889cb319f9baf3c");
+    background-size: 24px 96px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-overview-detail-status {
+    background-image: url("images/default/2x/exgrid_status.png?v=1904fa31d62a20d06889cb319f9baf3c");
+    background-size: 24px 96px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-overview-detail-status-healthy {
+  background-position: 0 0px;
+}
+.syno-app-iscsi .iscsi-overview-detail-status-processing {
+  background-position: 0 -24px;
+}
+.syno-app-iscsi .iscsi-overview-detail-status-error {
+  background-position: 0 -48px;
+}
+.syno-app-iscsi .iscsi-overview-detail-status-warning {
+  background-position: 0 -72px;
+}
+.syno-app-iscsi .iscsi-list-icon-target {
+  background-position: 0px -288px;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status {
+  font-family: Verdana, Arial, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-TW) {
+  font-family: Verdana, Arial, Microsoft JhengHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-CN) {
+  font-family: Verdana, Arial, Microsoft YaHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(ja) {
+  font-family: Verdana, Arial, Meiryo, sans-serif;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block
+  .health-text-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-info,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-no-title,
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .title,
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .title,
+.syno-app-iscsi .host-details-title {
+  font-weight: 700;
+}
+.syno-app-iscsi .iscsi-note {
+  color: #00a6a6;
+}
+.syno-app-iscsi .x-panel-body {
+  background-color: transparent;
+  padding: 0px;
+}
+.syno-app-iscsi .iscsi-grid-row {
+  border-radius: 6px;
+  border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(198, 212, 224, 0.7);
+}
+.syno-app-iscsi .iscsi-lun-icon {
+  background-image: url("images/default/1x/icon_iscsi_lun.png?v=eaea81eea61612b9e94f559e7f34752b");
+  background-repeat: no-repeat no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-lun-icon {
+    background-image: url("images/default/2x/icon_iscsi_lun.png?v=6e3df2ae91fd0210f8ecc893d43a511e");
+    background-size: 32px 160px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-lun-icon {
+    background-image: url("images/default/2x/icon_iscsi_lun.png?v=6e3df2ae91fd0210f8ecc893d43a511e");
+    background-size: 32px 160px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-lun-icon-block {
+  background-position: 0 -0px;
+}
+.syno-app-iscsi .iscsi-lun-icon-file {
+  background-position: 0 -32px;
+}
+.syno-app-iscsi .iscsi-lun-icon-btrfs {
+  background-position: 0 -64px;
+}
+.syno-app-iscsi .iscsi-lun-icon-sink {
+  background-position: 0 -96px;
+}
+.syno-app-iscsi .iscsi-lun-icon-disable {
+  background-position: 0 -128px;
+}
+.syno-app-iscsi .iscsi-lun-icon-wizard {
+  background-image: url("images/default/1x/g_icon_iSCSI_wizard.png?v=61f8682ec376ec24583e2c76b4909bfa");
+  background-repeat: no-repeat no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-lun-icon-wizard {
+    background-image: url("images/default/2x/g_icon_iSCSI_wizard.png?v=2f627d2f4969e78f5ab028191d8902a3");
+    background-size: 56px 280px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-lun-icon-wizard {
+    background-image: url("images/default/2x/g_icon_iSCSI_wizard.png?v=2f627d2f4969e78f5ab028191d8902a3");
+    background-size: 56px 280px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-lun-icon-wizard-block {
+  background-position: 0 -0px;
+}
+.syno-app-iscsi .iscsi-lun-icon-wizard-file {
+  background-position: 0 -56px;
+}
+.syno-app-iscsi .iscsi-lun-icon-wizard-btrfs {
+  background-position: 0 -112px;
+}
+.syno-app-iscsi .iscsi-lun-icon-wizard-sink {
+  background-position: 0 -168px;
+}
+.syno-app-iscsi .iscsi-lun-icon-wizard-disable {
+  background-position: 0 -224px;
+}
+.syno-app-iscsi .iscsi-lun-typebox {
+  height: 100%;
+  width: 598px;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.syno-app-iscsi .iscsi-lun-typebox .item-icon-wrap {
+  float: left;
+  height: 110px;
+  width: 104px;
+  position: relative;
+}
+.syno-app-iscsi .iscsi-lun-typebox .item-icon-wrap .item-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+}
+.syno-app-iscsi .iscsi-lun-typebox .lun-title {
+  float: left;
+  width: 170px;
+  height: 110px;
+  position: relative;
+  padding-right: 10px;
+}
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #3c3c3c;
+  line-height: 18px;
+}
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .sub-title {
+  font-size: 13px;
+  color: #0090d9;
+  margin-top: 5px;
+  display: block;
+}
+.syno-app-iscsi .iscsi-lun-typebox .lun-desc-wrap {
+  width: 314px;
+  height: 110px;
+  position: relative;
+  float: right;
+}
+.syno-app-iscsi .iscsi-lun-typebox .lun-desc-wrap .lun-desc {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-right: 20px;
+  color: #78828c;
+  line-height: 1.4em;
+  white-space: pre-line;
+  overflow: hidden;
+  font-size: 13px;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable {
+  height: 100%;
+  width: 598px;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-disable-overlap {
+  height: 110px;
+  width: 598px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+.syno-app-iscsi
+  .iscsi-lun-typebox-disable
+  .lun-disable-overlap
+  .lun-disable-tip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 88%;
+  font-size: 13px;
+  color: #78828c;
+  text-align: center;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .item-icon-wrap {
+  float: left;
+  height: 110px;
+  width: 104px;
+  position: relative;
+  background-color: #f6f8fa;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .item-icon-wrap .item-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title {
+  float: left;
+  width: 170px;
+  height: 110px;
+  position: relative;
+  padding-right: 10px;
+  background-color: #f6f8fa;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: rgba(65, 75, 85, 0.4);
+  line-height: 18px;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .sub-title {
+  font-size: 13px;
+  color: rgba(65, 75, 85, 0.4);
+  margin-top: 5px;
+  display: block;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-desc-wrap {
+  width: 314px;
+  height: 110px;
+  position: relative;
+  float: right;
+  background-color: #f6f8fa;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-desc-wrap .lun-desc {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-right: 20px;
+  color: rgba(65, 75, 85, 0.4);
+  line-height: 1.4em;
+  white-space: pre-line;
+  overflow: hidden;
+  font-size: 13px;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable:hover .lun-disable-overlap {
+  opacity: 1;
+}
+.syno-app-iscsi .iscsi-lun-typebox-disable:hover .item-icon-wrap,
+.syno-app-iscsi .iscsi-lun-typebox-disable:hover .lun-title,
+.syno-app-iscsi .iscsi-lun-typebox-disable:hover .lun-desc-wrap {
+  opacity: 0.13;
+}
+.syno-app-iscsi .iscsi-lun-typebox-click {
+  background-color: #e6f5ff !important;
+}
+.syno-app-iscsi .iscsi-lun-typebox-unclick {
+  background-color: #fff;
+}
+.syno-app-iscsi .iscsi-lun-typebox:hover {
+  cursor: pointer;
+  background-color: #f5faff;
+}
+.syno-app-iscsi .iscsi-lun-typebox-no-hover {
+  pointer-events: none;
+}
+.syno-app-iscsi .iscsi-lun-descpanel {
+  width: 558px;
+  background-color: #f2faff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #b6d9f2;
+  position: absolute;
+  bottom: 0px;
+}
+.syno-app-iscsi .gray-status {
+  color: rgba(65, 75, 85, 0.4);
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status {
+  font-family: Verdana, Arial, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-TW) {
+  font-family: Verdana, Arial, Microsoft JhengHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-CN) {
+  font-family: Verdana, Arial, Microsoft YaHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(ja) {
+  font-family: Verdana, Arial, Meiryo, sans-serif;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block
+  .health-text-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-info,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-no-title,
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .title,
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .title,
+.syno-app-iscsi .host-details-title {
+  font-weight: 700;
+}
+.syno-app-iscsi .iscsi-note {
+  color: #00a6a6;
+}
+.syno-app-iscsi .iscsi-log-err {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  padding-left: 24px !important;
+  text-align: left;
+  background-image: url("images/default/1x/log_error.png?v=8dafe7d9ae2e1c66f4e60830f59abb7b");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-log-err {
+    background-image: url("images/default/2x/log_error.png?v=524b5839bda0763c165709fc07857fc2");
+    background-size: 20px 20px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-log-err {
+    background-image: url("images/default/2x/log_error.png?v=524b5839bda0763c165709fc07857fc2");
+    background-size: 20px 20px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-log-warn {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  padding-left: 24px !important;
+  text-align: left;
+  background-image: url("images/default/1x/log_warn.png?v=2e21d7285cfdefeb692909a6862b83e9");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-log-warn {
+    background-image: url("images/default/2x/log_warn.png?v=fda3b766f966bfcda9801753ef93e5e8");
+    background-size: 20px 20px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-log-warn {
+    background-image: url("images/default/2x/log_warn.png?v=fda3b766f966bfcda9801753ef93e5e8");
+    background-size: 20px 20px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-log-info {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  padding-left: 24px !important;
+  text-align: left;
+  background-image: url("images/default/1x/log_info.png?v=201b11deea12867b2871a2e8f88f3ec2");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-log-info {
+    background-image: url("images/default/2x/log_info.png?v=fb416479e1917b7e2bd4571a7d5e6885");
+    background-size: 20px 20px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-log-info {
+    background-image: url("images/default/2x/log_info.png?v=fb416479e1917b7e2bd4571a7d5e6885");
+    background-size: 20px 20px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-no-hover {
+  pointer-events: none;
+  border-style: none;
+  box-shadow: none;
+}
+.syno-app-iscsi .iscsi-no-hover div {
+  padding: 0;
+}
+.syno-app-iscsi .iscsi-empty-text-inner-wrap {
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+}
+.syno-app-iscsi .iscsi-empty-text-icon {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  width: 120px;
+  height: 120px;
+  background-image: url("images/default/1x/icn_empty_default.png?v=b705dbd6f0a024ec89a772f117d03d35");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-empty-text-icon {
+    background-image: url("images/default/2x/icn_empty_default.png?v=f1cbdb19756532907cf317bd5e5f93da");
+    background-size: 120px 120px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-empty-text-icon {
+    background-image: url("images/default/2x/icn_empty_default.png?v=f1cbdb19756532907cf317bd5e5f93da");
+    background-size: 120px 120px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-empty-text {
+  margin-left: auto;
+  margin-right: auto;
+  width: 330px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 13px;
+  color: rgba(65, 75, 85, 0.6) !important;
+}
+.syno-app-iscsi .iscsi-log-toolbar .x-toolbar-right .x-toolbar-cell .xtb-text {
+  padding-left: 12px;
+}
+.syno-app-iscsi .iscsi-log-text-info {
+  color: #414b55;
+}
+.syno-app-iscsi .host-details-panel {
+  padding-top: 4px;
+}
+.syno-app-iscsi .host-details-panel form .x-form-item {
+  margin-bottom: 4px;
+}
+.syno-app-iscsi .host-details-title {
+  line-height: 24px;
+  color: #057feb;
+  font-size: 18px;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.syno-app-iscsi .host-details-initiators {
+  margin-bottom: 8px;
+}
+.syno-app-iscsi .x-layout-split {
+  width: 100% !important;
+  background-color: rgba(198, 212, 224, 0.4);
+  background-image: none;
+  height: 3px;
+  border-bottom: 1px solid rgba(198, 212, 224, 0.7);
+}
+.syno-app-iscsi .x-layout-split .x-layout-mini {
+  background-image: url("images/default/1x/grid_bt_prev_next_double.png?v=711bea6722ae0776759d834927382d07");
+  background-position: 0px -24px;
+  background-repeat: no-repeat;
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: 12px;
+  left: auto;
+  right: 8px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .x-layout-split .x-layout-mini {
+    background-image: url("images/default/2x/grid_bt_prev_next_double.png?v=5cdf5a74bf1bbf2e6dd0eb095f1e6718");
+    background-size: 48px 72px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .x-layout-split .x-layout-mini {
+    background-image: url("images/default/2x/grid_bt_prev_next_double.png?v=5cdf5a74bf1bbf2e6dd0eb095f1e6718");
+    background-size: 48px 72px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .x-layout-collapsed {
+  border: none;
+  height: 45px !important;
+  width: 100% !important;
+  background-image: url("images/default/1x/shadow_bar.png?v=6211080a50297b027a746e20ab31e224") !important;
+  background-color: transparent;
+  background-repeat: repeat-x;
+  padding-right: 0px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .x-layout-collapsed {
+    background-image: url("images/default/2x/shadow_bar.png?v=e3be9a6b283385ccd872cf28b061d866") !important;
+    background-size: 8px 10px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .x-layout-collapsed {
+    background-image: url("images/default/2x/shadow_bar.png?v=e3be9a6b283385ccd872cf28b061d866") !important;
+    background-size: 8px 10px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .x-layout-collapsed .x-layout-mini {
+  background-image: url("images/default/1x/grid_bt_prev_next_double.png?v=711bea6722ae0776759d834927382d07");
+  background-position: -24px -24px;
+  background-repeat: no-repeat;
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  top: 12px;
+  left: auto;
+  right: 8px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .x-layout-collapsed .x-layout-mini {
+    background-image: url("images/default/2x/grid_bt_prev_next_double.png?v=5cdf5a74bf1bbf2e6dd0eb095f1e6718");
+    background-size: 48px 72px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .x-layout-collapsed .x-layout-mini {
+    background-image: url("images/default/2x/grid_bt_prev_next_double.png?v=5cdf5a74bf1bbf2e6dd0eb095f1e6718");
+    background-size: 48px 72px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .bbar-note-no-padding .x-panel-bwrap {
+  padding: 0px;
+}
+.syno-app-iscsi .iscsi-host-no-triggerfield .x-grid3-cell-inner {
+  margin-left: 1px;
+}
+.syno-app-iscsi .host-protocol-disabled {
+  color: #96a0aa;
+}
+.syno-app-iscsi .host-welcome-icon-block {
+  width: 500px;
+  height: 200px;
+  position: relative;
+  background-image: url("images/default/1x/host_wizard_welcome.png?v=65e2bcef8aea69c261579fe3d8839aca");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .host-welcome-icon-block {
+    background-image: url("images/default/2x/host_wizard_welcome.png?v=37330924440a381ae95910f04c1df981");
+    background-size: 500px 200px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .host-welcome-icon-block {
+    background-image: url("images/default/2x/host_wizard_welcome.png?v=37330924440a381ae95910f04c1df981");
+    background-size: 500px 200px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .x-grid3-td-hostpermission {
+  border-right: 0px;
+}
+.syno-app-iscsi .x-grid3-col-hosttip {
+  padding: 0 0px !important;
+}
+.syno-app-iscsi .x-grid3-col-hosttip .syno-ux-whitetip-icon {
+  margin-left: 0px;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status {
+  font-family: Verdana, Arial, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-TW) {
+  font-family: Verdana, Arial, Microsoft JhengHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(zh-CN) {
+  font-family: Verdana, Arial, Microsoft YaHei, sans-serif;
+}
+.syno-app-iscsi .syno-ux-expandable-listview .item-title-status:lang(ja) {
+  font-family: Verdana, Arial, Meiryo, sans-serif;
+}
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-status-panel
+  .iscsi-overview-statusbox-block
+  .iscsi-overview-statusbox
+  .statusbox-box
+  .statusbox-title-right
+  h3,
+.syno-app-iscsi
+  .iscsi-overview-health-panel
+  .health-text-block
+  .iscsi-overview-health-title-block
+  .health-text-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .item-title,
+.syno-app-iscsi
+  .iscsi-overview-detail
+  .syno-ux-expandable-listview
+  .item-wrap
+  .item-summary
+  .iscsi-maptrg-title,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-sizespace-info,
+.syno-app-iscsi .iscsi-overview-detail .iscsi-maptrg-no-title,
+.syno-app-iscsi .iscsi-lun-typebox .lun-title .title,
+.syno-app-iscsi .iscsi-lun-typebox-disable .lun-title .title,
+.syno-app-iscsi .host-details-title {
+  font-weight: 700;
+}
+.syno-app-iscsi .iscsi-note {
+  color: #00a6a6;
+}
+.syno-app-iscsi .iscsi-welcome-top-picture {
+  width: 600px;
+  height: 200px;
+  background-position: center;
+  background-image: url("images/default/1x/banner_activation.png?v=ffab73a4b196ac6ec6f9c15072822a72");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack .syno-app-iscsi .iscsi-welcome-top-picture {
+    background-image: url("images/default/2x/banner_activation.png?v=ad6c38606c23a419b0f635ffe615c29f");
+    background-size: 600px 200px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug .syno-app-iscsi .iscsi-welcome-top-picture {
+    background-image: url("images/default/2x/banner_activation.png?v=ad6c38606c23a419b0f635ffe615c29f");
+    background-size: 600px 200px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi .iscsi-welcome-title-container {
+  margin-top: 32px;
+}
+.syno-app-iscsi .iscsi-welcome-title-container .iscsi-welcome-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 30px;
+}
+.syno-app-iscsi .iscsi-welcome-main-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.syno-app-iscsi .iscsi-welcome-main-container .iscsi-welcome-main-left-arrow {
+  width: 48px;
+  height: 80px;
+  margin: 0px 10px;
+  cursor: pointer;
+  background-image: url("images/default/1x/welcome_bt_previous.png?v=77ca924e695f2c9ac8516052185914c4");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .iscsi-welcome-main-container
+    .iscsi-welcome-main-left-arrow {
+    background-image: url("images/default/2x/welcome_bt_previous.png?v=212902bc4c89d605a354cc17ff4868e5");
+    background-size: 48px 252px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-welcome-main-container
+    .iscsi-welcome-main-left-arrow {
+    background-image: url("images/default/2x/welcome_bt_previous.png?v=212902bc4c89d605a354cc17ff4868e5");
+    background-size: 48px 252px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi
+  .iscsi-welcome-main-container
+  .iscsi-welcome-main-left-arrow:hover {
+  background-position: 0px 84px;
+}
+.syno-app-iscsi
+  .iscsi-welcome-main-container
+  .iscsi-welcome-main-content-container {
+  width: 464px;
+  height: 60px;
+  overflow: auto;
+  margin-top: 20px;
+}
+.syno-app-iscsi
+  .iscsi-welcome-main-container
+  .iscsi-welcome-main-content-container
+  .iscsi-welcome-main-content {
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  word-wrap: break-word;
+}
+.syno-app-iscsi .iscsi-welcome-main-container .iscsi-welcome-main-right-arrow {
+  width: 48px;
+  height: 80px;
+  margin: 0px 10px;
+  cursor: pointer;
+  background-image: url("images/default/1x/welcome_bt_next.png?v=d02b3832f1850836b8c53187f9a2c366");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpack
+    .syno-app-iscsi
+    .iscsi-welcome-main-container
+    .iscsi-welcome-main-right-arrow {
+    background-image: url("images/default/2x/welcome_bt_next.png?v=0806cd09253c5b1a4f3ac0e579459eee");
+    background-size: 48px 252px;
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),
+  (-o-min-device-pixel-ratio: 3 / 2),
+  (min-resolution: 144dpi) {
+  .synohdpackdebug
+    .syno-app-iscsi
+    .iscsi-welcome-main-container
+    .iscsi-welcome-main-right-arrow {
+    background-image: url("images/default/2x/welcome_bt_next.png?v=0806cd09253c5b1a4f3ac0e579459eee");
+    background-size: 48px 252px;
+    outline: 1px green dashed;
+  }
+}
+.syno-app-iscsi
+  .iscsi-welcome-main-container
+  .iscsi-welcome-main-right-arrow:hover {
+  background-position: 0px 84px;
+}
+.syno-app-iscsi .iscsi-welcome-button-container {
+  display: flex;
+  justify-content: center;
+}
+.syno-app-iscsi .iscsi-welcome-button-container .iscsi-welcome-start-btn {
+  margin-right: 0px !important;
+  border-radius: 100px;
+  width: 200px;
+}
+.syno-app-iscsi .iscsi-welcome-dot-container {
+  position: absolute;
+  bottom: 36px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.syno-app-iscsi .iscsi-welcome-dot-container .iscsi-welcome-dot-click {
+  margin: 0px 5px;
+  height: 7px;
+  width: 7px;
+  background-color: #2a323b;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.syno-app-iscsi .iscsi-welcome-dot-container .iscsi-welcome-dot {
+  margin: 0px 5px;
+  height: 7px;
+  width: 7px;
+  background-color: rgba(42, 50, 59, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.syno-app-iscsi .iscsi-welcome-dot-container .iscsi-welcome-dot:hover {
+  background-color: rgba(42, 50, 59, 0.4);
+}
+.san-color-blue {
+  color: #057feb;
+}
+.iscsi-search-panel {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+.iscsi-search-panel .x-btn button {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.iscsi-search-panel .x-panel-body {
+  background-color: #fff;
+  border-radius: 4px;
+}
+.iscsi-search-panel .syno-ux-displayfield {
+  height: 24px;
+  line-height: 24px;
+  padding: 0px;
+  margin-bottom: -4px;
+  margin-top: 12px;
+}
+.iscsi-search-panel .x-toolbar-cell {
+  padding: 0 0 0 8px;
+}
+.iscsi-search-panel .x-toolbar-cell .syno-ux-button {
+  margin: 0 0 0 8px;
+  padding-left: 13px;
+  padding-right: 13px;
+  border-radius: 100px;
+  min-width: 52px;
+}
+.iscsi-search-panel .x-toolbar-cell .syno-ux-button.syno-ux-button-blue {
+  min-width: 92px;
+}
+.iscsi-search-panel .search-panel-fbar-btnPanel {
+  margin-top: 16px;
+}
+.san-is-empty {
+  height: 100%;
+}
+.san-is-empty .x-grid-empty {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  right: 10px;
+}
+.san-is-empty .x-grid-empty:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+  width: 0px;
+}
