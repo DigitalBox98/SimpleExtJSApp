@@ -246,34 +246,34 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                             handler: this.showUpdateUploadDialog.bind(this)
                         }]
                     },
-                    {
-                        xtype: 'syno_compositefield',
-                        hideLabel: true,
-                        items: [{
-                            xtype: 'syno_displayfield',
-                            value: 'Clean up system partition:',
-                            width: 140
-                        }, {
-                            xtype: 'syno_button',
-                            btnStyle: 'red',
-                            text: 'Run Clean Up',
-                            handler: this.onRunCleanUpSystemPartition.bind(this)
-                        }]
-                    },
-                    {
-                        xtype: 'syno_compositefield',
-                        hideLabel: true,
-                        items: [{
-                            xtype: 'syno_displayfield',
-                            value: '(TEST)Create SQL test',
-                            width: 140
-                        }, {
-                            xtype: 'syno_button',
-                            btnStyle: 'red',
-                            text: 'Run Create SQL',
-                            handler: this.onRunCreateSQL.bind(this)
-                        }]
-                    }
+                    // {
+                    //     xtype: 'syno_compositefield',
+                    //     hideLabel: true,
+                    //     items: [{
+                    //         xtype: 'syno_displayfield',
+                    //         value: 'Clean up system partition:',
+                    //         width: 140
+                    //     }, {
+                    //         xtype: 'syno_button',
+                    //         btnStyle: 'red',
+                    //         text: 'Run Clean Up',
+                    //         handler: this.onRunCleanUpSystemPartition.bind(this)
+                    //     }]
+                    // },
+                    // {
+                    //     xtype: 'syno_compositefield',
+                    //     hideLabel: true,
+                    //     items: [{
+                    //         xtype: 'syno_displayfield',
+                    //         value: '(TEST)Create SQL test',
+                    //         width: 140
+                    //     }, {
+                    //         xtype: 'syno_button',
+                    //         btnStyle: 'red',
+                    //         text: 'Run Create SQL',
+                    //         handler: this.onRunCreateSQL.bind(this)
+                    //     }]
+                    // }
                 ]
         });
     },
