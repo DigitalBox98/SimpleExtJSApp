@@ -1055,7 +1055,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     text: _T("common", "alt_cancel"),
                     scope: this,
                     handler: function () {
-                        Ext.getCmp("confirm_password_dialog").close();
+                        Ext.getCmp("upload_file_dialog")?.close();
                         reject(new Error("User cancelled password dialog."));
                     },
                 },
@@ -1073,7 +1073,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                         }
                         that.getEl().mask(_T("common", "loading"), "x-mask-loading");
                         that.onUploadFile(fileObject, that);
-                        Ext.getCmp("upload_file_dialog").close();
+                        Ext.getCmp("upload_file_dialog")?.close();
                     }
                 },
             ],
