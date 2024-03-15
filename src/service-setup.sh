@@ -1,7 +1,9 @@
-PYTHON_DIR="/var/packages/python311/target/bin"
-PATH="${SYNOPKG_PKGDEST}/env/bin:${SYNOPKG_PKGDEST}/bin:${SYNOPKG_PKGDEST}/usr/bin:${PYTHON_DIR}:${PATH}"
-TMP_DIR="${SYNOPKG_PKGDEST}/../../tmp"
+#PYTHON_DIR="/var/packages/python311/target/bin"
 PACKAGE="rr-manager"
+INSTALL_DIR="/usr/local/${PACKAGE}"
+PYTHON_DIR="/usr/local/python"
+PATH="${SYNOPKG_PKGDEST}/env/bin:${SYNOPKG_PKGDEST}/bin:${SYNOPKG_PKGDEST}/usr/bin:${PYTHON_DIR}:${PATH}"
+TMP_DIR="${SYNOPKG_PKGDEST}/../../@tmp"
 
 service_postinst ()
 {
@@ -26,6 +28,7 @@ service_postinst ()
             -e "s|@this_is_rr_tpm_dir@|${wizard_watch_dir}|g" \
         "${SYNOPKG_PKGDEST}/app/config.txt"
     fi
+    exit 0
 }
 
 preupgrade ()
@@ -35,11 +38,16 @@ preupgrade ()
     mkdir -p ${TMP_DIR}/${PACKAGE}
 
       # Save package config
-    mv "${SYNOPKG_PKGDEST}/app/config.txt" ${TMP_DIR}/${PACKAGE}
+    mv "${SYNOPKG_PKGDEST}/app/config.txt" "${TMP_DIR}/${PACKAGE}/config.txt"
+    exit 0
 }
 
 postupgrade ()
 {
+    rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
     # Restore package config
     mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
+    touch /tmp/rr_manager_installed
+    rm -fr ${TMP_DIR}/${PACKAGE}
+    exit 0
 }
