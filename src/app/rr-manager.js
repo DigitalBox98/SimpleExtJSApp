@@ -101,6 +101,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         this['rrConfigNew']['addons'] = newAddons;
         this.handleFileUpload(this['rrConfigNew']).then(x => {
             this.runTask('ApplyRRConfig');
+            this.showMsg('title','The RR config has been successfully applied. Please restart the NAS to apply the changes.');
         });
     },
     handleFileUpload: function (jsonData) {
@@ -1110,17 +1111,18 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 defaultHeaders: l,
                 timeout: null
             });
+            var tabs = Ext.getCmp('tabsControl');
             var m = this.conn.request({
                 headers: s,
                 html5upload: !0,
                 chunkmode: t.chunkmode,
                 uploadData: n,
                 success: (x) => {
-                    that?.getEl()?.unmask();
+                    tabs?.getEl()?.unmask();
                     this.showPrompt(_V('ui', 'file_uploading_succesfull_msg'), _V('ui', 'update_confirm_title'), x => this.onRunRrUpdateManuallyClick());
                 },
                 failure: (x) => {
-                    that?.getEl()?.unmask();
+                    tabs?.getEl()?.unmask();
                     that.showMsg("title", "Error file uploading.");
                     console.log(x);
                 },
