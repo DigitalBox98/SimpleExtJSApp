@@ -27,18 +27,10 @@ service_postinst ()
             -e "s|@this_is_sharename@|${wizard_download_share}|g" \
         "${SYNOPKG_PKGDEST}/app/config.txt"
     fi
-    
-    if [ "${SYNOPKG_PKG_STATUS}" != "UPGRADE" ]; then
-        rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
-        # Restore package config
-        mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
-        touch /tmp/rr_manager_installed
-    fi
-
     exit 0
 }
 
-preupgrade ()
+service_preupgrade ()
 {
  # Save configuration files
     rm -fr ${TMP_DIR}/${PACKAGE}
@@ -49,12 +41,12 @@ preupgrade ()
     exit 0
 }
 
-# postupgrade ()
-# {
-#     rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
-#     # Restore package config
-#     mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
-#     touch /tmp/rr_manager_installed
-#     rm -fr ${TMP_DIR}/${PACKAGE}
-#     exit 0
-# }
+service_postupgrade ()
+{
+    rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
+    # Restore package config
+    mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
+    touch /tmp/rr_manager_installed
+    rm -fr ${TMP_DIR}/${PACKAGE}
+    exit 0
+}
