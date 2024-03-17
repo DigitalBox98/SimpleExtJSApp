@@ -20,11 +20,20 @@ class DoubleQuotedDumper(yaml.Dumper):
         return super(DoubleQuotedDumper, self).represent_scalar(tag, value, style)
 
 response = {}
-
+response['success'] = False
 # Authenticate the user
 f = os.popen('/usr/syno/synoman/webman/modules/authenticate.cgi', 'r')
 user = f.read().strip()
 message =""
+
+def read_user_config():
+    try:
+        with open('/mnt/p1/user-config.yml', 'r') as file:
+            return yaml.safe_load(file)  # Load and parse the YAML file
+    except IOError as e:
+        return f"Error reading user-config.yml: {e}"
+    except e:
+        return "{}"
 
 if len(user) > 0:
     # Read the request body to get the JSON data
@@ -37,16 +46,28 @@ if len(user) > 0:
 
             # Convert JSON data to YAML using the custom dumper
             yaml_data = yaml.dump(data, Dumper=DoubleQuotedDumper, default_flow_style=False, sort_keys=False)
+            try:
+                # existing_config = read_user_config()
+                # message ='after read existing_config' 
+                # Define the file path
+                file_path = '/tmp/user-config.yml'
+                # existing_config['addons'] = data.addons
+                # message ='after remap existing_config' 
+                response['addons'] = data
+                # Write the YAML data to a file
+                with open(file_path, 'w') as yaml_file:
+                    yaml_file.write(yaml_data)
+                    message ='after write existing_config'
 
-            # Define the file path
-            file_path = '/tmp/user-config.yml'
-            
-            # Write the YAML data to a file
-            with open(file_path, 'w') as yaml_file:
-                yaml_file.write(yaml_data)
+                with open('/tmp/.build', 'w') as build_file:
+                    build_file.write('')
+                    message ='after write build'
+
+                response['success'] = True
+            except Exception as e:
+                response["error"] = str(e)
 
             response['message'] = message
-            response['success'] = True
 else:
     response["status"] = "not authenticated"
 

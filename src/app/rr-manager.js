@@ -74,7 +74,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             maximizable: true,
             minimizable: true,
             width: 640,
-            height: 640, 
+            height: 640,
             items: [
                 {
                     xtype: 'syno_tabpanel',
@@ -99,7 +99,9 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
 
         this['rrConfigNew'] = this['rrConfig']['user_config'];
         this['rrConfigNew']['addons'] = newAddons;
-        this.handleFileUpload(this['rrConfigNew']);
+        this.handleFileUpload(this['rrConfigNew']).then(x => {
+            this.runTask('ApplyRRConfig');
+        });
     },
     handleFileUpload: function (jsonData) {
         let url = `${this.API._prefix}uploadConfigFile.cgi`;
@@ -257,28 +259,200 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             ]
         });
     },
+    getPackagesList: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                additional: ["description", "description_enu", "dependent_packages", "beta", "distributor", "distributor_url", "maintainer", "maintainer_url", "dsm_apps", "dsm_app_page", "dsm_app_launch_name", "report_beta_url", "support_center", "startable", "installed_info", "support_url", "is_uninstall_pages", "install_type", "autoupdate", "silent_upgrade", "installing_progress", "ctl_uninstall", "updated_at", "status", "url", "available_operation", "install_type"],
+                ignore_hidden: false,
+            };
+            let args = {
+                api: 'SYNO.Core.Package',
+                method: 'list',
+                version: 2,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    runTask: function (taskName) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: taskName
+            };
+            let args = {
+                api: 'SYNO.Core.EventScheduler',
+                method: 'run',
+                version: 1,
+                params: params,
+                stop_when_error: false,
+                mode: 'sequential',
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    getSytemInfo: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let args = {
+                api: 'SYNO.DSM.Info',
+                method: 'getinfo',
+                version: 2,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get getSytemInfo!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    getSharesList: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                filetype: 'dir', // URL-encode special characters if needed
+                sort_by: 'name',
+                check_dir: true,
+                additional: '["real_path","owner","time","perm","mount_point_type","sync_share","volume_status","indexed","hybrid_share","worm_share"]',
+                enum_cluster: true,
+                node: 'fm_root'
+            };
+            let args = {
+                api: 'SYNO.FileStation.List',
+                method: 'list_share',
+                version: 2,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get getSytemInfo!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    getTaskList: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                sort_by: "next_trigger_time",
+                sort_direction: "ASC",
+                offset: 0,
+                limit: 50
+            };
+            let args = {
+                api: 'SYNO.Core.TaskScheduler',
+                method: 'list',
+                version: 3,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    rebootSystem: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                force: false,
+                local: true,
+                firmware_upgrade: false,
+                cache_check_shutdown: false
+            };
+
+            let args = {
+                api: "SYNO.Core.System",
+                method: "reboot",
+                version: 2,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to reboot system!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    getPasswordConfirm: function (data) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let args = {
+                api: "SYNO.Core.User.PasswordConfirm",
+                method: "auth",
+                version: 2,
+                params: {
+                    password: data
+                }, callback: function (success, message) {
+                    success ? resolve(message?.SynoConfirmPWToken)
+                        : reject('Unable to create task!');
+                },
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    createTask: function (task_name, operation, token) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: task_name,
+                owner: { 0: "root" },
+                event: "bootup",
+                enable: false,
+                depend_on_task: "",
+                notify_enable: false,
+                notify_mail: "",
+                notify_if_error: false,
+                operation_type: "script",
+                operation: decodeURIComponent(operation)
+            };
+
+            if (token != "") {
+                params.SynoConfirmPWToken = token
+            }
+
+            let args = {
+                api: token != "" ? "SYNO.Core.EventScheduler.Root" : "SYNO.Core.EventScheduler",
+                method: "create",
+                version: 1,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to create task!');
+                },
+                scope: this,
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    sendRunSchedulerTaskWebAPI: function (token) {
+        args = {
+            api: "SYNO.Core.EventScheduler",
+            method: "run",
+            version: 1,
+            params: {
+                task_name: "SetRootPrivsToRrManager",
+            },
+            callback: function (success, message, data) {
+                if (!success) {
+                    console.log("error run EventScheduler task");
+                    return;
+                }
+            },
+            scope: this,
+        };
+
+        if (token != "") {
+            args.params.SynoConfirmPWToken = token
+        }
+        this.sendWebAPI(args);
+    },
     API: {
         _baseUrl: 'webapi/entry.cgi?',
         _prefix: '/webman/3rdparty/rr-manager/',
-        runTask: function (taskName, callback) {
-            let compound = JSON.stringify([{ 'api': 'SYNO.Core.EventScheduler', 'method': 'run', 'version': 1, 'task_name': taskName }]);
-            var t = `${this._baseUrl}api=SYNO.Entry.Request&method=request&version=1&stop_when_error=false&mode='sequential'&compound=${compound}`;
-            Ext.Ajax.request({
-                url: t,
-                method: 'GET',
-                timeout: 60000,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                success: function (response) {
-                    if (callback) callback(response.responseText);
-                },
-                failure: function (response) {
-                    that.showMsg('Error', 'Request Failed');
-                    console.error(response);
-                }
-            });
-        },
         getUpdateFileInfo: function (file) {
             return new Promise((resolve, reject) => {
                 Ext.Ajax.request({
@@ -341,307 +515,32 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 });
             });
         },
-        getSharesList: function () {
-            return new Promise((resolve, reject) => {
-                Ext.Ajax.request({
-                    url: this._baseUrl,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'Accept': '*/*'
-                    },
-                    params: {
-                        api: 'SYNO.FileStation.List',
-                        method: 'list_share',
-                        version: 2,
-                        filetype: 'dir', // URL-encode special characters if needed
-                        sort_by: 'name',
-                        check_dir: true,
-                        additional: '["real_path","owner","time","perm","mount_point_type","sync_share","volume_status","indexed","hybrid_share","worm_share"]',
-                        enum_cluster: true,
-                        node: 'fm_root'
-                    },
-                    success: function (response) {
-                        if (typeof response?.responseText === 'string') {
-                            resolve(Ext.decode(response?.responseText));
-                        } else {
-                            resolve(response?.responseText);
-                        }
-                    },
-                    failure: function (response) {
-                        if (typeof result?.responseText === 'string' && result?.responseText) {
-                            var response = Ext.decode(result?.responseText);
-                            reject(response?.error);
-                        }
-                        else {
-                            reject('Failed with status: ' + response.status);
-                        }
-                    }
-                });
-            });
-        },
-        getSytemInfo: function () {
-            return new Promise((resolve, reject) => {
-                Ext.Ajax.request({
-                    url: this._baseUrl,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'Accept': '*/*'
-                    },
-                    params: {
-                        api: 'SYNO.DSM.Info',
-                        method: 'getinfo',
-                        version: 2
-                    },
-                    success: function (response) {
-                        if (typeof response?.responseText === 'string') {
-                            resolve(Ext.decode(response?.responseText));
-                        } else {
-                            resolve(response?.responseText);
-                        }
-                    },
-                    failure: function (response) {
-                        if (typeof result?.responseText === 'string' && result?.responseText) {
-                            var response = Ext.decode(result?.responseText);
-                            reject(response?.error);
-                        }
-                        else {
-                            reject('Failed with status: ' + response.status);
-                        }
-                    }
-                });
-            });
-        },
-        getPackagesList: function () {
-            return new Promise((resolve, reject) => {
-                Ext.Ajax.request({
-                    url: this._baseUrl,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'Accept': '*/*'
-                    },
-                    params: {
-                        api: 'SYNO.Core.Package',
-                        method: 'list',
-                        version: 2,
-                        additional: ["description", "description_enu", "dependent_packages", "beta", "distributor", "distributor_url", "maintainer", "maintainer_url", "dsm_apps", "dsm_app_page", "dsm_app_launch_name", "report_beta_url", "support_center", "startable", "installed_info", "support_url", "is_uninstall_pages", "install_type", "autoupdate", "silent_upgrade", "installing_progress", "ctl_uninstall", "updated_at", "status", "url", "available_operation", "install_type"],
-                        ignore_hidden: false,
-                    },
-                    success: function (response) {
-                        if (typeof response?.responseText === 'string') {
-                            resolve(Ext.decode(response?.responseText));
-                        } else {
-                            resolve(response?.responseText);
-                        }
-                    },
-                    failure: function (response) {
-                        if (typeof result?.responseText === 'string' && result?.responseText) {
-                            var response = Ext.decode(result?.responseText);
-                            reject(response?.error);
-                        }
-                        else {
-                            reject('Failed with status: ' + response.status);
-                        }
-                    }
-                });
-            });
-        },
-        getTaskList: function () {
-            return new Promise((resolve, reject) => {
-                Ext.Ajax.request({
-                    url: this._baseUrl,
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'Accept': '*/*'
-                    },
-                    params: {
-                        api: 'SYNO.Core.TaskScheduler',
-                        method: 'list',
-                        version: 3,
-                        sort_by: "next_trigger_time",
-                        sort_direction: "ASC",
-                        offset: 0,
-                        limit: 50
-                    },
-                    success: function (response) {
-                        if (typeof response?.responseText === 'string') {
-                            resolve(Ext.decode(response?.responseText));
-                        } else {
-                            resolve(response?.responseText);
-                        }
-                    },
-                    failure: function (response) {
-                        if (typeof result?.responseText === 'string' && result?.responseText) {
-                            var response = Ext.decode(result?.responseText);
-                            reject(response?.error);
-                        }
-                        else {
-                            reject('Failed with status: ' + response.status);
-                        }
-                    }
-                });
-            });
-        },
-        rebootSystem: function () {
-            return new Promise((resolve, reject) => {
-                Ext.Ajax.request({
-                    url: this._baseUrl,
-                    method: 'POST',
-                    jsonData: {
-                        api: SYNO.Core.System,
-                        method: reboot,
-                        version: 2,
-                        force: false,
-                        local: true,
-                        firmware_upgrade: false,
-                        cache_check_shutdown: false
-                    },
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'Accept': '*/*'
-                    },
-                    success: function (response) {
-                        if (typeof response?.responseText === 'string') {
-                            resolve(Ext.decode(response?.responseText));
-                        } else {
-                            resolve(response?.responseText);
-                        }
-                    },
-                    failure: function (response) {
-                        if (typeof result?.responseText === 'string' && result?.responseText) {
-                            var response = Ext.decode(result?.responseText);
-                            reject(response?.error);
-                        }
-                        else {
-                            reject('Failed with status: ' + response.status);
-                        }
-                    }
-                });
-            });
-
-        },
-        createRunRrUpdateTask: function (token, callback) {
-            let that = this;
-            let task_name = "RunRrUpdate"
-            let operation = ".%20%2Fvar%2Fpackages%2Frr-manager%2Ftarget%2Fapp%2Fconfig.txt%20%26%26%20%2Fusr%2Fbin%2Frr-update.sh%20updateRR%20%22%24UPLOAD_DIR_PATH%24RR_TMP_DIR%22%2Fupdate.zip%20%2Ftmp%2Frr_update_progress"
-            params = {
-                task_name: task_name,
-                owner: { 0: "root" },
-                event: "bootup",
-                enable: false,
-                depend_on_task: "",
-                notify_enable: false,
-                notify_mail: "",
-                notify_if_error: false,
-                operation_type: "script",
-                operation: decodeURIComponent(operation)
-            };
-
-            if (token != "") {
-                params.SynoConfirmPWToken = token
-            }
-
-            args = {
-                method: "create",
-                version: 1,
-                params: params,
-                callback: function (success, message) {
-                    if (!success) {
-                        console.log("error create EventScheduler task");
-                        return;
-                    }
-                },
-                scope: this,
-            }
-
-            if (token != "") {
-                args.api = "SYNO.Core.EventScheduler.Root"
-            } else {
-                args.api = "SYNO.Core.EventScheduler"
-            }
-
-            this.sendWebAPI(args);
-        },
-        createRunSetPriviledgeForRRTask: function (token) {
-            let that = this;
-            let task_name = "SetRootPrivsToRrManager"
-            let operation = "sed%20-i%20's%2Fpackage%2Froot%2Fg'%20%2Fvar%2Fpackages%2Frr-manager%2Fconf%2Fprivilege%20%26%26%20synopkg%20restart%20rr-manager";
-            params = {
-                task_name: task_name,
-                owner: { 0: "root" },
-                event: "bootup",
-                enable: false,
-                depend_on_task: "",
-                notify_enable: false,
-                notify_mail: "",
-                notify_if_error: false,
-                operation_type: "script",
-                operation: decodeURIComponent(operation)
-            };
-
-            if (token != "") {
-                params.SynoConfirmPWToken = token
-            }
-
-            args = {
-                method: "create",
-                version: 1,
-                params: params,
-                callback: function (success, message) {
-                    if (!success) {
-                        console.log("error create EventScheduler task");
-                        return;
-                    }
-
-                    if (token != "") {
-                        this.API.sendRunSchedulerTaskWebAPI.bind(this, { token });
-                    }
-                },
-                scope: this,
-            }
-
-            if (token != "") {
-                args.api = "SYNO.Core.EventScheduler.Root"
-            } else {
-                args.api = "SYNO.Core.EventScheduler"
-            }
-
-            this.sendWebAPI(args);
-        },
-        sendRunSchedulerTaskWebAPI: function (token) {
-            args = {
-                api: "SYNO.Core.EventScheduler",
-                method: "run",
-                version: 1,
-                params: {
-                    task_name: "SetRootPrivsToRrManager",
-                },
-                callback: function (success, message, data) {
-                    if (!success) {
-                        console.log("error run EventScheduler task");
-                        return;
-                    }
-                },
-                scope: this,
-            };
-
-            if (token != "") {
-                params.SynoConfirmPWToken = token
-            }
-            this.sendWebAPI(args);
-        },
         createAndRunSchedulerTask: function (data) {
-            this.fetchSynoConfirmPWToken(data,
-                this.API.createRunRrUpdateTask.bind(this)
-            );
+            this.getPasswordConfirm(data).then(data => {
+                this.createTask("RunRrUpdate",
+                    ".%20%2Fvar%2Fpackages%2Frr-manager%2Ftarget%2Fapp%2Fconfig.txt%20%26%26%20%2Fusr%2Fbin%2Frr-update.sh%20updateRR%20%22%24UPLOAD_DIR_PATH%24RR_TMP_DIR%22%2Fupdate.zip%20%2Ftmp%2Frr_update_progress",
+                    data
+                );
+            });
         },
         createAndRunSchedulerTaskSetRootPrivilegesForRrManager: function (data) {
-            this.fetchSynoConfirmPWToken(data,
-                this.API.createRunSetPriviledgeForRRTask.bind(this)
-            );
+            that = this;
+            this.getPasswordConfirm(data).then(data => {
+                this.createTask("SetRootPrivsToRrManager",
+                    "sed%20-i%20's%2Fpackage%2Froot%2Fg'%20%2Fvar%2Fpackages%2Frr-manager%2Fconf%2Fprivilege%20%26%26%20synopkg%20restart%20rr-manager",
+                    data
+                ).then(x => {
+                    that.sendRunSchedulerTaskWebAPI(data);
+                });
+            });
+        },
+        createSchedulerTaskApplyRRConfig: function (data) {
+            this.getPasswordConfirm(data).then(data => {
+                this.createTask("ApplyRRConfig",
+                    "cp%20%2Ftmp%2Fuser-config.yml%20%2Fmnt%2Fp1%2Fuser-config.yml%20%26%26%20cp%20%2Ftmp%2F.build%20%2Fmnt%2Fp1%2F.build",
+                    data
+                );
+            });
         },
     },
     onRunCreateSQL: function () {
@@ -659,10 +558,10 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         });
     },
     onRunTaskMountLoaderDiskClick: function () {
-        this.API.runTask('MountLoaderDisk');
+        this.runTask('MountLoaderDisk');
     },
     onRunTaskUnMountLoaderDiskClick: function () {
-        this.API.runTask('UnMountLoaderDisk');
+        this.runTask('UnMountLoaderDisk');
     },
     showMsg(title, msg) {
         return new SYNO.SDS.MessageBoxV5()
@@ -721,7 +620,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             async function runUpdate() {
                 //show the spinner
                 tabs.getEl().mask(_T("common", "loading"), "x-mask-loading");
-                that.API.runTask('RunRrUpdate');
+                that.runTask('RunRrUpdate');
                 var maxCountOfRefreshUpdateStatus = 350;
                 var countUpdatesStatusAttemp = 0;
 
@@ -996,7 +895,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                         scope: this,
                         handler: function () {
                             Ext.getCmp("confirm_password_dialog").close();
-                            reject(new Error("User cancelled password dialog."));
+                            // reject(new Error("User cancelled password dialog."));
                         },
                     },
                     {
@@ -1050,7 +949,6 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     scope: this,
                     handler: function () {
                         Ext.getCmp("upload_file_dialog")?.close();
-                        reject(new Error("User cancelled password dialog."));
                     },
                 },
                 {
@@ -1078,39 +976,11 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         });
         window.open();
     },
-    fetchSynoConfirmPWToken: function (data, callback) {
-        this.sendWebAPI({
-            api: "SYNO.Core.User.PasswordConfirm",
-            method: "auth",
-            version: 2,
-            params: {
-                password: data
-            },
-            callback: function (success, response) {
-                if (!success) {
-                    window.alert("invalid admin password");
-                    return;
-                }
-
-                if (
-                    response.SynoConfirmPWToken === null ||
-                    (typeof response.SynoConfirmPWToken === "string" &&
-                        response.SynoConfirmPWToken.trim() === "")
-                ) {
-                    console.log("empty SynoConfirmPWToken");
-                    return;
-                }
-
-                callback(response.SynoConfirmPWToken);
-            },
-            scope: this,
-        });
-    },
     __checkDownloadFolder: function (callback) {
         var that = this;
-        this.API.getSharesList().then(x => {
+        this.getSharesList().then(x => {
             var shareName = `/${that['rrManagerConfig']['SHARE_NAME']}`;
-            var sharesList = x.data.shares;
+            var sharesList = x.shares;
             var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName);
             if (!downloadsShareMetadata) {
                 var msg = formatString(_V('ui', 'share_notfound_msg'), that['rrManagerConfig']['SHARE_NAME']);
@@ -1132,12 +1002,16 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             {
                 name: "SetRootPrivsToRrManager",
                 createTaskCallback: this.API.createAndRunSchedulerTaskSetRootPrivilegesForRrManager.bind(this)
+            },
+            {
+                name: "ApplyRRConfig",
+                createTaskCallback: this.API.createSchedulerTaskApplyRRConfig.bind(this)
             }
         ];
 
         try {
-            let response = await that.API.getTaskList();
-            var tasks = response.data.tasks;
+            let response = await that.getTaskList();
+            var tasks = response.tasks;
             var tasksToCreate = requiredTasks.filter(task => !tasks.find(x => x.name === task.name));
             var tabs = Ext.getCmp('tabsControl');
             if (tasksToCreate.length > 0) {
@@ -1172,14 +1046,14 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             that['rrManagerConfig'] = that[configName]['rr_manager_config'];
             that['opts']['params']['path'] = `/${that['rrManagerConfig']['SHARE_NAME']}/${that['rrManagerConfig']['RR_TMP_DIR']}`;
 
-            that.API.getSytemInfo().then((x) => {
-                that['synoInfo'] = x.data;
-                Ext.getCmp('lbSystemInfo').setValue(`Model: ${x?.data?.model}, RAM: ${x?.data?.ram} Gb, DSM version: ${x?.data?.version_string} `);
+            that.getSytemInfo().then((x) => {
+                that['synoInfo'] = x;
+                Ext.getCmp('lbSystemInfo').setValue(`Model: ${x?.model}, RAM: ${x?.ram} Gb, DSM version: ${x?.version_string} `);
             });
             this.__checkDownloadFolder(this.__checkRequiredTasks.bind(this));
         });
-        that.API.getPackagesList().then((response) => {
-            var rrManagerPackage = response.data.packages.find(p => p.id == 'rr-manager');
+        this.getPackagesList().then((response) => {
+            var rrManagerPackage = response.packages.find(p => p.id == 'rr-manager');
             Ext.getCmp('lbRrManagerVersion')?.setValue(`${rrManagerPackage?.version}`);
         });
     },
