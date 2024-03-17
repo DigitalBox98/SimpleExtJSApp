@@ -65,7 +65,7 @@ base_install_step() {
                 {
                     "key": "wizard_download_share",
                     "desc": "${DOWNLOAD_SHARED_FOLDER_LOCATION}",
-                    "defaultValue": "downloads",
+                    "defaultValue": "rr",
                     "validator": {
                         "allowBlank": false,
                         "regex": {
@@ -85,19 +85,6 @@ base_install_step() {
         },
         {
             "desc": "${IF_SPECIFIED_SHARE_DOES_NOT_EXIST}"
-        },
-        {
-            "type": "textfield",
-            "desc": "${WATCH_DIR_DESC}",
-            "subitems": [
-                {
-                    "key": "wizard_watch_dir",
-                    "desc": "${WATCH_DIR_INPUT_DESC}",
-                    "validator": {
-                        "allowBlank": false
-                    }
-                }
-            ]
         },
         {
             "desc": "${PERMISSION_MANAGEMENT}"

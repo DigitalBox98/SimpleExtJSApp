@@ -1,3 +1,3 @@
 UPLOAD_DIR_PATH=@this_is_upload_realpath@
 SHARE_NAME=@this_is_sharename@
-RR_TMP_DIR=@this_is_rr_tpm_dir@
+RR_TMP_DIR=tmp
