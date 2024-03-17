@@ -1,13 +1,13 @@
 SPK_NAME = rr-manager
 SPK_VERS = 1.0
-SPK_REV = 30
+SPK_REV = 31
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
 DSM_UI_CONFIG = src/app/config
 
-#PYTHON_PACKAGE = python311
-#SPK_DEPENDS = "python311>=3.11.5-8"
+PYTHON_PACKAGE = python311
+SPK_DEPENDS = "python311>=3.11.5-8"
 
 MAINTAINER = T-REX-XP
 
