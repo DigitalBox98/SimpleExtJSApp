@@ -1,7 +1,7 @@
 #PYTHON_DIR="/var/packages/python311/target/bin"
 PACKAGE="rr-manager"
 INSTALL_DIR="/usr/local/${PACKAGE}"
-PYTHON_DIR="/usr/local/python"
+PYTHON_DIR="/usr/local/bin/"
 PATH="${SYNOPKG_PKGDEST}/env/bin:${SYNOPKG_PKGDEST}/bin:${SYNOPKG_PKGDEST}/usr/bin:${PYTHON_DIR}:${PATH}"
 TMP_DIR="${SYNOPKG_PKGDEST}/../../@tmp"
 
