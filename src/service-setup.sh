@@ -21,12 +21,20 @@ service_postinst ()
     ${SYNOPKG_PKGDEST}/env/bin/pip install --target ${SYNOPKG_PKGDEST}/app/libs/ -r ${SYNOPKG_PKGDEST}/share/wheelhouse/requirements.txt
 
     echo ${separator}
-    #  if [ "${SYNOPKG_PKG_STATUS}" == "INSTALL" ]; then
+     if [ "${SYNOPKG_PKG_STATUS}" == "INSTALL" ]; then
         echo "Populate config.txt"
         sed -i -e "s|@this_is_upload_realpath@|${wizard_download_dir}|g" \
             -e "s|@this_is_sharename@|${wizard_download_share}|g" \
         "${SYNOPKG_PKGDEST}/app/config.txt"
-    # fi
+    fi
+    
+    if [ "${SYNOPKG_PKG_STATUS}" != "UPGRADE" ]; then
+        rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
+        # Restore package config
+        mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
+        touch /tmp/rr_manager_installed
+    fi
+
     exit 0
 }
 
@@ -41,12 +49,12 @@ preupgrade ()
     exit 0
 }
 
-postupgrade ()
-{
-    rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
-    # Restore package config
-    mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
-    touch /tmp/rr_manager_installed
-    rm -fr ${TMP_DIR}/${PACKAGE}
-    exit 0
-}
+# postupgrade ()
+# {
+#     rm -f "${SYNOPKG_PKGDEST}/app/config.txt"
+#     # Restore package config
+#     mv "${TMP_DIR}/${PACKAGE}/config.txt" "${SYNOPKG_PKGDEST}/app/config.txt"
+#     touch /tmp/rr_manager_installed
+#     rm -fr ${TMP_DIR}/${PACKAGE}
+#     exit 0
+# }
