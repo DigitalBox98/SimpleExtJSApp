@@ -46,12 +46,26 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     align: "stretch"
                 },
                 items: [
-                    //this.createSystemInfoPannel(),
                     this.createGeneralSection(),
                     this.createActionsSection(),
-                ]
+                ],
             });
 
+            allTabs.push({
+                title: 'Config', //_V("ui", "tab_addons"),
+                id: "tabRrConfig",
+                layout: "vbox",
+                cls: "blue-border",
+                layoutConfig: {
+                    align: "stretch"
+                },
+                items: [
+                    new SYNO.ux.FieldSet({
+                        items: [
+                            this.createRRConfigPanel()]
+                    })
+                ]
+            });
             allTabs.push({
                 title: _V("ui", "tab_addons"),
                 id: "tabAddons",
@@ -91,17 +105,19 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         this.callParent([config]);
     },
     saveChanges: function (e) {
+        let formValues = that['rr_config_form'].getForm().getFieldValues()
         //Rewrite rr config with new addons
-        var newAddons = {};
+        let newAddons = {};
         this['rrInstalledAddons']?.forEach(addonName => {
             newAddons[addonName] = ''
         });
 
         this['rrConfigNew'] = this['rrConfig']['user_config'];
         this['rrConfigNew']['addons'] = newAddons;
+        //TODO: save config
         this.handleFileUpload(this['rrConfigNew']).then(x => {
             this.runTask('ApplyRRConfig');
-            this.showMsg('title','The RR config has been successfully applied. Please restart the NAS to apply the changes.');
+            this.showMsg('title', 'The RR config has been successfully applied. Please restart the NAS to apply the changes.');
         });
     },
     handleFileUpload: function (jsonData) {
@@ -139,19 +155,6 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         });
         this["upload_form"] = myFormPanel;
         return myFormPanel;
-    },
-    createSystemInfoPannel: function () {
-
-        return new SYNO.ux.FieldSet({
-            collapsible: true,
-            title: 'Device Information',
-            id: 'deviceInfoPanel',
-            name: 'deviceInfoPanel',
-            frame: true,
-            labelWidth: 130,
-            autoScroll: true,
-            items: []
-        });
     },
     // Create the display of CGI calls
     createGeneralSection: function () {
@@ -233,6 +236,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     // Create the display of API calls
     createActionsSection: function () {
         return new SYNO.ux.FieldSet({
+            title: 'RR Actions',
             items: [
                 {
                     xtype: 'syno_panel',
@@ -259,6 +263,224 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 },
             ]
         });
+    },
+    createRRConfigPanel: function () {
+        var myFormPanel = new Ext.form.FormPanel({
+            name: 'rr_config_form',
+            border: false,
+            bodyPadding: 10,
+            layout: 'column',
+            buttons: [{
+                xtype: 'syno_button',
+                btnStyle: 'blue',
+                text: 'Apply Config',//_V('ui', 'upload_file_dialog_title'),
+                handler: this.saveChanges.bind(this)
+            }],
+            items: [
+                new SYNO.ux.FieldSet({
+                    title: 'Device Info',
+                    collapsible: true,
+                    items: [
+                        {
+                            fieldLabel: 'model',
+                            name: 'model',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'productver',
+                            name: 'productver',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'buildnum',
+                            name: 'buildnum',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'sn',
+                            name: 'sn',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        },
+                    ]
+                }),
+                new SYNO.ux.FieldSet({
+                    title: 'Network Info',
+                    collapsible: true,
+                    items: [
+                        {
+                            fieldLabel: 'mac1',
+                            name: 'mac1',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'mac2',
+                            name: 'mac2',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'mac3',
+                            name: 'mac3',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'mac4',
+                            name: 'mac4',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'mac5',
+                            name: 'mac5',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        },
+                    ],
+                }),
+                new SYNO.ux.FieldSet({
+                    title: 'RR Config',
+                    collapsible: true,
+                    items: [
+                        {
+                            fieldLabel: 'lkm',
+                            name: 'lkm',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'kernel',
+                            name: 'kernel',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'dsmlogo',
+                            name: 'dsmlogo',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'directboot',
+                            name: 'directboot',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'prerelease',
+                            name: 'prerelease',
+                            xtype: 'checkbox',
+                            formBind: true,
+                            value: false,
+
+                        }, {
+                            fieldLabel: 'bootwait',
+                            name: 'bootwait',
+                            xtype: 'numberfield',
+                        }, {
+                            fieldLabel: 'bootipwait',
+                            name: 'bootipwait',
+                            xtype: 'numberfield',
+                        }, {
+                            fieldLabel: 'kernelway',
+                            name: 'kernelway',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'kernelpanic',
+                            name: 'kernelpanic',
+                            allowBlank: false,
+                            xtype: 'numberfield',
+                        }, {
+                            fieldLabel: 'odp',
+                            name: 'odp',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'hddsort',
+                            name: 'hddsort',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'smallnum',
+                            name: 'smallnum',
+                            allowBlank: false,
+                            xtype: 'numberfield',
+                        }
+                    ]
+                }),
+                new SYNO.ux.FieldSet({
+                    title: 'Boot Config',
+                    collapsible: true,
+                    items: [{
+                        fieldLabel: 'vid',
+                        name: 'vid',
+                        allowBlank: false,
+                        xtype: 'textfield',
+                    }, {
+                        fieldLabel: 'pid',
+                        name: 'pid',
+                        allowBlank: false,
+                        xtype: 'textfield',
+                    }, {
+                        fieldLabel: 'emmcboot',
+                        name: 'emmcboot',
+                        xtype: 'checkbox',
+
+                    },
+                    ]
+                }),
+                new SYNO.ux.FieldSet({
+                    title: 'SynoInfo Config',
+                    collapsible: true,
+                    name: 'synoinfo',
+                    items: [
+                        {
+                            fieldLabel: 'Support Disk compatibility',
+                            name: 'synoinfo.support_disk_compatibility',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'Support Memory compatibility',
+                            name: 'synoinfo.support_memory_compatibility',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'Support Led brightness adjustment',
+                            name: 'synoinfo.support_led_brightness_adjustment',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'Support leds lp3943',
+                            name: 'synoinfo.support_leds_lp3943',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'Support syno hybrid RAID',
+                            name: 'synoinfo.support_syno_hybrid_raid',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'Support RAID group',
+                            name: 'synoinfo.supportraidgroup',
+                            xtype: 'checkbox',
+
+                        }, {
+                            fieldLabel: 'Max LAN port',
+                            name: 'synoinfo.maxlanport',
+                            allowBlank: false,
+                            xtype: 'numberfield',
+                        }, {
+                            fieldLabel: 'Netif seq',
+                            name: 'synoinfo.netif_seq',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }, {
+                            fieldLabel: 'Buzzer offen',
+                            name: 'synoinfo.buzzeroffen',
+                            allowBlank: false,
+                            xtype: 'textfield',
+                        }
+                    ]
+                })
+            ],
+        });
+        this["rr_config_form"] = myFormPanel;
+        return myFormPanel;
     },
     getPackagesList: function () {
         that = this;
@@ -1045,6 +1267,15 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
             that.populateSystemInfoPanel(that[configName]);
             //populate rr config path
             that['rrManagerConfig'] = that[configName]['rr_manager_config'];
+            that['rr_config_form'].getForm().setValues(that[configName]['user_config']);
+            //Populate synoinfo section
+            let synoinfo = that[configName]['user_config']['synoinfo'];
+            Object.keys(synoinfo).forEach(x => {
+                var frmField = that['rr_config_form'].getForm().findField(`synoinfo.${x}`);
+                if (frmField) {
+                    frmField.setValue(synoinfo[x]);
+                }
+            });
             that['opts']['params']['path'] = `/${that['rrManagerConfig']['SHARE_NAME']}/${that['rrManagerConfig']['RR_TMP_DIR']}`;
 
             that.getSytemInfo().then((x) => {
