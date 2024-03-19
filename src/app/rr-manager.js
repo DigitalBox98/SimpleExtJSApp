@@ -1049,7 +1049,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
 
             that.getSytemInfo().then((x) => {
                 that['synoInfo'] = x;
-                Ext.getCmp('lbSystemInfo').setValue(`Model: ${x?.model}, RAM: ${x?.ram/1024} Gb, DSM version: ${x?.version_string} `);
+                Ext.getCmp('lbSystemInfo').setValue(`Model: ${x?.model}, RAM: ${x?.ram} MB, DSM version: ${x?.version_string} `);
             });
             this.__checkDownloadFolder(this.__checkRequiredTasks.bind(this));
         });
