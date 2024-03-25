@@ -1,0 +1,38 @@
+[app]
+app_name = "RR Manager"
+description = "RR Manager"
+index_title = "Help documentation"
+
+[ui]
+greetings_text = "Welcome to RR Manager!"
+tab_general = "General"
+tab_addons = "Addons"
+
+lb_select_update_file = "请选择 update 文件: "
+upload_update_file_form_validation_invalid_msg = "请选择 update/updateAll 文件后开始上传。"
+alt_confirm = "确认"
+update_rr_progress_msg = "更新 RR 中: {0}. 状态: {1}."
+update_rr_completed = "RR 更新已完成. 请重新启动 NAS."
+update_rr_error_msg = "RR 更新未完成: {0}, 错误: {1}"
+update_rr_confirmation = "当前 RR 版本: {0}. Update 文件版本: {1}"
+update_rr_confirmation_title = "确认更新"
+confirm_system_clean_up_msg = "您想运行清理系统分区脚本吗?"
+confirm_system_clean_up_title = "确认清除"
+
+unable_update_rr_msg = "RR 更新未完成: {0}. 请上传 update 文件并重试."
+upload_file_dialog_title = "上传文件"
+
+select_file = "选择文件"
+loading_text = "加载中 ..."
+system_info = "🖥️系统信息:"
+
+rr_actions = "RR Loader Actions"
+required_tasks_is_missing = "❗❗❗系统中缺少必需的计划任务 {0}. 创建需要输入您的密码. 是否创建它们?"
+tasks_created_msg = "计划任务创建成功. 请重新启动 RR Manager."
+share_notfound_msg = "❗❗❗注意! {0} 文件夹没有找到. 请创建共享/文件夹并重新启动应用程序."
+required_components_missing-title = "缺少必需的组件"
+required_components_missing_spinner_msg = "❗❗❗系统中似乎缺少某些任务: {0}. 请在开始使用 RR Manager 之前完成前置流程."
+file_uploading_succesfull_msg = "文件上传完成. 是否进行更新?"
+update_confirm_title = "确认更新"
+uploading_file = "上传文件中 ..."
+save_addons_changes = "保存 addons 修改"
