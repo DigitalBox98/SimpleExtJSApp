@@ -134,9 +134,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         this.updateAllForm();
 
     },
-    opts:{
-        params:{
-            path:""
+    opts: {
+        params: {
+            path: ""
         }
     },
     getUpdateFileInfo: function (file) {
@@ -171,24 +171,49 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             });
         });
     },
+    runTask: function (taskName) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: taskName
+            };
+            let args = {
+                api: 'SYNO.Core.EventScheduler',
+                method: 'run',
+                version: 1,
+                params: params,
+                stop_when_error: false,
+                mode: 'sequential',
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
     onRunRrUpdateManuallyClick: function () {
         that = this;
-        var tabs = Ext.getCmp('tabsControl');
-        this.getUpdateFileInfo(that.updateFileRealPath()).then((responseText) => {
+
+        showMsg = function (msg) {
+            that.owner.getMsgBox().alert("title", msg);
+        }
+        var rrConfig = this.owner.rrManagerConfig;
+        var url = `${rrConfig?.UPLOAD_DIR_PATH}${rrConfig?.RR_TMP_DIR}/update.zip`;
+        // var tabs = Ext.getCmp('tabsControl');
+        this.getUpdateFileInfo(url).then((responseText) => {
             if (!responseText.success) {
-                tabs?.getEl()?.unmask();
-                that.showMsg('title', formatString(that._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
+                that.owner.getEl()?.unmask();
+                showMsg('title', that.formatString(that._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
                 return;
             }
-
             var configName = 'rrUpdateFileVersion';
-            that[configName] = responseText;
-            let currentRrVersion = that["rrConfig"]?.rr_version;
-            let updateRrVersion = that[configName].updateVersion;
+            that.owner[configName] = responseText;
+            let currentRrVersion = that.owner["rrConfig"]?.rr_version;
+            let updateRrVersion = that.owner[configName].updateVersion;
 
             async function runUpdate() {
                 //show the spinner
-                tabs.getEl().mask(_T("common", "loading"), "x-mask-loading");
+                that.owner.getEl().mask(_T("common", "loading"), "x-mask-loading");
                 that.runTask('RunRrUpdate');
                 var maxCountOfRefreshUpdateStatus = 350;
                 var countUpdatesStatusAttemp = 0;
@@ -197,27 +222,39 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     var checksStatusResponse = await that.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
-                        tabs?.getEl()?.unmask();
-                        that.showMsg('title', checksStatusResponse?.status);
+                        that.owner.getEl()?.unmask();
+                        showMsg(checksStatusResponse?.status);
                     }
                     var response = checksStatusResponse.result;
-                    tabs.getEl().mask(formatString(that._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
+                    that.owner.getEl()?.mask(that.formatString(that._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
                     countUpdatesStatusAttemp++;
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
-                        tabs?.getEl()?.unmask();
-                        that.showMsg('title', formatString(_V('ui'), response?.progress, response?.progressmsg));
+                        that.owner.getEl()?.unmask();
+                        showMsg(that.formatString(that._V('ui'), response?.progress, response?.progressmsg));
                     } else if (response?.progress == '100') {
-                        tabs?.getEl()?.unmask();
+                        that.owner.getEl()?.unmask();
                         clearInterval(updateStatusInterval);
-                        that.showMsg('title', that._V('ui', 'update_rr_completed'));
+                        showMsg(that._V('ui', 'update_rr_completed'));
                     }
                 }, 1500);
             }
-            that.showPrompt(formatString(_V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
-                _V('ui', 'update_rr_confirmation_title'), runUpdate);
+            that.appWin.getMsgBox().confirmDelete("title", that.formatString(that._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
+                (t) => {
+                    if ("yes" === t) {
+                        runUpdate();
+                    }
+                },
+                e,
+                {
+                    yes: {
+                        text: "Yes",
+                        btnStyle: "red",
+                    },
+                    no: { text: Ext.MessageBox.buttonText.no },
+                });
         }).catch(error => {
-            that.showMsg('title', `Error. ${error}`);
+            showMsg(`Error. ${error}`);
         });
     },
     updateAllForm: async function () {
@@ -389,16 +426,14 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 uploadData: n,
                 success: (x) => {
                     that.appWin.clearStatusBusy();
-                    // tabs?.getEl()?.unmask();
-                    // this.showPrompt(_V('ui', 'file_uploading_succesfull_msg'), _V('ui', 'update_confirm_title'), x => this.onRunRrUpdateManuallyClick());
                     that.appWin.getMsgBox().confirmDelete(
                         that.appWin.title,
                         that._V('ui', 'file_uploading_succesfull_msg'),
                         (t) => {
-                            "yes" === t &&
-                                (that.appWin.setStatusBusy(),
-                                    that.onRunRrUpdateManuallyClick()
-                                );
+                            if ("yes" === t) {
+                                var c = that.owner.onRunRrUpdateManuallyClick.bind(that.owner);
+                                c();
+                            }
                         },
                         e,
                         {
@@ -881,7 +916,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBox", {
         this.callParent([this.fillConfig(e)]);
     },
     fillConfig: function (e) {
-        debugger;
         (this.appWin = e.appWin),
             (this.tpl = new SYNOCOMMUNITY.RRManager.Overview.StatusBoxTmpl());
         const t = {
