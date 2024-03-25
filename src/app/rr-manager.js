@@ -59,6 +59,12 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 fn: "SYNOCOMMUNITY.RRManager.Addons.Main",
                 // help: "overview.html",
             },
+            {
+                text: _T("common", "common_settings"),
+                iconCls: "icon-settings",
+                fn: "SYNOCOMMUNITY.RRManager.Setting.Main",
+                // help: "setting.html",
+            },
         ];
     },
 
@@ -125,6 +131,145 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             })
         e.loaded || e.appWin.setStatusBusy(null, null, 50),
             e.appWin.fireEvent("poll_activate");
+        this.updateAllForm();
+
+    },
+    opts:{
+        params:{
+            path:""
+        }
+    },
+    getUpdateFileInfo: function (file) {
+        return new Promise((resolve, reject) => {
+            Ext.Ajax.request({
+                url: `${this._prefix}readUpdateFile.cgi`,
+                method: 'GET',
+                timeout: 60000,
+                params: {
+                    file: file
+                },
+                headers: {
+                    'Content-Type': 'text/html'
+                },
+                success: function (response) {
+                    // if response text is string need to decode it
+                    if (typeof response?.responseText === 'string' && response?.responseText != "") {
+                        resolve(Ext.decode(response?.responseText));
+                    } else {
+                        resolve(response?.responseText);
+                    }
+                },
+                failure: function (result) {
+                    if (typeof result?.responseText === 'string' && result?.responseText) {
+                        var response = Ext.decode(result?.responseText);
+                        reject(response?.error);
+                    }
+                    else {
+                        reject('Failed with status: ' + response?.status);
+                    }
+                }
+            });
+        });
+    },
+    onRunRrUpdateManuallyClick: function () {
+        that = this;
+        var tabs = Ext.getCmp('tabsControl');
+        this.getUpdateFileInfo(that.updateFileRealPath()).then((responseText) => {
+            if (!responseText.success) {
+                tabs?.getEl()?.unmask();
+                that.showMsg('title', formatString(that._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
+                return;
+            }
+
+            var configName = 'rrUpdateFileVersion';
+            that[configName] = responseText;
+            let currentRrVersion = that["rrConfig"]?.rr_version;
+            let updateRrVersion = that[configName].updateVersion;
+
+            async function runUpdate() {
+                //show the spinner
+                tabs.getEl().mask(_T("common", "loading"), "x-mask-loading");
+                that.runTask('RunRrUpdate');
+                var maxCountOfRefreshUpdateStatus = 350;
+                var countUpdatesStatusAttemp = 0;
+
+                var updateStatusInterval = setInterval(async function () {
+                    var checksStatusResponse = await that.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
+                    if (!checksStatusResponse?.success) {
+                        clearInterval(updateStatusInterval);
+                        tabs?.getEl()?.unmask();
+                        that.showMsg('title', checksStatusResponse?.status);
+                    }
+                    var response = checksStatusResponse.result;
+                    tabs.getEl().mask(formatString(that._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
+                    countUpdatesStatusAttemp++;
+                    if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
+                        clearInterval(updateStatusInterval);
+                        tabs?.getEl()?.unmask();
+                        that.showMsg('title', formatString(_V('ui'), response?.progress, response?.progressmsg));
+                    } else if (response?.progress == '100') {
+                        tabs?.getEl()?.unmask();
+                        clearInterval(updateStatusInterval);
+                        that.showMsg('title', that._V('ui', 'update_rr_completed'));
+                    }
+                }, 1500);
+            }
+            that.showPrompt(formatString(_V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
+                _V('ui', 'update_rr_confirmation_title'), runUpdate);
+        }).catch(error => {
+            that.showMsg('title', `Error. ${error}`);
+        });
+    },
+    updateAllForm: async function () {
+        that = this.appWin;
+        this.owner.setStatusBusy();
+        try {
+            const responseText = await this.getConf();
+            var configName = 'rrConfig';
+            that[configName] = responseText;
+            //populate rr config path
+            that['rrManagerConfig'] = that[configName]['rr_manager_config'];
+            this.opts.params.path = `/${that['rrManagerConfig']['SHARE_NAME']}/${that['rrManagerConfig']['RR_TMP_DIR']}`;
+            // this.loadAllForms(e), this.updateEnv(e);
+        } catch (e) {
+            SYNO.Debug(e);
+        } finally {
+            this.owner.clearStatusBusy();
+        }
+    },
+    _prefix: '/webman/3rdparty/rr-manager/',
+    callCustomScript: function (scriptName) {
+
+        return new Promise((resolve, reject) => {
+            Ext.Ajax.request({
+                url: `${this._prefix}${scriptName}`,
+                method: 'GET',
+                timeout: 60000,
+                headers: {
+                    'Content-Type': 'text/html'
+                },
+                success: function (response) {
+                    // if response text is string need to decode it
+                    if (typeof response?.responseText === 'string') {
+                        resolve(Ext.decode(response?.responseText));
+                    } else {
+                        resolve(response?.responseText);
+                    }
+                },
+                failure: function (result) {
+                    if (typeof result?.responseText === 'string' && result?.responseText && !result?.responseText.startsWith('<')) {
+                        var response = Ext.decode(result?.responseText);
+                        reject(response?.error);
+                    }
+                    else {
+                        reject('Failed with status: ' + result?.status);
+                    }
+                }
+            });
+        });
+    },
+    getConf: function () {
+        return this.callCustomScript('getConfig.cgi')
     },
     onDeactive: function () {
         this.panels.healthPanel.fireEvent(
@@ -183,6 +328,98 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         this["upload_form"] = myFormPanel;
         return myFormPanel;
     },
+    _baseUrl: 'webapi/entry.cgi?',
+    sendArray: function (e, t, i, o, r) {
+        var that = this;
+        if ("CANCEL" !== t.status) {
+            var n, s = {}, l = {};
+            if (!0 === t.chunkmode)
+                if (l = {
+                    "Content-Type": "multipart/form-data; boundary=" + e.boundary
+                },
+                    s = {
+                        "X-TYPE-NAME": "SLICEUPLOAD",
+                        "X-FILE-SIZE": t.size,
+                        "X-FILE-CHUNK-END": 1 > o.total || o.index === o.total - 1 ? "true" : "false"
+                    },
+                    r && Ext.apply(s, {
+                        "X-TMP-FILE": r
+                    }),
+                    window.XMLHttpRequest.prototype.sendAsBinary)
+                    n = e.formdata + ("" !== i ? i : "") + "\r\n--" + e.boundary + "--\r\n";
+                else if (window.Blob) {
+                    var a, d = 0, p = 0, h = 0, c = "\r\n--" + e.boundary + "--\r\n", f = e.formdata.length + c.length;
+                    for (h = Ext.isString(i) ? i.length : new Uint8Array(i).byteLength,
+                        a = new Uint8Array(f += h),
+                        d = 0; d < e.formdata.length; d++)
+                        a[d] = e.formdata.charCodeAt(d);
+                    if (Ext.isString(i))
+                        for (p = 0; p < i.length; p++)
+                            a[d + p] = i.charCodeAt(p);
+                    else
+                        a.set(new Uint8Array(i), d);
+                    for (d += h,
+                        p = 0; p < c.length; p++)
+                        a[d + p] = c.charCodeAt(p);
+                    n = a
+                } else {
+                    var u;
+                    window.MSBlobBuilder ? u = new MSBlobBuilder : window.BlobBuilder && (u = new BlobBuilder),
+                        u.append(e.formdata),
+                        "" !== i && u.append(i),
+                        u.append("\r\n--" + e.boundary + "--\r\n"),
+                        n = u.getBlob(),
+                        u = null
+                }
+            else
+                e.append("size", t.size),
+                    t.name ? e.append(this.opts.filefiledname, t, this.opts.params.fileName) : e.append(this.opts.filefiledname, t.file),
+                    n = e;
+            this.conn = new Ext.data.Connection({
+                method: 'POST',
+                url: `${this._baseUrl}api=SYNO.FileStation.Upload&method=upload&version=2&SynoToken=${localStorage['SynoToken']}`,
+                defaultHeaders: l,
+                timeout: null
+            });
+            // var tabs = Ext.getCmp('tabsControl');
+            var m = this.conn.request({
+                headers: s,
+                html5upload: !0,
+                chunkmode: t.chunkmode,
+                uploadData: n,
+                success: (x) => {
+                    that.appWin.clearStatusBusy();
+                    // tabs?.getEl()?.unmask();
+                    // this.showPrompt(_V('ui', 'file_uploading_succesfull_msg'), _V('ui', 'update_confirm_title'), x => this.onRunRrUpdateManuallyClick());
+                    that.appWin.getMsgBox().confirmDelete(
+                        that.appWin.title,
+                        that._V('ui', 'file_uploading_succesfull_msg'),
+                        (t) => {
+                            "yes" === t &&
+                                (that.appWin.setStatusBusy(),
+                                    that.onRunRrUpdateManuallyClick()
+                                );
+                        },
+                        e,
+                        {
+                            yes: {
+                                text: "Yes",
+                                btnStyle: "red",
+                            },
+                            no: { text: Ext.MessageBox.buttonText.no },
+                        }
+                    );
+                },
+                failure: (x) => {
+                    that.appWin.clearStatusBusy();
+                    that.showMsg("title", "Error file uploading.");
+                    console.log(x);
+                },
+                progress: (x) => { },
+            });
+        }
+    },
+    MAX_POST_FILESIZE: Ext.isWebKit ? -1 : window.console && window.console.firebug ? 20971521 : 4294963200,
     showUpdateUploadDialog: function () {
         that = this;
         var window = new SYNO.SDS.ModalWindow({
@@ -213,8 +450,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                             that.showMsg('error', this._V('ui', 'upload_update_file_form_validation_invalid_msg'));
                             return;
                         }
-                        var tabs = Ext.getCmp('tabsControl');
-                        // tabs.getEl().mask(this._V('ui', "uploading_file"), "x-mask-loading");
+                        this.appWin.setStatusBusy();
                         that.onUploadFile(fileObject, that);
                         Ext.getCmp("upload_file_dialog")?.close();
                     }
@@ -226,7 +462,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         });
         window.open();
     },
-    onUploadFile: function (e, that) {
+    onUploadFile: function (e, d) {
+        that = d.appWin;
         //create rr tmp folder
         SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
             folder_path: `/${that['rrManagerConfig']['SHARE_NAME']}`,
@@ -384,7 +621,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                                 xtype: 'syno_button',
                                 btnStyle: 'green',
                                 text: this._V('ui', 'upload_file_dialog_title'),
-                               handler: this.showUpdateUploadDialog.bind(this)
+                                handler: this.showUpdateUploadDialog.bind(this)
                             }]
                         },
                     ],
@@ -399,9 +636,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         this.titleTpl = this.createTitleTpl();
         this.upperPanel = this.createUpperPanel();
         this.lowerPanel = this.createLowerPanel();
-      
+
         this.descMapping = {
-            normal: this._V('ui','greetings_text'),
+            normal: this._V('ui', 'greetings_text'),
             target_abnormal: []
         };
 
@@ -429,9 +666,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     height: 96,
                     layout: "vbox",
                     layoutConfig: { align: "stretch" },
-                    items: [  this.createActionsSection()],
+                    items: [this.createActionsSection()],
                 },
-              
+
             ],
             listeners: { scope: this, data_ready: this.onDataReady },
         };
@@ -1307,3 +1544,157 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxsPanel", {
                 this.callParent([this]);
         },
     });
+
+//Settings tab
+Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
+    extend: "SYNO.SDS.Utils.TabPanel",
+    API: {},// SYNO.SDS.iSCSI.Utils.API,
+    constructor: function (e) {
+        (this.appWin = e.appWin),
+            (this.owner = e.owner),
+            this.callParent([this.fillConfig(e)]);
+    },
+    fillConfig: function (e) {
+        (this.generalTab = new SYNO.SDS.iSCSI.Setting.GeneralTab({
+            appWin: this.appWin,
+            owner: this,
+            itemId: "GeneralTab",
+        })),
+            (this.iscsiTab = new SYNO.SDS.iSCSI.Setting.iSCSITab({
+                appWin: this.appWin,
+                owner: this,
+                itemId: "iSCSITab",
+            }));
+        const t = [];
+        this.appWin.supportVAAI && t.push(this.generalTab), t.push(this.iscsiTab);
+        const i = {
+            title: SYNO.SDS.iSCSI.Utils.T("common", "common_settings"),
+            autoScroll: !0,
+            useDefaultBtn: !0,
+            labelWidth: 200,
+            fieldWidth: 240,
+            activeTab: 0,
+            deferredRender: !1,
+            items: t,
+            listeners: { activate: this.updateAllForm, scope: this },
+        };
+        return Ext.apply(i, e), i;
+    },
+    loadAllForms: function (e) {
+        this.items.each((t) => {
+            Ext.isFunction(t.loadForm) && t.loadForm(e);
+        });
+    },
+    updateEnv: function (e) {
+        (this.appWin.env.chap_info = e.chap_info),
+            (this.appWin.tp_hard_threshold_bytes = e.tp_hard_threshold_bytes);
+    },
+    updateAllForm: async function () {
+        this.setStatusBusy();
+        try {
+            const e = await this.getConf();
+            this.loadAllForms(e), this.updateEnv(e);
+        } catch (e) {
+            SYNO.Debug(e);
+        }
+        this.clearStatusBusy();
+    },
+    applyHandler: function () {
+        this.confirmApply() && this.doApply().catch(() => { });
+    },
+    doApply: async function () {
+        this.setStatusBusy();
+        try {
+            await this.setConf(), await this.updateAllForm();
+        } catch (e) {
+            throw (
+                (SYNO.Debug(e),
+                    this.clearStatusBusy(),
+                    this.appWin.getMsgBox().alert(this.title, this.API.getErrorString(e)),
+                    e)
+            );
+        }
+        this.clearStatusBusy(), this.setStatusOK();
+    },
+    getParams: function () {
+        const e = {};
+        if (this.appWin.supportVAAI && this.generalTab.isFormDirty()) {
+            const t = this.generalTab.getForm().getValues();
+            (e.tp_hard_threshold_bytes = t.lcw_enabled
+                ? SYNO.SDS.iSCSI.TP_HARD_THRESHOLD_MIN_SIZE
+                : SYNO.SDS.iSCSI.TP_HARD_THRESHOLD_MAX_SIZE),
+                delete t.lcw_enabled,
+                Ext.apply(e, t);
+        }
+        const t = this.iscsiTab.getForm().getValues(),
+            i = {};
+        return (
+            (t.chap_info = i),
+            (i.auth_type = 0),
+            t.global_chap &&
+            ((i.auth_type = 1),
+                (i.user = t.user),
+                (i.password = t.password),
+                delete t.user,
+                delete t.password),
+            delete t.global_chap,
+            t.mutual_chap &&
+            ((i.auth_type = 2),
+                (i.mutual_user = t.mutual_user),
+                (i.mutual_password = t.mutual_password),
+                delete t.mutual_user,
+                delete t.mutual_password),
+            delete t.mutual_chap,
+            t.isns_enabled ||
+            (t.isns_address = t.isns_address ? t.isns_address : ""),
+            Ext.apply(e, t),
+            e
+        );
+    },
+    getConf: function () {
+        return this.sendWebAPIPromise({
+            api: "SYNO.Core.ISCSI.Node",
+            version: 1,
+            method: "get",
+            params: {
+                additional: [
+                    "no_rod_key",
+                    "isns_info",
+                    "io_queue_length",
+                    "ep_unmap_buf_mode",
+                    "tp_hard_threshold_bytes",
+                ],
+            },
+        });
+    },
+    setConf: function () {
+        return this.sendWebAPIPromise({
+            api: "SYNO.Core.ISCSI.Node",
+            version: 1,
+            method: "set",
+            params: this.getParams(),
+        });
+    },
+    confirmApply: function () {
+        if (!this.isAnyFormDirty())
+            return (
+                this.setStatusError({
+                    text: SYNO.SDS.iSCSI.Utils.T("error", "nochange_subject"),
+                    clear: !0,
+                }),
+                !1
+            );
+        const e = this.getAllForms().find((e) => !e.isValid());
+        return (
+            !e ||
+            (this.setActiveTab(e.itemId),
+                this.setStatusError({
+                    text: SYNO.SDS.iSCSI.Utils.T("common", "forminvalid"),
+                }),
+                !1)
+        );
+    },
+    onPageConfirmLostChangeSave: function () {
+        return this.confirmApply() ? this.doApply() : Promise.reject();
+    },
+});
