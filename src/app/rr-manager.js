@@ -166,6 +166,233 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
             this.updateDesc("cur");
         this.owner.fireEvent("data_ready");
     },
+    createUploadPannel: function () {
+        var myFormPanel = new Ext.form.FormPanel({
+            title: this._V("ui", "lb_select_update_file"),
+            fileUpload: true,
+            name: 'upload_form',
+            border: !1,
+            bodyPadding: 10,
+            items: [{
+                xtype: 'syno_filebutton',
+                text: this._V('ui', 'select_file'),
+                name: 'filename',
+                allowBlank: false,
+            }],
+        });
+        this["upload_form"] = myFormPanel;
+        return myFormPanel;
+    },
+    showUpdateUploadDialog: function () {
+        that = this;
+        var window = new SYNO.SDS.ModalWindow({
+            id: "upload_file_dialog",
+            title: this._V("ui", "upload_file_dialog_title"),
+            width: 500,
+            height: 400,
+            resizable: false,
+            layout: "fit",
+            buttons: [
+                {
+                    xtype: "syno_button",
+                    text: _T("common", "alt_cancel"),
+                    scope: this,
+                    handler: function () {
+                        Ext.getCmp("upload_file_dialog")?.close();
+                    },
+                },
+                {
+                    xtype: "syno_button",
+                    text: _T("common", "submit"),
+                    btnStyle: "blue",
+                    scope: this,
+                    handler: function () {
+                        const form = that["upload_form"].getForm();
+                        var fileObject = form.el.dom[1].files[0];
+                        if (!form.isValid()) {
+                            that.showMsg('error', this._V('ui', 'upload_update_file_form_validation_invalid_msg'));
+                            return;
+                        }
+                        var tabs = Ext.getCmp('tabsControl');
+                        // tabs.getEl().mask(this._V('ui', "uploading_file"), "x-mask-loading");
+                        that.onUploadFile(fileObject, that);
+                        Ext.getCmp("upload_file_dialog")?.close();
+                    }
+                },
+            ],
+            items: [
+                this.createUploadPannel()
+            ],
+        });
+        window.open();
+    },
+    onUploadFile: function (e, that) {
+        //create rr tmp folder
+        SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
+            folder_path: `/${that['rrManagerConfig']['SHARE_NAME']}`,
+            name: that['rrManagerConfig']['RR_TMP_DIR'],
+            force_parent: false
+        });
+        //rename file to update.zip
+        e = new File([e], this.opts.params.filename);
+        var t, i = !1;
+        if (-1 !== this.MAX_POST_FILESIZE && e.size > this.MAX_POST_FILESIZE && i)
+            this.onError({
+                errno: {
+                    section: "error",
+                    key: "upload_too_large"
+                }
+            }, e);
+        else if (t = this.prepareStartFormdata(e), e.chunkmode) {
+            var o = this.opts.chunksize,
+                r = Math.ceil(e.size / o);
+            this.onUploadPartailFile(t, e, {
+                start: 0,
+                index: 0,
+                total: r
+            })
+        } else
+            this.sendArray(t, e)
+    },
+    opts: {
+        chunkmode: false,
+        filefiledname: "file",
+        file: function (t) {
+            var FileObj = function (e, t, i, o) {
+                var r = SYNO.SDS.copy(t || {})
+                    , n = SYNO.webfm.utils.getLastModifiedTime(e);
+                return n && (r = Ext.apply(r, {
+                    mtime: n
+                })),
+                {
+                    id: i,
+                    file: e,
+                    dtItem: o,
+                    name: e.name || e.fileName,
+                    size: e.size || e.fileSize,
+                    progress: 0,
+                    status: "NOT_STARTED",
+                    params: r,
+                    chunkmode: !1
+                }
+            }
+
+            mtime = SYNO.webfm.utils.getLastModifiedTime(t);
+            var i = new FileObj(t, { mtime: mtime });
+            return i;
+        },
+        //TODO: remove hard coding
+        params: {
+            // populating from the config in onOpen
+            path: '',
+            filename: "update.zip",
+            overwrite: true
+        }
+    },
+    prepareStartFormdata: function (e) {
+        e.chunkmode = (-1 !== this.MAX_POST_FILESIZE && e.size > this.MAX_POST_FILESIZE);
+        if (this.opts.chunkmode) {
+            var boundary = "----html5upload-" + (new Date).getTime().toString() + Math.floor(65535 * Math.random()).toString();
+            var contentPrefix = "";
+
+            if (this.opts.params)
+                for (var paramName in this.opts.params) {
+                    if (this.opts.params.hasOwnProperty(paramName)) {
+                        contentPrefix += "--" + boundary + '\r\n';
+                        contentPrefix += 'Content-Disposition: form-data; name="' + paramName + '"\r\n\r\n';
+                        contentPrefix += unescape(encodeURIComponent(this.opts.params[paramName])) + "\r\n";
+                    }
+                }
+
+            if (e.params)
+                for (var paramName in e.params) {
+                    if (e.params.hasOwnProperty(paramName)) {
+                        contentPrefix += "--" + boundary + '\r\n';
+                        contentPrefix += 'Content-Disposition: form-data; name="' + paramName + '"\r\n\r\n';
+                        contentPrefix += unescape(encodeURIComponent(e.params[paramName])) + "\r\n";
+                    }
+                }
+
+            var filename = unescape(encodeURIComponent(e.name));
+            contentPrefix += "--" + boundary + '\r\n';
+            contentPrefix += 'Content-Disposition: form-data; name="' + (this.opts.filefiledname || "file") + '"; filename="' + filename + '"\r\n';
+            contentPrefix += 'Content-Type: application/octet-stream\r\n\r\n';
+
+            return {
+                formdata: contentPrefix,
+                boundary: boundary
+            };
+        } else {
+            var formData = new FormData();
+
+            if (this.opts.params)
+                for (var paramName in this.opts.params) {
+                    if (this.opts.params.hasOwnProperty(paramName)) {
+                        formData.append(paramName, this.opts.params[paramName]);
+                    }
+                }
+
+            if (e.params)
+                for (var paramName in e.params) {
+                    if (e.params.hasOwnProperty(paramName)) {
+                        formData.append(paramName, e.params[paramName]);
+                    }
+                }
+
+            return formData;
+        }
+    },
+    onUploadPartailFile: function (e, t, i, o) {
+        i.start = i.index * this.opts.chunksize;
+        var chunkSize = Math.min(this.opts.chunksize, t.size - i.start);
+
+        if ("PROCESSING" === t.status) {
+            var fileSlice;
+
+            if (window.File && File.prototype.slice) {
+                fileSlice = t.file.slice(i.start, i.start + chunkSize);
+            } else if (window.File && File.prototype.webkitSlice) {
+                fileSlice = t.file.webkitSlice(i.start, i.start + chunkSize);
+            } else if (window.File && File.prototype.mozSlice) {
+                fileSlice = t.file.mozSlice(i.start, i.start + chunkSize);
+            } else {
+                this.onError({}, t);
+                return;
+            }
+
+            this.sendArray(e, t, fileSlice, i, o);
+        }
+    },
+    createActionsSection: function () {
+        return new SYNO.ux.FieldSet({
+            title: 'RR Actions',
+            items: [
+                {
+                    xtype: 'syno_panel',
+                    // cls: 'panel-with-border',
+                    activeTab: 0,
+                    plain: true,
+                    items: [
+                        {
+                            xtype: 'syno_compositefield',
+                            hideLabel: true,
+                            items: [{
+                                xtype: 'syno_displayfield',
+                                value: 'Run Update: ',
+                                width: 140
+                            }, {
+                                xtype: 'syno_button',
+                                btnStyle: 'green',
+                                text: this._V('ui', 'upload_file_dialog_title'),
+                               handler: this.showUpdateUploadDialog.bind(this)
+                            }]
+                        },
+                    ],
+                    deferredRender: true
+                },
+            ]
+        });
+    },
     fillConfig: function (e) {
         this.poolLinkId = Ext.id();
         this.iconTpl = this.createIconTpl();
@@ -194,6 +421,17 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     layoutConfig: { align: "stretch" },
                     items: [this.upperPanel, this.lowerPanel],
                 },
+                {
+                    xtype: "syno_panel",
+                    itemId: "rightPanel2",
+                    // cls: "health-text-block",
+                    flex: 1,
+                    height: 96,
+                    layout: "vbox",
+                    layoutConfig: { align: "stretch" },
+                    items: [  this.createActionsSection()],
+                },
+              
             ],
             listeners: { scope: this, data_ready: this.onDataReady },
         };
@@ -406,6 +644,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBox", {
         this.callParent([this.fillConfig(e)]);
     },
     fillConfig: function (e) {
+        debugger;
         (this.appWin = e.appWin),
             (this.tpl = new SYNOCOMMUNITY.RRManager.Overview.StatusBoxTmpl());
         const t = {
@@ -703,7 +942,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxsPanel", {
                     {
                         xtype: "tbtext",
                         style: "padding-right: 4px",
-                        text: SYNO.SDS.iSCSI.Utils.T("common", "items_perpage"),
+                        text: "Items per page",
                     },
                     this.initPageComboBox(this.getPageRecordStore()),
                 ],
