@@ -30,9 +30,9 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         this.appInstance = config.appInstance;
         Ext.util.CSS.createStyleSheet('.my-icon { background-image: url("webman/3rdparty/StorageManager/images/default/1x/overview_status.png") !important; }');
         Ext.util.CSS.createStyleSheet('.lb-title { font-weight: bold; }');
-        Ext.util.CSS.createStyleSheet('.tab { background-color: #f4f8fa; }');
-        Ext.util.CSS.createStyleSheet('.mainWindow { background-color: white }');
-        Ext.util.CSS.createStyleSheet('.panel-with-border { padding: 10px; margin: 10px; border-radius: 2px; box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5); }');
+        // Ext.util.CSS.createStyleSheet('.tab { background-color: #f4f8fa; }');
+        // Ext.util.CSS.createStyleSheet('.mainWindow { background-color: white }');
+        // Ext.util.CSS.createStyleSheet('.panel-with-border { padding: 10px; margin: 10px; border-radius: 2px; box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5); }');
         this.tabs = (function () {
             var allTabs = [];
 
@@ -115,6 +115,12 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         this['rrConfigNew'] = this['rrConfig']['user_config'];
         this['rrConfigNew']['addons'] = newAddons;
         //TODO: save config
+        Object.keys(formValues).forEach(field => {
+            if (field.includes('.')) {
+                var { parentField, field } = field.split('.');
+                formValues[parentField] = formValues[field];
+            }
+        });
         this.handleFileUpload(this['rrConfigNew']).then(x => {
             this.runTask('ApplyRRConfig');
             this.showMsg('title', 'The RR config has been successfully applied. Please restart the NAS to apply the changes.');
@@ -285,22 +291,22 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                             fieldLabel: 'model',
                             name: 'model',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'productver',
                             name: 'productver',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'buildnum',
                             name: 'buildnum',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'sn',
                             name: 'sn',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         },
                     ]
                 }),
@@ -312,27 +318,27 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                             fieldLabel: 'mac1',
                             name: 'mac1',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'mac2',
                             name: 'mac2',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'mac3',
                             name: 'mac3',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'mac4',
                             name: 'mac4',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'mac5',
                             name: 'mac5',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         },
                     ],
                 }),
@@ -344,62 +350,61 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                             fieldLabel: 'lkm',
                             name: 'lkm',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'kernel',
                             name: 'kernel',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
-                            fieldLabel: 'dsmlogo',
+                            boxLabel: 'dsmlogo',
                             name: 'dsmlogo',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'directboot',
+                            boxLabel: 'directboot',
                             name: 'directboot',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'prerelease',
+                            boxLabel: 'prerelease',
                             name: 'prerelease',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
                             formBind: true,
                             value: false,
 
                         }, {
                             fieldLabel: 'bootwait',
                             name: 'bootwait',
-                            xtype: 'numberfield',
+                            xtype: 'syno_numberfield',
                         }, {
                             fieldLabel: 'bootipwait',
                             name: 'bootipwait',
-                            xtype: 'numberfield',
+                            xtype: 'syno_numberfield',
                         }, {
                             fieldLabel: 'kernelway',
                             name: 'kernelway',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'kernelpanic',
                             name: 'kernelpanic',
                             allowBlank: false,
-                            xtype: 'numberfield',
+                            xtype: 'syno_numberfield',
                         }, {
-                            fieldLabel: 'odp',
+                            boxLabel: 'odp',
                             name: 'odp',
-                            xtype: 'checkbox',
-
+                            xtype: 'syno_checkbox',
                         }, {
-                            fieldLabel: 'hddsort',
+                            boxLabel: 'hddsort',
                             name: 'hddsort',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
                             fieldLabel: 'smallnum',
                             name: 'smallnum',
                             allowBlank: false,
-                            xtype: 'numberfield',
+                            xtype: 'syno_numberfield',
                         }
                     ]
                 }),
@@ -410,17 +415,16 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                         fieldLabel: 'vid',
                         name: 'vid',
                         allowBlank: false,
-                        xtype: 'textfield',
+                        xtype: 'syno_textfield',
                     }, {
                         fieldLabel: 'pid',
                         name: 'pid',
                         allowBlank: false,
-                        xtype: 'textfield',
+                        xtype: 'syno_textfield',
                     }, {
-                        fieldLabel: 'emmcboot',
+                        boxLabel: 'emmcboot',
                         name: 'emmcboot',
-                        xtype: 'checkbox',
-
+                        xtype: 'syno_checkbox',
                     },
                     ]
                 }),
@@ -430,50 +434,50 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     name: 'synoinfo',
                     items: [
                         {
-                            fieldLabel: 'Support Disk compatibility',
+                            boxLabel: 'Support Disk compatibility',
                             name: 'synoinfo.support_disk_compatibility',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'Support Memory compatibility',
+                            boxLabel: 'Support Memory compatibility',
                             name: 'synoinfo.support_memory_compatibility',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'Support Led brightness adjustment',
+                            boxLabel: 'Support Led brightness adjustment',
                             name: 'synoinfo.support_led_brightness_adjustment',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'Support leds lp3943',
+                            boxLabel: 'Support leds lp3943',
                             name: 'synoinfo.support_leds_lp3943',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'Support syno hybrid RAID',
+                            boxLabel: 'Support syno hybrid RAID',
                             name: 'synoinfo.support_syno_hybrid_raid',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
-                            fieldLabel: 'Support RAID group',
+                            boxLabel: 'Support RAID group',
                             name: 'synoinfo.supportraidgroup',
-                            xtype: 'checkbox',
+                            xtype: 'syno_checkbox',
 
                         }, {
                             fieldLabel: 'Max LAN port',
                             name: 'synoinfo.maxlanport',
                             allowBlank: false,
-                            xtype: 'numberfield',
+                            xtype: 'syno_numberfield',
                         }, {
                             fieldLabel: 'Netif seq',
                             name: 'synoinfo.netif_seq',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'Buzzer offen',
                             name: 'synoinfo.buzzeroffen',
                             allowBlank: false,
-                            xtype: 'textfield',
+                            xtype: 'syno_textfield',
                         }
                     ]
                 })
@@ -999,20 +1003,13 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
         var c = {
             store: gridStore,
             id: 'gridAddons',
-            tbar: [
+            buttons: [
                 {
-                    xtype: 'syno_compositefield',
-                    hideLabel: true,
-                    items: [
-                        {
-                            xtype: 'syno_button',
-                            btnStyle: 'green',
-                            text: _V('ui', 'save_addons_changes'),
-                            handler: this.saveChanges.bind(this)
-                        },
-
-                    ]
-                }
+                    xtype: 'syno_button',
+                    btnStyle: 'blue',
+                    text: _V('ui', 'save_addons_changes'),
+                    handler: this.saveChanges.bind(this)
+                },
             ],
             colModel: new Ext.grid.ColumnModel({
                 defaults: {
@@ -1036,24 +1033,24 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                     renderer: function (value, metaData, record, row, col, store, gridView) {
                         return value[currentLngCode] ?? value['en_US'];
                     }
-                }, {
-                    header: 'System',
-                    width: 30,
-                    dataIndex: 'system',
-                    renderer: function (value, metaData, record, row, col, store, gridView) {
-                        return value ? '✔️' : '';
-                    }
-                }, {
-                    header: 'Installed',
-                    width: 50,
-                    dataIndex: 'installed',
-                    renderer: function (value, metaData, record, row, col, store, gridView) {
-                        if (!record.data.system)
-                            return '<input type="checkbox" class="grid-checkbox-installed" ' +
-                                (value ? 'checked="checked"' : '') +
-                                ' data-row="' + row + '" data-record-id="' + record.data.name + '"/>';
-                    }
-                }]
+                }, new SYNO.ux.EnableColumn({
+                    header: "System",
+                    dataIndex: "system",
+                    width: 100,
+                    align: "center",
+                    enableFastSelectAll: false,
+                    disabled: true,
+                }), {
+                        header: 'Installed',
+                        width: 50,
+                        dataIndex: 'installed',
+                        renderer: function (value, metaData, record, row, col, store, gridView) {
+                            if (!record.data.system)
+                                return '<input type="checkbox" class="grid-checkbox-installed" ' +
+                                    (value ? 'checked="checked"' : '') +
+                                    ' data-row="' + row + '" data-record-id="' + record.data.name + '"/>';
+                        }
+                    }]
             }),
             viewConfig: {
                 forceFit: true,
@@ -1100,7 +1097,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 }
             }
         };
-        return new SYNO.ux.GridPanel(c);
+        return  Ext.create(c, 'syno_gridpanel');
     },
     showPasswordConfirmDialog: function (taskName) {
         return new Promise((resolve, reject) => {
