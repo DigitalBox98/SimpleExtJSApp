@@ -1,0 +1,637 @@
+// Namespace definition
+Ext.ns('SYNOCOMMUNITY.RRManager');
+
+// Application definition
+Ext.define('SYNOCOMMUNITY.RRManager.AppInstance', {
+    extend: 'SYNO.SDS.AppInstance',
+    appWindowName: 'SYNOCOMMUNITY.RRManager.AppWindow',
+    constructor: function () {
+        this.callParent(arguments)
+    }
+});
+
+// Translator
+_V = function (category, element) {
+    return _TT("SYNOCOMMUNITY.RRManager.AppInstance", category, element)
+}
+
+formatString = function (str, ...args) {
+    return str.replace(/{(\d+)}/g, function (match, number) {
+        return typeof args[number] !== 'undefined' ? args[number] : match;
+    });
+}
+
+// Window definition
+Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
+    extend: "SYNO.SDS.PageListAppWindow",
+    // activePage: "SYNO.SDS.iSCSI.Log.Main",
+    defaultWinSize: { width: 1160, height: 620 },
+    constructor: function (config) {
+        const t = this;
+        // t.callParent([config]);
+        t.callParent([t.fillConfig(config)]);
+
+    },
+    fillConfig: function (e) {
+        let t;
+        t = this.getListItems();
+        const i = {
+            cls: "syno-app-iscsi",
+            width: this.defaultWinSize.width,
+            height: this.defaultWinSize.height,
+            minWidth: this.defaultWinSize.width,
+            minHeight: this.defaultWinSize.height,
+            activePage: "SYNOCOMMUNITY.RRManager.Overview.Main",
+            listItems: t,
+        };
+        return Ext.apply(i, e), i;
+
+    },
+    getListItems: function () {
+        return [
+            // {
+            //     text: SYNO.SDS.iSCSI.Utils.T("tree", "leaf_overview"),
+            //     iconCls: "icon-overview",
+            //     fn: "SYNOCOMMUNITY.RRManager.Overview.Main",
+            //     help: "overview.html",
+            // },
+            {
+                text: _V('ui', 'tabAddons') ?? 'Addons',
+                iconCls: "icon-log",
+                fn: "SYNOCOMMUNITY.RRManager.Addons.Main",
+                // help: "overview.html",
+            },
+        ];
+
+    },
+
+    onOpen: function (a) {
+        var that = this;
+        SYNOCOMMUNITY.RRManager.AppWindow.superclass.onOpen.call(this, a);
+    }
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
+    extend: "SYNO.ux.GridPanel",
+    itemsPerPage: 1e3,
+    constructor: function (e) {
+        const t = this;
+        let i;
+        Ext.apply(t, e),
+            (i = t.fillConfig(e)),
+            (t.itemsPerPage =
+                t.appWin.appInstance.getUserSettings(t.itemId + "-dsPageLimit") ||
+                t.itemsPerPage),
+            t.callParent([i]),
+            t.mon(
+                t,
+                "resize",
+                (e, i, s) => {
+                    t.updateFbarItems(i);
+                },
+                t
+            );
+    },
+    getPageRecordStore: function () {
+        return new Ext.data.SimpleStore({
+            fields: ["value", "display"],
+            data: [
+                [100, 100],
+                [500, 500],
+                [1e3, 1e3],
+                [3e3, 3e3],
+            ],
+        });
+    },
+    getCategoryStore: function () {
+        return new Ext.data.SimpleStore({
+            fields: ["value", "display"],
+            data: [
+                ["", SYNO.SDS.iSCSI.Utils.T("log", "log_all")],
+                ["general", SYNO.SDS.iSCSI.Utils.T("log", "general")],
+                ["connection", SYNO.SDS.iSCSI.Utils.T("log", "log_link_connection")],
+            ],
+        });
+    },
+    onChangeDisplayRecord: function (e, t, i) {
+        const s = this,
+            n = s.logStore;
+        s.itemsPerPage !== e.getValue() &&
+            ((s.itemsPerPage = e.getValue()),
+                (s.paging.pageSize = s.itemsPerPage),
+                n.load({ params: { offset: 0, limit: s.itemsPerPage } }),
+                s.appWin.appInstance.setUserSettings(
+                    s.itemId + "-dsPageLimit",
+                    s.itemsPerPage
+                ));
+    },
+    onChangeCategory: function (e, t, i) {
+        const s = this,
+            n = s.logStore,
+            a = e.getValue();
+        a !== n.baseParams.category &&
+            (Ext.apply(n.baseParams, { category: a }), s.loadData());
+    },
+    initPageComboBox: function (e) {
+        return new SYNO.ux.ComboBox({
+            name: "page_rec",
+            hiddenName: "page_rec",
+            hiddenId: Ext.id(),
+            store: e,
+            displayField: "display",
+            valueField: "value",
+            triggerAction: "all",
+            value: this.itemsPerPage,
+            editable: !1,
+            width: 72,
+            mode: "local",
+            listeners: { select: { fn: this.onChangeDisplayRecord, scope: this } },
+        });
+    },
+    initCategoryComboBox: function (e) {
+        return new SYNO.ux.ComboBox({
+            name: "category",
+            store: e,
+            displayField: "display",
+            valueField: "value",
+            value: "",
+            width: 120,
+            mode: "local",
+            listeners: { select: { fn: this.onChangeCategory, scope: this } },
+        });
+    },
+    initPagingToolbar: function () {
+        return new SYNO.ux.PagingToolbar({
+            store: this.logStore,
+            displayInfo: !0,
+            pageSize: this.itemsPerPage,
+            showRefreshBtn: !0,
+            cls: "iscsi-log-toolbar",
+            items: [
+                {
+                    xtype: "tbtext",
+                    style: "padding-right: 4px",
+                    text: SYNO.SDS.iSCSI.Utils.T("common", "items_perpage"),
+                },
+                this.initPageComboBox(this.getPageRecordStore()),
+            ],
+        });
+    },
+    initSearchForm: function () {
+        // return new SYNO.SDS.iSCSI.SearchFormPanel({
+        //     cls: "iscsi-search-panel",
+        //     renderTo: Ext.getBody(),
+        //     shadow: !1,
+        //     hidden: !0,
+        //     owner: this,
+        // });
+    },
+    initToolbar: function () {
+        const e = this,
+            t = new SYNO.ux.Toolbar();
+        return (
+            (e.clearButton = new SYNO.ux.Button({
+                xtype: "syno_button",
+                text: SYNO.SDS.iSCSI.Utils.T("common", "btn_clear"),
+                handler: e.onLogClear,
+                scope: e,
+            })),
+            (e.exportButton = new SYNO.ux.SplitButton({
+                xtype: "syno_splitbutton",
+                text: SYNO.SDS.iSCSI.Utils.T("common", "btn_export"),
+                handler: e.onExportHtml,
+                scope: e,
+                menu: {
+                    items: [
+                        {
+                            text: SYNO.SDS.iSCSI.Utils.T("log", "html_type"),
+                            handler: e.onExportHtml,
+                            scope: e,
+                        },
+                        {
+                            text: SYNO.SDS.iSCSI.Utils.T("log", "csv_type"),
+                            handler: e.onExportCSV,
+                            scope: e,
+                        },
+                    ],
+                },
+            })),
+            (e.searchField = new SYNO.SDS.iSCSI.AdvancedSearchField({
+                iconStyle: "filter",
+                owner: e,
+            })),
+            (e.searchField.searchPanel = e.searchPanel),
+            t.add(e.clearButton),
+            t.add(e.exportButton),
+            t.add("->"),
+            t.add(e.initCategoryComboBox(e.getCategoryStore())),
+            t.add({ xtype: "tbspacer", width: 4 }),
+            t.add(e.searchField),
+            t
+        );
+    },
+    initEvents: function () {
+        // this.mon(this.searchPanel, "search", this.onSearch, this),
+        this.mon(this, "activate", this.onActive, this);
+    },
+    _getLng: function (lng) {
+        const localeMapping = {
+            'dan': 'da_DK', // Danish in Denmark
+            'ger': 'de_DE', // German in Germany
+            'enu': 'en_US', // English (United States)
+            'spn': 'es_ES', // Spanish (Spain)
+            'fre': 'fr_FR', // French in France
+            'ita': 'it_IT', // Italian in Italy
+            'hun': 'hu_HU', // Hungarian in Hungary
+            'nld': 'nl_NL', // Dutch in The Netherlands
+            'nor': 'no_NO', // Norwegian in Norway
+            'plk': 'pl_PL', // Polish in Poland
+            'ptg': 'pt_PT', // European Portuguese
+            'ptb': 'pt_BR', // Brazilian Portuguese
+            'sve': 'sv_SE', // Swedish in Sweden
+            'trk': 'tr_TR', // Turkish in Turkey
+            'csy': 'cs_CZ', // Czech in Czech Republic
+            'gre': 'el_GR', // Greek in Greece
+            'rus': 'uk-UA',
+            'heb': 'he_IL', // Hebrew in Israel
+            'ara': 'ar_SA', // Arabic in Saudi Arabia
+            'tha': 'th_TH', // Thai in Thailand
+            'jpn': 'ja_JP', // Japanese in Japan
+            'chs': 'zh_CN', // Simplified Chinese in China
+            'cht': 'zh_TW', // Traditional Chinese in Taiwan
+            'krn': 'ko_KR', // Korean in Korea
+            'vi': 'vi-VN', // Vietnam in Vietnam 
+        };
+        return Object.keys(localeMapping).indexOf(lng) > -1
+            ? localeMapping[lng] : localeMapping['enu'];
+    },
+    getStore: function () {
+        var gridStore = new SYNO.API.JsonStore({
+            autoDestroy: true,
+            appWindow: this.appWin,
+            restful: true,
+            root: "result",
+            url: `/webman/3rdparty/rr-manager/getAddons.cgi`,
+            idProperty: "name",
+            fields: [{
+                name: 'name',
+                type: 'string'
+            }, {
+                name: 'version',
+                type: 'string'
+            }, {
+                name: 'description',
+                type: 'object'
+            }, {
+                name: 'system',
+                type: 'boolean'
+            }, {
+                name: 'installed',
+                type: 'boolean'
+            }],
+            // reader: new Ext.data.JsonReader({
+            //     idProperty: "name",
+            
+            //     totalProperty: "total",
+            //     fields: [{
+            //         name: 'name', type: 'string',mapping: 'name'
+            //     }, {
+            //         name: 'version', type: 'string',mapping: 'version'
+            //     }, {
+            //         name: 'description', type: 'object',mapping: 'description'
+            //     }, {
+            //         name: 'system', type: 'boolean',mapping: 'system'
+            //     }, {
+            //         name: 'installed', type: 'boolean',mapping: 'installed'
+            //     }]
+            // }),
+            listeners: {
+                exception: this.loadException,
+                beforeload: this.onBeforeStoreLoad,
+                load: this.onAfterStoreLoad,
+                scope: this,
+            }
+        });
+        return gridStore;
+    },
+    logLevelRenderer: function (e) {
+        switch (e) {
+            case "err":
+                return (
+                    "<span class='red-status'>" +
+                    SYNO.SDS.iSCSI.Utils.T("log", "error_level") +
+                    "</span>"
+                );
+            case "warning":
+                return (
+                    "<span class='orange-status'>" +
+                    SYNO.SDS.iSCSI.Utils.T("log", "warn_level") +
+                    "</span>"
+                );
+            case "info":
+                return (
+                    "<span class='iscsi-log-text-info'>" +
+                    SYNO.SDS.iSCSI.Utils.T("log", "info_level") +
+                    "</span>"
+                );
+            default:
+                return "Undefined";
+        }
+    },
+    htmlTimeRender: function (e) {
+        const t = new Date(1e3 * e);
+        return SYNO.SDS.DateTimeFormatter(t, { type: "datetimesec" });
+    },
+    getColumnModel: function () {
+        var currentLngCode = this._getLng(SYNO?.SDS?.Session?.lang || "enu");
+        return new Ext.grid.ColumnModel({
+            columns: [
+                {
+                    header: 'Name',
+                    width: 60,
+                    dataIndex: 'name'
+                }, {
+                    header: 'Verison',
+                    width: 30,
+                    dataIndex: 'version'
+                }, {
+                    header: 'Description',
+                    width: 300,
+                    dataIndex: 'description',
+                    renderer: function (value, metaData, record, row, col, store, gridView) {
+                        return value[currentLngCode] ?? value['en_US'];
+                    }
+                }, new SYNO.ux.EnableColumn({
+                    header: "System",
+                    dataIndex: "system",
+                    width: 100,
+                    align: "center",
+                    enableFastSelectAll: false,
+                    disabled: true,
+                }), new SYNO.ux.EnableColumn({
+                    header: "Installed",
+                    dataIndex: "installed",
+                    width: 100,
+                    align: "center",
+                    enableFastSelectAll: false,
+                    disabled: true,
+                }),
+            ],
+            defaults: { sortable: !1, menuDisabled: !1 },
+        });
+    },
+    fillConfig: function (e) {
+        const t = this;
+        (t.searchPanel = t.initSearchForm()),
+            (t.logStore = t.getStore()),
+            (t.paging = t.initPagingToolbar());
+        const i = {
+            border: !1,
+            trackResetOnLoad: !0,
+            layout: "fit",
+            itemId: "iscsi_log",
+            tbar: t.initToolbar(),
+            enableColumnMove: !1,
+            enableHdMenu: !1,
+            bbar: t.paging,
+            store: t.logStore,
+            colModel: t.getColumnModel(),
+            view: new SYNO.ux.FleXcroll.grid.BufferView({
+                rowHeight: 27,
+                scrollDelay: 30,
+                borderHeight: 1,
+                emptyText: SYNO.SDS.iSCSI.Utils.EmptyMsgRender(
+                    SYNO.SDS.iSCSI.Utils.T("log", "no_log_available")
+                ),
+                templates: {
+                    cell: new Ext.XTemplate(
+                        '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable {css}" style="{style}" tabIndex="-1" {cellAttr}>',
+                        '<div class="{this.selectableCls} x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>',
+                        "</td>",
+                        { selectableCls: SYNO.SDS.Utils.SelectableCLS }
+                    ),
+                },
+            }),
+            loadMask: !0,
+            stripeRows: !0,
+        };
+        return Ext.apply(i, e), i;
+    },
+    isBelong: function (e, t) {
+          let i;
+          for (i in t) if (t[i] !== e[i]) return !1;
+          return !0;
+    },
+    isTheSame: function (e, t) {
+          return this.isBelong(e, t) && this.isBelong(t, e);
+    },
+    onSearch: function (e, t) {
+          const i = this,
+            s = i.logStore;
+          if (!i.isTheSame(s.baseParams, t)) {
+            const e = ["date_from", "date_to", "keyword", "log_level"];
+            if (
+              (t.date_from &&
+                (t.date_from =
+                  Date.parseDate(
+                    t.date_from,
+                    SYNO.SDS.DateTimeUtils.GetDateFormat()
+                  ) / 1e3),
+              t.date_to)
+            ) {
+              const e = Date.parseDate(
+                t.date_to,
+                SYNO.SDS.DateTimeUtils.GetDateFormat()
+              );
+              e.setDate(e.getDate() + 1), (t.date_to = e / 1e3 - 1);
+            }
+            e.forEach((e) => {
+              s.baseParams[e] = t[e];
+            }),
+              i.loadData();
+          }
+          i.searchField.searchPanel.hide();
+    },
+    setUnread: function () {
+        this.sendWebAPI({
+            api: "SYNO.Core.ISCSI.Node",
+            version: 1,
+            method: "log_list",
+            params: { additional: ["update_unread"] },
+            scope: this,
+        });
+    },
+    onActive: function () {
+        this.loadData();//, this.setUnread();
+    },
+    enableButtonCheck: function () {
+        this.logStore.getTotalCount()
+            ? (this.exportButton.enable(), this.clearButton.enable())
+            : (this.exportButton.disable(), this.clearButton.disable());
+    },
+    loadData: function () {
+        const e = this.logStore;
+        const t = { offset: 0, limit: this.itemsPerPage };
+        e.load({ params: t });
+        this.enableButtonCheck();
+    },
+    loadException: function () {
+        this.appWin.clearStatusBusy(), this.setMask(!0);
+    },
+    onBeforeStoreLoad: function (e, t) {
+        this.appWin.setStatusBusy();
+    },
+    onAfterStoreLoad: function (e, t, i) {
+
+        const s = this;
+        s.appWin.clearStatusBusy(),
+            t.length < 1 ? s.setMask(!0) : s.setMask(!1),
+            s.setPagingToolbar(e, s.paging),
+            this.enableButtonCheck();
+    },
+    setMask: function (e) {
+        SYNO.SDS.iSCSI.Utils.SetEmptyIcon(this, e);
+    },
+    setPagingToolbar: function (e, t) {
+        this.setPagingToolbarVisible(t, e.getTotalCount() > this.itemsPerPage);
+    },
+    setPagingToolbarVisible: function (e, t) {
+        e.setButtonsVisible(!0);
+    },
+    updateFbarItems: function (e) {
+        this.isVisible();
+    },
+    onClearLogDone: function (e, t, i, s) {
+        e
+            ? this.loadData()
+            : this.appWin
+                .getMsgBox()
+                .alert(
+                    this.appWin.title,
+                    SYNO.SDS.iSCSI.Utils.T("common", "error_system")
+                ),
+            this.appWin.clearStatusBusy();
+    },
+    onLogClear: function () {
+        const e = this;
+        e.appWin.getMsgBox().confirmDelete(
+            e.appWin.title,
+            SYNO.SDS.iSCSI.Utils.T("log", "log_cfrm_clear"),
+            (t) => {
+                "yes" === t &&
+                    (e.appWin.setStatusBusy(),
+                        e.appWin.sendWebAPI({
+                            api: "SYNO.Core.ISCSI.Node",
+                            version: 1,
+                            method: "log_clear",
+                            callback: e.onClearLogDone,
+                            scope: e,
+                        }));
+            },
+            e,
+            {
+                yes: {
+                    text: SYNO.SDS.iSCSI.Utils.T("common", "btn_clear"),
+                    btnStyle: "red",
+                },
+                no: { text: Ext.MessageBox.buttonText.no },
+            }
+        );
+    },
+    onExportCSV: function () {
+          this.onLogSave("csv");
+    },
+    onExportHtml: function () {
+          this.onLogSave("html");
+    },
+    onLogSave: function (e) {
+          _S("demo_mode")
+            ? this.appWin
+                .getMsgBox()
+                .alert(this.appWin.title, _JSLIBSTR("uicommon", "error_demo"))
+            : this.saveLog(e);
+    },
+    saveLog: function (e) {
+          const t = this,
+            i = t.logStore,
+            s = { export_format: e };
+          Ext.apply(s, i.baseParams),
+            t.downloadWebAPI({
+              webapi: {
+                version: 1,
+                api: "SYNO.Core.ISCSI.Node",
+                method: "log_export",
+                params: s,
+              },
+              scope: t,
+            });
+    },
+    destroy: function () {
+        this.rowNav && (Ext.destroy(this.rowNav), (this.rowNav = null)),
+            this.searchField && this.searchField.fireEvent("destroy"),
+            this.callParent([this]);
+    },
+});
+
+
+Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
+    extend: "SYNO.ux.Panel",
+    constructor: function (e) {
+        (this.loaded = !1), this.callParent([this.fillConfig(e)]);
+    },
+    fillConfig: function (e) {
+        this.panels = {
+            healthPanel: new SYNO.SDS.iSCSI.Overview.HealthPanel({
+                appWin: e.appWin,
+                owner: this,
+            }),
+            statusBoxsPanel: new SYNO.SDS.iSCSI.Overview.StatusBoxsPanel({
+                appWin: e.appWin,
+                owner: this,
+            }),
+            detailPanel: new SYNO.SDS.iSCSI.Overview.DetailTabPanel({
+                appWin: e.appWin,
+                owner: this,
+                flex: 1,
+            }),
+        };
+        const t = {
+            layout: "vbox",
+            cls: "blue-border",
+            layoutConfig: { align: "stretch" },
+            items: Object.values(this.panels),
+            listeners: {
+                scope: this,
+                activate: this.onActivate,
+                deactivate: this.onDeactive,
+                data_ready: this.onDataReady,
+            },
+        };
+        return Ext.apply(t, e), t;
+    },
+    onActivate: function () {
+        const e = this;
+        e.panels.detailPanel.fireEvent(
+            "select",
+            e.panels.statusBoxsPanel.clickedBox
+        ),
+            e.loaded || e.appWin.setStatusBusy(null, null, 50),
+            e.appWin.fireEvent("poll_activate");
+    },
+    onDeactive: function () {
+        this.panels.detailPanel.fireEvent(
+            "deactivate",
+            this.panels.statusBoxsPanel.clickedBox
+        );
+    },
+    onDataReady: function () {
+        const e = this;
+        e.loaded || (e.appWin.clearStatusBusy(), (e.loaded = !0)),
+            e.panels.healthPanel.fireEvent("data_ready"),
+            e.panels.statusBoxsPanel.fireEvent("data_ready"),
+            e.panels.detailPanel.fireEvent(
+                "data_ready",
+                e.panels.statusBoxsPanel.clickedBox
+            );
+    },
+});
