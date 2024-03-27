@@ -1845,17 +1845,17 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.GeneralTab", {
                     }, {
                         fieldLabel: 'mac2',
                         name: 'mac2',
-                        allowBlank: false,
+                        allowBlank: true,
                         xtype: 'syno_textfield',
                     }, {
                         fieldLabel: 'mac3',
                         name: 'mac3',
-                        allowBlank: false,
+                        allowBlank: true,
                         xtype: 'syno_textfield',
                     }, {
                         fieldLabel: 'mac4',
                         name: 'mac4',
-                        allowBlank: false,
+                        allowBlank: true,
                         xtype: 'syno_textfield',
                     }
                 ],
