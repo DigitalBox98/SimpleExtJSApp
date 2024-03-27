@@ -1773,7 +1773,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         if (!this.isAnyFormDirty())
             return (
                 this.setStatusError({
-                    text: "nochange_subject",
+                    text: "Nothing to save",
                     clear: !0,
                 }),
                 !1
