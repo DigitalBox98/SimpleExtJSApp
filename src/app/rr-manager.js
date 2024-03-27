@@ -1760,7 +1760,52 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         var rrConfig = JSON.parse(rrConfigJson);
         return rrConfig?.user_config;
     },
+    _prefix: '/webman/3rdparty/rr-manager/',
+    handleFileUpload: function (jsonData) {
+        let url = `${this._prefix}uploadConfigFile.cgi`;
+        return new Promise((resolve, reject) => {
+            Ext.Ajax.request({
+                url: url,
+                method: 'POST',
+                jsonData: jsonData,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                success: function (response) {
+                    resolve(Ext.decode(response.responseText));
+                },
+                failure: function (response) {
+                    reject('Failed with status: ' + response.status);
+                }
+            });
+        });
+    },
+    runTask: function (taskName) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: taskName
+            };
+            let args = {
+                api: 'SYNO.Core.EventScheduler',
+                method: 'run',
+                version: 1,
+                params: params,
+                stop_when_error: false,
+                mode: 'sequential',
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
     setConf: function () {
+        data = this.getParams();
+        this.handleFileUpload(data).then(x => {
+            this.runTask('ApplyRRConfig');
+          //  this.showMsg('title', 'The RR config has been successfully applied. Please restart the NAS to apply the changes.');
+        });
         //TODO: implement save config
         // return this.sendWebAPIPromise({
         //     api: "SYNO.Core.ISCSI.Node",
