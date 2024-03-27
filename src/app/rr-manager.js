@@ -1507,9 +1507,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         this.loadData();
     },
     enableButtonCheck: function () {
-        this.logStore.getTotalCount()
-            ? (this.clearButton.enable())
-            : (this.clearButton.disable());
+        // this.logStore.getTotalCount()
+        //     ? (this.clearButton.enable())
+        //     : (this.clearButton.disable());
     },
     loadData: function () {
         const e = this.logStore;
@@ -1711,13 +1711,19 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         return Ext.apply(i, e), i;
     },
     loadAllForms: function (e) {
+        console.log(e);
         this.items.each((t) => {
-            Ext.isFunction(t.loadForm) && t.loadForm(e);
+            if(Ext.isFunction(t.loadForm)){
+                if(t.itemId== "SynoInfoTab"){
+                    t.loadForm(e.synoinfo);
+                }else{
+                    t.loadForm(e);
+                }
+                console.log(t);
+            }
         });
     },
     updateEnv: function (e) {
-        // (this.appWin.env.chap_info = e.chap_info),
-        //     (this.appWin.tp_hard_threshold_bytes = e.tp_hard_threshold_bytes);
     },
     updateAllForm: async function () {
         this.setStatusBusy();
@@ -1735,7 +1741,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     doApply: async function () {
         this.setStatusBusy();
         try {
-            await this.setConf(), await this.updateAllForm();
+            await this.setConf(), await this.updateAllForm(), this.runTask('ApplyRRConfig');
         } catch (e) {
             throw (
                 (SYNO.Debug(e),
@@ -1747,15 +1753,22 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         this.clearStatusBusy(), this.setStatusOK();
     },
     getParams: function () {
-        debugger;
-        const e = {};
-        if (this.generalTab.isFormDirty()) {
+        // const e = {};
+        //if (this.generalTab.isFormDirty()) {
             //TODO:
             const t = this.generalTab.getForm().getValues();
-        }
+            const t2 = this.iscsiTab.getForm().getValues();
+        //}
+        
+        const t3 = this.synoInfoTab.getForm().getValues()?.each();
+        const t4 ={};
+        t3.forEach(x=>{
+            t4["syno_"+x] = t3[x];
+        });
+         Object.assign({},t,t2,t4);
+         return e;
     },
     getConf: function () {
-        debugger;
         var rrConfigJson = localStorage.getItem("rrConfig");
         var rrConfig = JSON.parse(rrConfigJson);
         return rrConfig?.user_config;
@@ -1802,17 +1815,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     },
     setConf: function () {
         data = this.getParams();
-        this.handleFileUpload(data).then(x => {
-            this.runTask('ApplyRRConfig');
-          //  this.showMsg('title', 'The RR config has been successfully applied. Please restart the NAS to apply the changes.');
-        });
-        //TODO: implement save config
-        // return this.sendWebAPIPromise({
-        //     api: "SYNO.Core.ISCSI.Node",
-        //     version: 1,
-        //     method: "set",
-        //     params: this.getParams(),
-        // });
+        return this.handleFileUpload(data);
     },
     confirmApply: function () {
         if (!this.isAnyFormDirty())
@@ -2101,47 +2104,47 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab", {
                     items: [
                         {
                             boxLabel: 'Support Disk compatibility',
-                            name: 'synoinfo.support_disk_compatibility',
+                            name: 'support_disk_compatibility',
                             xtype: 'syno_checkbox',
 
                         }, {
                             boxLabel: 'Support Memory compatibility',
-                            name: 'synoinfo.support_memory_compatibility',
+                            name: 'support_memory_compatibility',
                             xtype: 'syno_checkbox',
 
                         }, {
                             boxLabel: 'Support Led brightness adjustment',
-                            name: 'synoinfo.support_led_brightness_adjustment',
+                            name: 'support_led_brightness_adjustment',
                             xtype: 'syno_checkbox',
 
                         }, {
                             boxLabel: 'Support leds lp3943',
-                            name: 'synoinfo.support_leds_lp3943',
+                            name: 'support_leds_lp3943',
                             xtype: 'syno_checkbox',
 
                         }, {
                             boxLabel: 'Support syno hybrid RAID',
-                            name: 'synoinfo.support_syno_hybrid_raid',
+                            name: 'support_syno_hybrid_raid',
                             xtype: 'syno_checkbox',
 
                         }, {
                             boxLabel: 'Support RAID group',
-                            name: 'synoinfo.supportraidgroup',
+                            name: 'supportraidgroup',
                             xtype: 'syno_checkbox',
 
                         }, {
                             fieldLabel: 'Max LAN port',
-                            name: 'synoinfo.maxlanport',
+                            name: 'maxlanport',
                             allowBlank: false,
                             xtype: 'syno_numberfield',
                         }, {
                             fieldLabel: 'Netif seq',
-                            name: 'synoinfo.netif_seq',
+                            name: 'netif_seq',
                             allowBlank: false,
                             xtype: 'syno_textfield',
                         }, {
                             fieldLabel: 'Buzzer offen',
-                            name: 'synoinfo.buzzeroffen',
+                            name: 'buzzeroffen',
                             allowBlank: false,
                             xtype: 'syno_textfield',
                         }
@@ -2158,12 +2161,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab", {
     onActivate: function () {
     },
     loadForm: function (e) {
-        // const t = Ext.getCmp(this.lcw_enabled);
-        // this.appWin.setTpHardThreshold(e.tp_hard_threshold_bytes),
-        //     e.lcw_enabled = this.appWin.isLowCapacityWriteEnable(),
-        //     t.suspendEvents(),
         this.getForm().setValues(e);
-        // t.resumeEvents()
     },
     promptLcwDialog: function (e, t) {
         t && !this.suspendLcwPrompt && this.appWin.getMsgBox().show({
