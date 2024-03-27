@@ -60,7 +60,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 // help: "overview.html",
             },
             {
-                text: _T("common", "common_settings"),
+                text: "Configuration",
                 iconCls: "icon-settings",
                 fn: "SYNOCOMMUNITY.RRManager.Setting.Main",
                 // help: "setting.html",
@@ -86,6 +86,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             return typeof args[number] !== 'undefined' ? args[number] : match;
         });
     },
+
     constructor: function (e) {
         const t = this;
         (this.loaded = !1),
@@ -123,16 +124,26 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     },
     onActivate: function () {
         const e = this;
-        e.panels.healthPanel.fireEvent(
-            "select",
-            e.panels.healthPanel.clickedBox
-        ),
-            e.panels.healthPanel.fireEvent("data_ready", function () {
-            })
-        e.loaded || e.appWin.setStatusBusy(null, null, 50),
-            e.appWin.fireEvent("poll_activate");
-        this.updateAllForm();
-
+        (async () => {
+            // e.loaded = false;
+            var systemInfo = await e.getSytemInfo();
+            var packages = await e.getPackagesList();
+            if (systemInfo && packages) {
+                e.systemInfoTxt = `Model: ${systemInfo?.model}, RAM: ${systemInfo?.ram} MB, DSM version: ${systemInfo?.version_string} `;
+                var rrManagerPackage = packages.packages.find(p => p.id == 'rr-manager');
+                e.rrManagerVersionText = `🛡️RR Manager v.: ${rrManagerPackage?.version}`;
+                // e.loaded = true;
+                e.panels.healthPanel.fireEvent(
+                    "select",
+                    e.panels.healthPanel.clickedBox
+                ),
+                    e.panels.healthPanel.fireEvent("data_ready", function () {
+                    })
+                e.loaded || e.appWin.setStatusBusy(null, null, 50),
+                    e.appWin.fireEvent("poll_activate");
+                this.updateAllForm();
+            }
+        })();
     },
     opts: {
         params: {
@@ -264,6 +275,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             const responseText = await this.getConf();
             var configName = 'rrConfig';
             that[configName] = responseText;
+            localStorage.setItem(configName, JSON.stringify(responseText));
             //populate rr config path
             that['rrManagerConfig'] = that[configName]['rr_manager_config'];
             this.opts.params.path = `/${that['rrManagerConfig']['SHARE_NAME']}/${that['rrManagerConfig']['RR_TMP_DIR']}`;
@@ -314,13 +326,53 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             this.panels.healthPanel.clickedBox
         );
     },
+    getSytemInfo: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let args = {
+                api: 'SYNO.DSM.Info',
+                method: 'getinfo',
+                version: 2,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get getSytemInfo!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    getPackagesList: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                additional: ["description", "description_enu", "dependent_packages", "beta", "distributor", "distributor_url", "maintainer", "maintainer_url", "dsm_apps", "dsm_app_page", "dsm_app_launch_name", "report_beta_url", "support_center", "startable", "installed_info", "support_url", "is_uninstall_pages", "install_type", "autoupdate", "silent_upgrade", "installing_progress", "ctl_uninstall", "updated_at", "status", "url", "available_operation", "install_type"],
+                ignore_hidden: false,
+            };
+            let args = {
+                api: 'SYNO.Core.Package',
+                method: 'list',
+                version: 2,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
     onDataReady: function () {
         const e = this;
-        e.loaded = true;
-        e.appWin.clearStatusBusy();
-        if (!e.loaded || e.loaded !== true) {
-            e.panels.healthPanel.fireEvent("data_ready");
-        }
+        console.log("--onDataReady1");
+        (async () => {
+            // e.loaded = false;
+            e.systemInfo = await e.getSytemInfo();
+            e.packages = await e.getPackagesList();
+
+            e.loaded = true;
+            e.appWin.clearStatusBusy();
+            if (!e.loaded || e.loaded !== true) {
+                e.panels.healthPanel.fireEvent("data_ready");
+            }
+        })();
     },
 });
 
@@ -688,7 +740,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     itemId: "rightPanel",
                     cls: "health-text-block",
                     flex: 1,
-                    height: 96,
+                    height: 120,
                     layout: "vbox",
                     layoutConfig: { align: "stretch" },
                     items: [this.upperPanel, this.lowerPanel],
@@ -772,39 +824,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     itemId: "desc",
                     cls: "health-text-content",
                     htmlEncode: !1,
-                    poolLinkId: this.poolLinkId,
-                    setValue: function (e, t) {
-                        if (
-                            (this.constructor.prototype.setValue.apply(this, arguments),
-                                "fc_target_abnormal" !== t)
-                        )
-                            if (Ext.get(this.poolLinkId))
-                                this.mon(
-                                    Ext.get(this.poolLinkId),
-                                    "click",
-                                    function (e) {
-                                        e.preventDefault(),
-                                            SYNO.SDS.AppLaunch("SYNO.SDS.StorageManager.Instance", {
-                                                fn: "SYNO.SDS.StorageManager.Pool.Main",
-                                            });
-                                    },
-                                    this
-                                );
-                            else {
-                                const e = this.getEl().query("a")[0],
-                                    t = Ext.get(e),
-                                    i = (e) => {
-                                        e.preventDefault(),
-                                            SYNO.SDS.AppLaunch("SYNO.SDS.StorageManager.Instance", {
-                                                fn: "SYNO.SDS.StorageManager.Volume.Main",
-                                            });
-                                    };
-                                t &&
-                                    SYNO.SDS.iSCSI.Utils.T("volume", "storage_manager") ===
-                                    e.text &&
-                                    this.mon(t, "click", i, this);
-                            }
-                    },
+                },
+                {
+                    xtype: "syno_displayfield",
+                    itemId: "desc2",
+                    cls: "health-text-content",
+                    htmlEncode: !1,
+                    value: "This is value"
                 },
             ],
         });
@@ -819,13 +845,15 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
             a = this.descs.length,
             o = this.getComponent("rightPanel"),
             r = this.lowerPanel.getComponent("desc"),
+            m = this.lowerPanel.getComponent("desc2"),
             l = this.upperPanel.getComponent("leftBtn"),
             S = this.upperPanel.getComponent("rightBtn"),
             c = r.getHeight();
         let d = o.getHeight(),
             p = !1;
         s = this.descMapping.normal;
-        r.setValue(s);
+        r.setValue(t.owner.systemInfoTxt);
+        m.setValue(t.owner.rrManagerVersionText);
         const u = r.getHeight();
         if (
             (u !== c && ((d = d - c + u), (p = !0)),
@@ -1020,6 +1048,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBox", {
             (this.data.healthy = e.info_count ? e.info_count : 0);
     },
     onDataReady: function () {
+        console.log("--onDataReady2")
         switch (
         ((this.data = { error: 0, warning: 0, healthy: 0 }), this.storeKey)
         ) {
@@ -1043,6 +1072,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBox", {
             this.updateTpl();
     },
 });
+
 Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxsPanel", {
     extend: "SYNO.ux.Panel",
     constructor: function (e) {
@@ -1078,7 +1108,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxsPanel", {
                     Ext.apply(
                         {
                             type: "event",
-                            title: SYNO.SDS.iSCSI.Utils.T("schedule", "event"),
+                            title: "Events",
                             storeKey: "event_summ",
                         },
                         t
@@ -1106,478 +1136,536 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxsPanel", {
             }),
             this.owner.panels.detailPanel.fireEvent("select", e);
     },
+
     onDataReady: function () {
+        console.log("--onDataReady3")
         Ext.each(this.statusBoxs, (e) => {
             e.fireEvent("data_ready");
         });
     },
-}),
+});
 
-    //Addons tab
-    Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
-        extend: "SYNO.ux.GridPanel",
-        itemsPerPage: 1e3,
-        constructor: function (e) {
-            const t = this;
-            let i;
-            Ext.apply(t, e),
-                (i = t.fillConfig(e)),
-                (t.itemsPerPage =
-                    t.appWin.appInstance.getUserSettings(t.itemId + "-dsPageLimit") ||
-                    t.itemsPerPage),
-                t.callParent([i]),
-                t.mon(
-                    t,
-                    "resize",
-                    (e, i, s) => {
-                        t.updateFbarItems(i);
-                    },
-                    t
-                );
-        },
-        getPageRecordStore: function () {
-            return new Ext.data.SimpleStore({
-                fields: ["value", "display"],
-                data: [
-                    [100, 100],
-                    [500, 500],
-                    [1e3, 1e3],
-                    [3e3, 3e3],
-                ],
-            });
-        },
-        getCategoryStore: function () {
-            return new Ext.data.SimpleStore({
-                fields: ["value", "display"],
-                data: [
-                    ["", "All"],
-                    ["system", "System"],
-                ],
-            });
-        },
-        onChangeDisplayRecord: function (e, t, i) {
-            const s = this,
-                n = s.logStore;
-            s.itemsPerPage !== e.getValue() &&
-                ((s.itemsPerPage = e.getValue()),
-                    (s.paging.pageSize = s.itemsPerPage),
-                    n.load({ params: { offset: 0, limit: s.itemsPerPage } }),
-                    s.appWin.appInstance.setUserSettings(
-                        s.itemId + "-dsPageLimit",
-                        s.itemsPerPage
-                    ));
-        },
-        onChangeCategory: function (e, t, i) {
-            const s = this,
-                n = s.logStore,
-                a = e.getValue();
-            a !== n.baseParams.category &&
-                (Ext.apply(n.baseParams, { category: a }), s.loadData());
-        },
-        initPageComboBox: function (e) {
-            return new SYNO.ux.ComboBox({
-                name: "page_rec",
-                hiddenName: "page_rec",
-                hiddenId: Ext.id(),
-                store: e,
-                displayField: "display",
-                valueField: "value",
-                triggerAction: "all",
-                value: this.itemsPerPage,
-                editable: !1,
-                width: 72,
-                mode: "local",
-                listeners: { select: { fn: this.onChangeDisplayRecord, scope: this } },
-            });
-        },
-        initCategoryComboBox: function (e) {
-            return new SYNO.ux.ComboBox({
-                name: "category",
-                store: e,
-                displayField: "display",
-                valueField: "value",
-                value: "",
-                width: 120,
-                mode: "local",
-                listeners: { select: { fn: this.onChangeCategory, scope: this } },
-            });
-        },
-        initPagingToolbar: function () {
-            return new SYNO.ux.PagingToolbar({
-                store: this.logStore,
-                displayInfo: !0,
-                pageSize: this.itemsPerPage,
-                showRefreshBtn: !0,
-                cls: "iscsi-log-toolbar",
-                items: [
-                    {
-                        xtype: "tbtext",
-                        style: "padding-right: 4px",
-                        text: "Items per page",
-                    },
-                    this.initPageComboBox(this.getPageRecordStore()),
-                ],
-            });
-        },
-        initSearchForm: function () {
-            // return new SYNO.SDS.iSCSI.SearchFormPanel({
-            //     cls: "iscsi-search-panel",
-            //     renderTo: Ext.getBody(),
-            //     shadow: !1,
-            //     hidden: !0,
-            //     owner: this,
-            // });
-        },
-        initToolbar: function () {
-            const e = this,
-                t = new SYNO.ux.Toolbar();
-            return (
-                (e.clearButton = new SYNO.ux.Button({
-                    xtype: "syno_button",
-                    text: SYNO.SDS.iSCSI.Utils.T("common", "btn_clear"),
-                    handler: e.onLogClear,
-                    scope: e,
-                })),
-                (e.searchField = new SYNO.SDS.iSCSI.AdvancedSearchField({
-                    iconStyle: "filter",
-                    owner: e,
-                })),
-                (e.searchField.searchPanel = e.searchPanel),
-                t.add(e.clearButton),
-                t.add("->"),
-                t.add(e.initCategoryComboBox(e.getCategoryStore())),
-                t.add({ xtype: "tbspacer", width: 4 }),
-                t.add(e.searchField),
+//Addons tab
+Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
+    extend: "SYNO.ux.GridPanel",
+    itemsPerPage: 1e3,
+    constructor: function (e) {
+        const t = this;
+        let i;
+        Ext.apply(t, e),
+            (i = t.fillConfig(e)),
+            (t.itemsPerPage =
+                t.appWin.appInstance.getUserSettings(t.itemId + "-dsPageLimit") ||
+                t.itemsPerPage),
+            t.callParent([i]),
+            t.mon(
+                t,
+                "resize",
+                (e, i, s) => {
+                    t.updateFbarItems(i);
+                },
                 t
             );
-            // return [];
-        },
-        initEvents: function () {
-            // this.mon(this.searchPanel, "search", this.onSearch, this),
-            this.mon(this, "activate", this.onActive, this);
-        },
-        _getLng: function (lng) {
-            const localeMapping = {
-                'dan': 'da_DK', // Danish in Denmark
-                'ger': 'de_DE', // German in Germany
-                'enu': 'en_US', // English (United States)
-                'spn': 'es_ES', // Spanish (Spain)
-                'fre': 'fr_FR', // French in France
-                'ita': 'it_IT', // Italian in Italy
-                'hun': 'hu_HU', // Hungarian in Hungary
-                'nld': 'nl_NL', // Dutch in The Netherlands
-                'nor': 'no_NO', // Norwegian in Norway
-                'plk': 'pl_PL', // Polish in Poland
-                'ptg': 'pt_PT', // European Portuguese
-                'ptb': 'pt_BR', // Brazilian Portuguese
-                'sve': 'sv_SE', // Swedish in Sweden
-                'trk': 'tr_TR', // Turkish in Turkey
-                'csy': 'cs_CZ', // Czech in Czech Republic
-                'gre': 'el_GR', // Greek in Greece
-                'rus': 'uk-UA',
-                'heb': 'he_IL', // Hebrew in Israel
-                'ara': 'ar_SA', // Arabic in Saudi Arabia
-                'tha': 'th_TH', // Thai in Thailand
-                'jpn': 'ja_JP', // Japanese in Japan
-                'chs': 'zh_CN', // Simplified Chinese in China
-                'cht': 'zh_TW', // Traditional Chinese in Taiwan
-                'krn': 'ko_KR', // Korean in Korea
-                'vi': 'vi-VN', // Vietnam in Vietnam 
-            };
-            return Object.keys(localeMapping).indexOf(lng) > -1
-                ? localeMapping[lng] : localeMapping['enu'];
-        },
-        getStore: function () {
-            var gridStore = new SYNO.API.JsonStore({
-                autoDestroy: true,
-                appWindow: this.appWin,
-                restful: true,
-                root: "result",
-                url: `/webman/3rdparty/rr-manager/getAddons.cgi`,
-                idProperty: "name",
-                fields: [{
-                    name: 'name',
-                    type: 'string'
-                }, {
-                    name: 'version',
-                    type: 'string'
-                }, {
-                    name: 'description',
-                    type: 'object'
-                }, {
-                    name: 'system',
-                    type: 'boolean'
-                }, {
-                    name: 'installed',
-                    type: 'boolean'
-                }],
-                listeners: {
-                    exception: this.loadException,
-                    beforeload: this.onBeforeStoreLoad,
-                    load: this.onAfterStoreLoad,
-                    scope: this,
-                }
-            });
-            return gridStore;
-        },
-        logLevelRenderer: function (e) {
-            switch (e) {
-                case "err":
-                    return (
-                        "<span class='red-status'>" +
-                        SYNO.SDS.iSCSI.Utils.T("log", "error_level") +
-                        "</span>"
-                    );
-                case "warning":
-                    return (
-                        "<span class='orange-status'>" +
-                        SYNO.SDS.iSCSI.Utils.T("log", "warn_level") +
-                        "</span>"
-                    );
-                case "info":
-                    return (
-                        "<span class='iscsi-log-text-info'>" +
-                        SYNO.SDS.iSCSI.Utils.T("log", "info_level") +
-                        "</span>"
-                    );
-                default:
-                    return "Undefined";
-            }
-        },
-        htmlTimeRender: function (e) {
-            const t = new Date(1e3 * e);
-            return SYNO.SDS.DateTimeFormatter(t, { type: "datetimesec" });
-        },
-        getColumnModel: function () {
-            var currentLngCode = this._getLng(SYNO?.SDS?.Session?.lang || "enu");
-            return new Ext.grid.ColumnModel({
-                columns: [
-                    {
-                        header: 'Name',
-                        width: 60,
-                        dataIndex: 'name'
-                    }, {
-                        header: 'Verison',
-                        width: 30,
-                        dataIndex: 'version'
-                    }, {
-                        header: 'Description',
-                        width: 300,
-                        dataIndex: 'description',
-                        renderer: function (value, metaData, record, row, col, store, gridView) {
-                            return value[currentLngCode] ?? value['en_US'];
-                        }
-                    }, new SYNO.ux.EnableColumn({
-                        header: "System",
-                        dataIndex: "system",
-                        width: 100,
-                        align: "center",
-                        enableFastSelectAll: false,
-                        disabled: true,
-                    }), new SYNO.ux.EnableColumn({
-                        header: "Installed",
-                        dataIndex: "installed",
-                        width: 100,
-                        align: "center",
-                        enableFastSelectAll: false,
-                        disabled: true,
-                    }),
-                ],
-                defaults: { sortable: !1, menuDisabled: !1 },
-            });
-        },
-        fillConfig: function (e) {
-            const t = this;
-            (t.searchPanel = t.initSearchForm()),
-                (t.logStore = t.getStore()),
-                (t.paging = t.initPagingToolbar());
-            const i = {
-                border: !1,
-                trackResetOnLoad: !0,
-                layout: "fit",
-                itemId: "iscsi_log",
-                tbar: t.initToolbar(),
-                enableColumnMove: !1,
-                enableHdMenu: !1,
-                bbar: t.paging,
-                store: t.logStore,
-                colModel: t.getColumnModel(),
-                view: new SYNO.ux.FleXcroll.grid.BufferView({
-                    rowHeight: 27,
-                    scrollDelay: 30,
-                    borderHeight: 1,
-                    emptyText: SYNO.SDS.iSCSI.Utils.EmptyMsgRender(
-                        SYNO.SDS.iSCSI.Utils.T("log", "no_log_available")
-                    ),
-                    templates: {
-                        cell: new Ext.XTemplate(
-                            '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable {css}" style="{style}" tabIndex="-1" {cellAttr}>',
-                            '<div class="{this.selectableCls} x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>',
-                            "</td>",
-                            { selectableCls: SYNO.SDS.Utils.SelectableCLS }
-                        ),
-                    },
-                }),
-                loadMask: !0,
-                stripeRows: !0,
-            };
-            return Ext.apply(i, e), i;
-        },
-        isBelong: function (e, t) {
-            let i;
-            for (i in t) if (t[i] !== e[i]) return !1;
-            return !0;
-        },
-        isTheSame: function (e, t) {
-            return this.isBelong(e, t) && this.isBelong(t, e);
-        },
-        onSearch: function (e, t) {
-            const i = this,
-                s = i.logStore;
-            if (!i.isTheSame(s.baseParams, t)) {
-                const e = ["date_from", "date_to", "keyword", "log_level"];
-                if (
-                    (t.date_from &&
-                        (t.date_from =
-                            Date.parseDate(
-                                t.date_from,
-                                SYNO.SDS.DateTimeUtils.GetDateFormat()
-                            ) / 1e3),
-                        t.date_to)
-                ) {
-                    const e = Date.parseDate(
-                        t.date_to,
-                        SYNO.SDS.DateTimeUtils.GetDateFormat()
-                    );
-                    e.setDate(e.getDate() + 1), (t.date_to = e / 1e3 - 1);
-                }
-                e.forEach((e) => {
-                    s.baseParams[e] = t[e];
-                }),
-                    i.loadData();
-            }
-            i.searchField.searchPanel.hide();
-        },
-        setUnread: function () {
-            this.sendWebAPI({
-                api: "SYNO.Core.ISCSI.Node",
-                version: 1,
-                method: "log_list",
-                params: { additional: ["update_unread"] },
-                scope: this,
-            });
-        },
-        onActive: function () {
-            this.loadData();//, this.setUnread();
-        },
-        enableButtonCheck: function () {
-            this.logStore.getTotalCount()
-                ? (this.clearButton.enable())
-                : (this.clearButton.disable());
-        },
-        loadData: function () {
-            const e = this.logStore;
-            const t = { offset: 0, limit: this.itemsPerPage };
-            e.load({ params: t });
-            this.enableButtonCheck();
-        },
-        loadException: function () {
-            this.appWin.clearStatusBusy(), this.setMask(!0);
-        },
-        onBeforeStoreLoad: function (e, t) {
-            this.appWin.setStatusBusy();
-        },
-        onAfterStoreLoad: function (e, t, i) {
-
-            const s = this;
-            s.appWin.clearStatusBusy(),
-                t.length < 1 ? s.setMask(!0) : s.setMask(!1),
-                s.setPagingToolbar(e, s.paging),
-                this.enableButtonCheck();
-        },
-        setMask: function (e) {
-            SYNO.SDS.iSCSI.Utils.SetEmptyIcon(this, e);
-        },
-        setPagingToolbar: function (e, t) {
-            this.setPagingToolbarVisible(t, e.getTotalCount() > this.itemsPerPage);
-        },
-        setPagingToolbarVisible: function (e, t) {
-            e.setButtonsVisible(!0);
-        },
-        updateFbarItems: function (e) {
-            this.isVisible();
-        },
-        onClearLogDone: function (e, t, i, s) {
-            e
-                ? this.loadData()
-                : this.appWin
-                    .getMsgBox()
-                    .alert(
-                        this.appWin.title,
-                        SYNO.SDS.iSCSI.Utils.T("common", "error_system")
-                    ),
-                this.appWin.clearStatusBusy();
-        },
-        onLogClear: function () {
-            const e = this;
-            e.appWin.getMsgBox().confirmDelete(
-                e.appWin.title,
-                SYNO.SDS.iSCSI.Utils.T("log", "log_cfrm_clear"),
-                (t) => {
-                    "yes" === t &&
-                        (e.appWin.setStatusBusy(),
-                            e.appWin.sendWebAPI({
-                                api: "SYNO.Core.ISCSI.Node",
-                                version: 1,
-                                method: "log_clear",
-                                callback: e.onClearLogDone,
-                                scope: e,
-                            }));
-                },
-                e,
+    },
+    getPageRecordStore: function () {
+        return new Ext.data.SimpleStore({
+            fields: ["value", "display"],
+            data: [
+                [100, 100],
+                [500, 500],
+                [1e3, 1e3],
+                [3e3, 3e3],
+            ],
+        });
+    },
+    getCategoryStore: function () {
+        return new Ext.data.SimpleStore({
+            fields: ["value", "display"],
+            data: [
+                ["", "All"],
+                ["system", "System"],
+            ],
+        });
+    },
+    onChangeDisplayRecord: function (e, t, i) {
+        const s = this,
+            n = s.logStore;
+        s.itemsPerPage !== e.getValue() &&
+            ((s.itemsPerPage = e.getValue()),
+                (s.paging.pageSize = s.itemsPerPage),
+                n.load({ params: { offset: 0, limit: s.itemsPerPage } }),
+                s.appWin.appInstance.setUserSettings(
+                    s.itemId + "-dsPageLimit",
+                    s.itemsPerPage
+                ));
+    },
+    onChangeCategory: function (e, t, i) {
+        const s = this,
+            n = s.logStore,
+            a = e.getValue();
+        a !== n.baseParams.category &&
+            (Ext.apply(n.baseParams, { category: a }), s.loadData());
+    },
+    initPageComboBox: function (e) {
+        return new SYNO.ux.ComboBox({
+            name: "page_rec",
+            hiddenName: "page_rec",
+            hiddenId: Ext.id(),
+            store: e,
+            displayField: "display",
+            valueField: "value",
+            triggerAction: "all",
+            value: this.itemsPerPage,
+            editable: !1,
+            width: 72,
+            mode: "local",
+            listeners: { select: { fn: this.onChangeDisplayRecord, scope: this } },
+        });
+    },
+    initCategoryComboBox: function (e) {
+        return new SYNO.ux.ComboBox({
+            name: "category",
+            store: e,
+            displayField: "display",
+            valueField: "value",
+            value: "",
+            width: 120,
+            mode: "local",
+            listeners: { select: { fn: this.onChangeCategory, scope: this } },
+        });
+    },
+    initPagingToolbar: function () {
+        return new SYNO.ux.PagingToolbar({
+            store: this.logStore,
+            displayInfo: !0,
+            pageSize: this.itemsPerPage,
+            showRefreshBtn: !0,
+            cls: "iscsi-log-toolbar",
+            items: [
                 {
-                    yes: {
-                        text: SYNO.SDS.iSCSI.Utils.T("common", "btn_clear"),
-                        btnStyle: "red",
-                    },
-                    no: { text: Ext.MessageBox.buttonText.no },
-                }
-            );
-        },
-        onExportCSV: function () {
-            this.onLogSave("csv");
-        },
-        onExportHtml: function () {
-            this.onLogSave("html");
-        },
-        onLogSave: function (e) {
-            _S("demo_mode")
-                ? this.appWin
-                    .getMsgBox()
-                    .alert(this.appWin.title, _JSLIBSTR("uicommon", "error_demo"))
-                : this.saveLog(e);
-        },
-        saveLog: function (e) {
-            const t = this,
-                i = t.logStore,
-                s = { export_format: e };
-            Ext.apply(s, i.baseParams),
-                t.downloadWebAPI({
-                    webapi: {
-                        version: 1,
-                        api: "SYNO.Core.ISCSI.Node",
-                        method: "log_export",
-                        params: s,
-                    },
-                    scope: t,
-                });
-        },
-        destroy: function () {
-            this.rowNav && (Ext.destroy(this.rowNav), (this.rowNav = null)),
-                this.searchField && this.searchField.fireEvent("destroy"),
-                this.callParent([this]);
-        },
-    });
+                    xtype: "tbtext",
+                    style: "padding-right: 4px",
+                    text: "Items per page",
+                },
+                this.initPageComboBox(this.getPageRecordStore()),
+            ],
+        });
+    },
+    initSearchForm: function () {
+        // return new SYNO.SDS.iSCSI.SearchFormPanel({
+        //     cls: "iscsi-search-panel",
+        //     renderTo: Ext.getBody(),
+        //     shadow: !1,
+        //     hidden: !0,
+        //     owner: this,
+        // });
+    },
+    initToolbar: function () {
+        const e = this,
+            t = new SYNO.ux.Toolbar();
+        return (
+            // (e.clearButton = new SYNO.ux.Button({
+            //     xtype: "syno_button",
+            //     text: "Clear",
+            //     handler: e.onLogClear,
+            //     scope: e,
+            // })),
+            (e.saveButton = new SYNO.ux.Button({
+                xtype: "syno_button",
+                text: "Save",
+                handler: e.onAddonsSave,
+                btnStyle: "blue",
+                scope: e,
+            })),
+            // (e.searchField = new SYNOCOMMUNITY.RRManager.AdvancedSearchField({
+            //     iconStyle: "filter",
+            //     owner: e,
+            // })),
+            // (e.searchField.searchPanel = e.searchPanel),
+            // t.add(e.clearButton),
+            t.add(e.saveButton),
+            t.add("->"),
+            t.add(e.initCategoryComboBox(e.getCategoryStore())),
+            t.add({ xtype: "tbspacer", width: 4 }),
+            // t.add(e.searchField),
+            t
+        );
+        // return [];
+    },
+    initEvents: function () {
+        // this.mon(this.searchPanel, "search", this.onSearch, this),
+        this.mon(this, "activate", this.onActive, this);
+    },
+    _getLng: function (lng) {
+        const localeMapping = {
+            'dan': 'da_DK', // Danish in Denmark
+            'ger': 'de_DE', // German in Germany
+            'enu': 'en_US', // English (United States)
+            'spn': 'es_ES', // Spanish (Spain)
+            'fre': 'fr_FR', // French in France
+            'ita': 'it_IT', // Italian in Italy
+            'hun': 'hu_HU', // Hungarian in Hungary
+            'nld': 'nl_NL', // Dutch in The Netherlands
+            'nor': 'no_NO', // Norwegian in Norway
+            'plk': 'pl_PL', // Polish in Poland
+            'ptg': 'pt_PT', // European Portuguese
+            'ptb': 'pt_BR', // Brazilian Portuguese
+            'sve': 'sv_SE', // Swedish in Sweden
+            'trk': 'tr_TR', // Turkish in Turkey
+            'csy': 'cs_CZ', // Czech in Czech Republic
+            'gre': 'el_GR', // Greek in Greece
+            'rus': 'uk-UA',
+            'heb': 'he_IL', // Hebrew in Israel
+            'ara': 'ar_SA', // Arabic in Saudi Arabia
+            'tha': 'th_TH', // Thai in Thailand
+            'jpn': 'ja_JP', // Japanese in Japan
+            'chs': 'zh_CN', // Simplified Chinese in China
+            'cht': 'zh_TW', // Traditional Chinese in Taiwan
+            'krn': 'ko_KR', // Korean in Korea
+            'vi': 'vi-VN', // Vietnam in Vietnam 
+        };
+        return Object.keys(localeMapping).indexOf(lng) > -1
+            ? localeMapping[lng] : localeMapping['enu'];
+    },
+    getStore: function () {
+        var gridStore = new SYNO.API.JsonStore({
+            autoDestroy: true,
+            appWindow: this.appWin,
+            restful: true,
+            root: "result",
+            url: `/webman/3rdparty/rr-manager/getAddons.cgi`,
+            idProperty: "name",
+            fields: [{
+                name: 'name',
+                type: 'string'
+            }, {
+                name: 'version',
+                type: 'string'
+            }, {
+                name: 'description',
+                type: 'object'
+            }, {
+                name: 'system',
+                type: 'boolean'
+            }, {
+                name: 'installed',
+                type: 'boolean'
+            }],
+            listeners: {
+                exception: this.loadException,
+                beforeload: this.onBeforeStoreLoad,
+                load: this.onAfterStoreLoad,
+                scope: this,
+            }
+        });
+        return gridStore;
+    },
+    getColumnModel: function () {
+        var currentLngCode = this._getLng(SYNO?.SDS?.Session?.lang || "enu");
+        this.Col1 = new SYNO.ux.EnableColumn({
+            header: "System",
+            dataIndex: "system",
+            id: "system",
+            name: "system",
+            width: 100,
+            align: "center",
+            enableFastSelectAll: false,
+            disabled: true,
+            bindRowClick: true
+        })
+        this.Col2 = new SYNO.ux.EnableColumn({
+            header: "Installed",
+            dataIndex: "installed",
+            name: "installed",
+            id: "installed",
+            width: 100,
+            align: "center",
+            enableFastSelectAll: false,
+            disabled: true,
+            bindRowClick: true
+        });
+
+        return new Ext.grid.ColumnModel({
+            columns: [
+                {
+                    header: 'Name',
+                    width: 60,
+                    dataIndex: 'name'
+                }, {
+                    header: 'Verison',
+                    width: 30,
+                    dataIndex: 'version'
+                }, {
+                    header: 'Description',
+                    width: 300,
+                    dataIndex: 'description',
+                    renderer: function (value, metaData, record, row, col, store, gridView) {
+                        return value[currentLngCode] ?? value['en_US'];
+                    }
+                }, this.Col1, this.Col2,
+            ],
+            defaults: { sortable: !1, menuDisabled: !1 },
+        });
+    },
+    fillConfig: function (e) {
+        const t = this;
+        (t.searchPanel = t.initSearchForm()),
+            (t.logStore = t.getStore()),
+            (t.paging = t.initPagingToolbar());
+        const i = {
+            border: !1,
+            trackResetOnLoad: !0,
+            layout: "fit",
+            itemId: "iscsi_log",
+            tbar: t.initToolbar(),
+            enableColumnMove: !1,
+            enableHdMenu: !1,
+            bbar: t.paging,
+            store: t.logStore,
+            colModel: t.getColumnModel(),
+            view: new SYNO.ux.FleXcroll.grid.BufferView({
+                rowHeight: 27,
+                scrollDelay: 30,
+                borderHeight: 1,
+                emptyText: "no_log_available",
+                templates: {
+                    cell: new Ext.XTemplate(
+                        '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable {css}" style="{style}" tabIndex="-1" {cellAttr}>',
+                        '<div class="{this.selectableCls} x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>',
+                        "</td>",
+                        { selectableCls: SYNO.SDS.Utils.SelectableCLS }
+                    ),
+                },
+            }),
+            plugins: [this.Col1, this.Col2],
+            selModel: new Ext.grid.RowSelectionModel({
+                singleSelect: false
+            }),
+            loadMask: !0,
+            stripeRows: !0,
+            listeners: {
+                cellclick: {
+                    delay: 100,
+                    scope: this,
+                    fn: this.onCellClick
+                },
+            }
+        };
+        return Ext.apply(i, e), i;
+    },
+    onCellClick: function (grid, recordIndex, i, s) {
+        var record = grid.store.data.get(recordIndex);
+        var id = grid.getColumnModel().getColumnAt(i).id;
+        record.data[id] = !record.data[id];
+        grid.getView().refresh();
+    },
+    isBelong: function (e, t) {
+        let i;
+        for (i in t) if (t[i] !== e[i]) return !1;
+        return !0;
+    },
+    isTheSame: function (e, t) {
+        return this.isBelong(e, t) && this.isBelong(t, e);
+    },
+    onSearch: function (e, t) {
+        const i = this,
+            s = i.logStore;
+        if (!i.isTheSame(s.baseParams, t)) {
+            const e = ["date_from", "date_to", "keyword", "log_level"];
+            if (
+                (t.date_from &&
+                    (t.date_from =
+                        Date.parseDate(
+                            t.date_from,
+                            SYNO.SDS.DateTimeUtils.GetDateFormat()
+                        ) / 1e3),
+                    t.date_to)
+            ) {
+                const e = Date.parseDate(
+                    t.date_to,
+                    SYNO.SDS.DateTimeUtils.GetDateFormat()
+                );
+                e.setDate(e.getDate() + 1), (t.date_to = e / 1e3 - 1);
+            }
+            e.forEach((e) => {
+                s.baseParams[e] = t[e];
+            }),
+                i.loadData();
+        }
+        i.searchField.searchPanel.hide();
+    },
+    setUnread: function () {
+        this.sendWebAPI({
+            api: "SYNO.Core.ISCSI.Node",
+            version: 1,
+            method: "log_list",
+            params: { additional: ["update_unread"] },
+            scope: this,
+        });
+    },
+    onActive: function () {
+        this.loadData();
+    },
+    enableButtonCheck: function () {
+        this.logStore.getTotalCount()
+            ? (this.clearButton.enable())
+            : (this.clearButton.disable());
+    },
+    loadData: function () {
+        const e = this.logStore;
+        const t = { offset: 0, limit: this.itemsPerPage };
+        e.load({ params: t });
+        this.enableButtonCheck();
+    },
+    loadException: function () {
+        this.appWin.clearStatusBusy(), this.setMask(!0);
+    },
+    onBeforeStoreLoad: function (e, t) {
+        this.appWin.setStatusBusy();
+    },
+    onAfterStoreLoad: function (e, t, i) {
+        const s = this;
+        s.appWin.clearStatusBusy(),
+            t.length < 1 ? s.setMask(!0) : s.setMask(!1),
+            s.setPagingToolbar(e, s.paging),
+            this.enableButtonCheck();
+    },
+    setMask: function (e) {
+        // SYNO.SDS.iSCSI.Utils.SetEmptyIcon(this, e);
+    },
+    setPagingToolbar: function (e, t) {
+        this.setPagingToolbarVisible(t, e.getTotalCount() > this.itemsPerPage);
+    },
+    setPagingToolbarVisible: function (e, t) {
+        e.setButtonsVisible(!0);
+    },
+    updateFbarItems: function (e) {
+        this.isVisible();
+    },
+    onClearLogDone: function (e, t, i, s) {
+        e
+            ? this.loadData()
+            : this.appWin
+                .getMsgBox()
+                .alert(
+                    this.appWin.title,
+                    "error_system"
+                ),
+            this.appWin.clearStatusBusy();
+    },
+    onAddonsSave: function (e) {
+        debugger;
+    },
+    onLogClear: function () {
+        // const e = this;
+        // e.appWin.getMsgBox().confirmDelete(
+        //     e.appWin.title,
+        //     "log_cfrm_clear",
+        //     (t) => {
+        //         "yes" === t &&
+        //             (e.appWin.setStatusBusy(),
+        //                 e.appWin.sendWebAPI({
+        //                     api: "SYNO.Core.ISCSI.Node",
+        //                     version: 1,
+        //                     method: "log_clear",
+        //                     callback: e.onClearLogDone,
+        //                     scope: e,
+        //                 }));
+        //     },
+        //     e,
+        //     {
+        //         yes: {
+        //             text: "Clear",
+        //             btnStyle: "red",
+        //         },
+        //         no: { text: Ext.MessageBox.buttonText.no },
+        //     }
+        // );
+    },
+    onExportCSV: function () {
+        this.onLogSave("csv");
+    },
+    onExportHtml: function () {
+        this.onLogSave("html");
+    },
+    onLogSave: function (e) {
+        // _S("demo_mode")
+        //     ? this.appWin
+        //         .getMsgBox()
+        //         .alert(this.appWin.title, _JSLIBSTR("uicommon", "error_demo"))
+        //     : this.saveLog(e);
+    },
+    saveLog: function (e) {
+        // const t = this,
+        //     i = t.logStore,
+        //     s = { export_format: e };
+        // Ext.apply(s, i.baseParams),
+        //     t.downloadWebAPI({
+        //         webapi: {
+        //             version: 1,
+        //             api: "SYNO.Core.ISCSI.Node",
+        //             method: "log_export",
+        //             params: s,
+        //         },
+        //         scope: t,
+        //     });
+    },
+    destroy: function () {
+        this.rowNav && (Ext.destroy(this.rowNav), (this.rowNav = null)),
+            this.searchField && this.searchField.fireEvent("destroy"),
+            this.callParent([this]);
+    },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.AdvancedSearchField", {
+
+    extend: "SYNO.ux.SearchField",
+    initEvents: function () {
+        this.callParent(arguments),
+            this.mon(Ext.getDoc(), "mousedown", this.onMouseDown, this),
+            this.mon(this, "keypress", (function (e, t) {
+                t.getKey() === Ext.EventObject.ENTER && (this.searchPanel.setKeyWord(this.getValue()),
+                    this.searchPanel.onSearch())
+            }
+            ), this),
+            this.mon(this, "destroy", (function () {
+                this.searchPanel.destroy()
+            }
+            ), this)
+    },
+    isInnerComponent: function (e, t) {
+        let i = !1;
+        return e.getTarget(".syno-datetimepicker-inner-menu") && (i = !0),
+            t.items.each((function (t) {
+                if (t instanceof Ext.form.ComboBox) {
+                    if (t.view && e.within(t.view.getEl()))
+                        return i = !0,
+                            !1
+                } else if (t instanceof Ext.form.DateField) {
+                    if (t.menu && e.within(t.menu.getEl()))
+                        return i = !0,
+                            !1
+                } else if (t instanceof Ext.form.CompositeField && this.isInnerComponent(e, t))
+                    return i = !0,
+                        !1
+            }
+            ), this),
+            i
+    },
+    onMouseDown: function (e) {
+        const t = this.searchPanel;
+        !t || !t.isVisible() || t.inEl || e.within(t.getEl()) || e.within(this.searchtrigger) || this.isInnerComponent(e, this.searchPanel.getForm()) || t.hide()
+    },
+    onSearchTriggerClick: function () {
+        this.searchPanel.isVisible() ? this.searchPanel.hide() : (this.searchPanel.getEl().alignTo(this.wrap, "tr-br?", [6, 0]),
+            this.searchPanel.show(),
+            this.searchPanel.setKeyWord(this.getValue()))
+    },
+    onTriggerClick: function () {
+        this.callParent(),
+            this.searchPanel.onReset()
+    }
+});
 
 //Settings tab
 Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
@@ -1589,20 +1677,28 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             this.callParent([this.fillConfig(e)]);
     },
     fillConfig: function (e) {
-        (this.generalTab = new SYNO.SDS.iSCSI.Setting.GeneralTab({
+        (this.generalTab = new SYNOCOMMUNITY.RRManager.Setting.GeneralTab({
             appWin: this.appWin,
             owner: this,
             itemId: "GeneralTab",
         })),
-            (this.iscsiTab = new SYNO.SDS.iSCSI.Setting.iSCSITab({
+            (this.iscsiTab = new SYNOCOMMUNITY.RRManager.Setting.RRConfigTab({
                 appWin: this.appWin,
                 owner: this,
-                itemId: "iSCSITab",
-            }));
+                itemId: "RRConfigTab",
+            })),
+            (this.synoInfoTab = new SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab({
+                appWin: this.appWin,
+                owner: this,
+                itemId: "SynoInfoTab",
+            }))
+            ;
         const t = [];
-        this.appWin.supportVAAI && t.push(this.generalTab), t.push(this.iscsiTab);
+        t.push(this.generalTab);
+        t.push(this.iscsiTab);
+        t.push(this.synoInfoTab);
         const i = {
-            title: SYNO.SDS.iSCSI.Utils.T("common", "common_settings"),
+            title: "Settings",
             autoScroll: !0,
             useDefaultBtn: !0,
             labelWidth: 200,
@@ -1620,8 +1716,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         });
     },
     updateEnv: function (e) {
-        (this.appWin.env.chap_info = e.chap_info),
-            (this.appWin.tp_hard_threshold_bytes = e.tp_hard_threshold_bytes);
+        // (this.appWin.env.chap_info = e.chap_info),
+        //     (this.appWin.tp_hard_threshold_bytes = e.tp_hard_threshold_bytes);
     },
     updateAllForm: async function () {
         this.setStatusBusy();
@@ -1651,69 +1747,33 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         this.clearStatusBusy(), this.setStatusOK();
     },
     getParams: function () {
+        debugger;
         const e = {};
-        if (this.appWin.supportVAAI && this.generalTab.isFormDirty()) {
+        if (this.generalTab.isFormDirty()) {
+            //TODO:
             const t = this.generalTab.getForm().getValues();
-            (e.tp_hard_threshold_bytes = t.lcw_enabled
-                ? SYNO.SDS.iSCSI.TP_HARD_THRESHOLD_MIN_SIZE
-                : SYNO.SDS.iSCSI.TP_HARD_THRESHOLD_MAX_SIZE),
-                delete t.lcw_enabled,
-                Ext.apply(e, t);
         }
-        const t = this.iscsiTab.getForm().getValues(),
-            i = {};
-        return (
-            (t.chap_info = i),
-            (i.auth_type = 0),
-            t.global_chap &&
-            ((i.auth_type = 1),
-                (i.user = t.user),
-                (i.password = t.password),
-                delete t.user,
-                delete t.password),
-            delete t.global_chap,
-            t.mutual_chap &&
-            ((i.auth_type = 2),
-                (i.mutual_user = t.mutual_user),
-                (i.mutual_password = t.mutual_password),
-                delete t.mutual_user,
-                delete t.mutual_password),
-            delete t.mutual_chap,
-            t.isns_enabled ||
-            (t.isns_address = t.isns_address ? t.isns_address : ""),
-            Ext.apply(e, t),
-            e
-        );
     },
     getConf: function () {
-        return this.sendWebAPIPromise({
-            api: "SYNO.Core.ISCSI.Node",
-            version: 1,
-            method: "get",
-            params: {
-                additional: [
-                    "no_rod_key",
-                    "isns_info",
-                    "io_queue_length",
-                    "ep_unmap_buf_mode",
-                    "tp_hard_threshold_bytes",
-                ],
-            },
-        });
+        debugger;
+        var rrConfigJson = localStorage.getItem("rrConfig");
+        var rrConfig = JSON.parse(rrConfigJson);
+        return rrConfig?.user_config;
     },
     setConf: function () {
-        return this.sendWebAPIPromise({
-            api: "SYNO.Core.ISCSI.Node",
-            version: 1,
-            method: "set",
-            params: this.getParams(),
-        });
+        //TODO: implement save config
+        // return this.sendWebAPIPromise({
+        //     api: "SYNO.Core.ISCSI.Node",
+        //     version: 1,
+        //     method: "set",
+        //     params: this.getParams(),
+        // });
     },
     confirmApply: function () {
         if (!this.isAnyFormDirty())
             return (
                 this.setStatusError({
-                    text: SYNO.SDS.iSCSI.Utils.T("error", "nochange_subject"),
+                    text: "nochange_subject",
                     clear: !0,
                 }),
                 !1
@@ -1723,7 +1783,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             !e ||
             (this.setActiveTab(e.itemId),
                 this.setStatusError({
-                    text: SYNO.SDS.iSCSI.Utils.T("common", "forminvalid"),
+                    text: "forminvalid"
                 }),
                 !1)
         );
@@ -1731,4 +1791,354 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     onPageConfirmLostChangeSave: function () {
         return this.confirmApply() ? this.doApply() : Promise.reject();
     },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.Setting.GeneralTab", {
+    extend: "SYNO.SDS.Utils.FormPanel",
+    constructor: function (e) {
+        this.callParent([this.fillConfig(e)])
+    },
+    fillConfig: function (e) {
+        this.suspendLcwPrompt = !1;
+        const t = {
+            title: "General",
+            items: [{
+                xtype: "syno_fieldset",
+                title: "Device Info",
+                itemId: "lcw",
+                name: "lcw",
+                id: "lcw",
+                items: [
+                    {
+                        fieldLabel: 'model',
+                        name: 'model',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'productver',
+                        name: 'productver',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'buildnum',
+                        name: 'buildnum',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'sn',
+                        name: 'sn',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    },
+                ]
+            },
+            new SYNO.ux.FieldSet({
+                title: 'Network Info',
+                collapsible: true,
+                columns: 2,
+                items: [
+                    {
+                        fieldLabel: 'mac1',
+                        name: 'mac1',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'mac2',
+                        name: 'mac2',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'mac3',
+                        name: 'mac3',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'mac4',
+                        name: 'mac4',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }
+                ],
+            }),
+            new SYNO.ux.FieldSet({
+                title: 'Boot Config',
+                collapsible: true,
+                items: [{
+                    fieldLabel: 'vid',
+                    name: 'vid',
+                    allowBlank: false,
+                    xtype: 'syno_textfield',
+                }, {
+                    fieldLabel: 'pid',
+                    name: 'pid',
+                    allowBlank: false,
+                    xtype: 'syno_textfield',
+                }, {
+                    boxLabel: 'emmcboot',
+                    name: 'emmcboot',
+                    xtype: 'syno_checkbox',
+
+                },
+                ]
+            })
+            ]
+        };
+        return Ext.apply(t, e),
+            t
+    },
+    initEvents: function () {
+        this.mon(this, "activate", this.onActivate, this)
+    },
+    onActivate: function () {
+    },
+    loadForm: function (e) {
+        // const t = Ext.getCmp(this.lcw_enabled);
+        // this.appWin.setTpHardThreshold(e.tp_hard_threshold_bytes),
+        //     e.lcw_enabled = this.appWin.isLowCapacityWriteEnable(),
+        //     t.suspendEvents(),
+        this.getForm().setValues(e);
+        // t.resumeEvents()
+    },
+    promptLcwDialog: function (e, t) {
+        t && !this.suspendLcwPrompt && this.appWin.getMsgBox().show({
+            title: this.title,
+            msg: "ddd",
+            buttons: {
+                yes: {
+                    text: Ext.MessageBox.buttonText.yes,
+                    btnStyle: "red"
+                },
+                no: {
+                    text: Ext.MessageBox.buttonText.no
+                }
+            },
+            fn: function (e) {
+                "yes" !== e && this.form.findField("lcw_enabled").setValue(!1)
+            },
+            scope: this,
+            icon: Ext.MessageBox.ERRORRED,
+            minWidth: Ext.MessageBox.minWidth
+        })
+    }
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.Setting.RRConfigTab", {
+    extend: "SYNO.SDS.Utils.FormPanel",
+    constructor: function (e) {
+        this.callParent([this.fillConfig(e)])
+    },
+    fillConfig: function (e) {
+        this.suspendLcwPrompt = !1;
+        const t = {
+            title: "RR Config",
+            items: [
+                new SYNO.ux.FieldSet({
+                    title: 'RR Config',
+                    collapsible: true,
+                    items: [
+                        {
+                            fieldLabel: 'lkm',
+                            name: 'lkm',
+                            allowBlank: false,
+                            xtype: 'syno_textfield',
+                        }, {
+                            fieldLabel: 'kernel',
+                            name: 'kernel',
+                            allowBlank: false,
+                            xtype: 'syno_textfield',
+                        }, {
+                            boxLabel: 'dsmlogo',
+                            name: 'dsmlogo',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'directboot',
+                            name: 'directboot',
+                            xtype: 'syno_checkbox',
+                        }, {
+                            boxLabel: 'prerelease',
+                            name: 'prerelease',
+                            xtype: 'syno_checkbox',
+                            formBind: true,
+                            value: false,
+
+                        }, {
+                            fieldLabel: 'bootwait',
+                            name: 'bootwait',
+                            xtype: 'syno_numberfield',
+                        }, {
+                            fieldLabel: 'bootipwait',
+                            name: 'bootipwait',
+                            xtype: 'syno_numberfield',
+                        }, {
+                            fieldLabel: 'kernelway',
+                            name: 'kernelway',
+                            allowBlank: false,
+                            xtype: 'syno_textfield',
+                        }, {
+                            fieldLabel: 'kernelpanic',
+                            name: 'kernelpanic',
+                            allowBlank: false,
+                            xtype: 'syno_numberfield',
+                        }, {
+                            boxLabel: 'odp',
+                            name: 'odp',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'hddsort',
+                            name: 'hddsort',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            fieldLabel: 'smallnum',
+                            name: 'smallnum',
+                            allowBlank: false,
+                            xtype: 'syno_numberfield',
+                        }
+                    ]
+                })
+            ]
+        };
+        return Ext.apply(t, e),
+            t
+    },
+    initEvents: function () {
+        this.mon(this, "activate", this.onActivate, this)
+    },
+    onActivate: function () {
+    },
+    loadForm: function (e) {
+        // const t = Ext.getCmp(this.lcw_enabled);
+        // this.appWin.setTpHardThreshold(e.tp_hard_threshold_bytes),
+        //     e.lcw_enabled = this.appWin.isLowCapacityWriteEnable(),
+        //     t.suspendEvents(),
+        this.getForm().setValues(e);
+        // t.resumeEvents()
+    },
+    promptLcwDialog: function (e, t) {
+        t && !this.suspendLcwPrompt && this.appWin.getMsgBox().show({
+            title: this.title,
+            msg: "ddd",
+            buttons: {
+                yes: {
+                    text: Ext.MessageBox.buttonText.yes,
+                    btnStyle: "red"
+                },
+                no: {
+                    text: Ext.MessageBox.buttonText.no
+                }
+            },
+            fn: function (e) {
+                "yes" !== e && this.form.findField("lcw_enabled").setValue(!1)
+            },
+            scope: this,
+            icon: Ext.MessageBox.ERRORRED,
+            minWidth: Ext.MessageBox.minWidth
+        })
+    }
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab", {
+    extend: "SYNO.SDS.Utils.FormPanel",
+    constructor: function (e) {
+        this.callParent([this.fillConfig(e)])
+    },
+    fillConfig: function (e) {
+        this.suspendLcwPrompt = !1;
+        const t = {
+            title: "Syno Info",
+            items: [
+                new SYNO.ux.FieldSet({
+                    title: 'SynoInfo Config',
+                    collapsible: true,
+                    name: 'synoinfo',
+                    items: [
+                        {
+                            boxLabel: 'Support Disk compatibility',
+                            name: 'synoinfo.support_disk_compatibility',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'Support Memory compatibility',
+                            name: 'synoinfo.support_memory_compatibility',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'Support Led brightness adjustment',
+                            name: 'synoinfo.support_led_brightness_adjustment',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'Support leds lp3943',
+                            name: 'synoinfo.support_leds_lp3943',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'Support syno hybrid RAID',
+                            name: 'synoinfo.support_syno_hybrid_raid',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            boxLabel: 'Support RAID group',
+                            name: 'synoinfo.supportraidgroup',
+                            xtype: 'syno_checkbox',
+
+                        }, {
+                            fieldLabel: 'Max LAN port',
+                            name: 'synoinfo.maxlanport',
+                            allowBlank: false,
+                            xtype: 'syno_numberfield',
+                        }, {
+                            fieldLabel: 'Netif seq',
+                            name: 'synoinfo.netif_seq',
+                            allowBlank: false,
+                            xtype: 'syno_textfield',
+                        }, {
+                            fieldLabel: 'Buzzer offen',
+                            name: 'synoinfo.buzzeroffen',
+                            allowBlank: false,
+                            xtype: 'syno_textfield',
+                        }
+                    ]
+                })
+            ]
+        };
+        return Ext.apply(t, e),
+            t
+    },
+    initEvents: function () {
+        this.mon(this, "activate", this.onActivate, this)
+    },
+    onActivate: function () {
+    },
+    loadForm: function (e) {
+        // const t = Ext.getCmp(this.lcw_enabled);
+        // this.appWin.setTpHardThreshold(e.tp_hard_threshold_bytes),
+        //     e.lcw_enabled = this.appWin.isLowCapacityWriteEnable(),
+        //     t.suspendEvents(),
+        this.getForm().setValues(e);
+        // t.resumeEvents()
+    },
+    promptLcwDialog: function (e, t) {
+        t && !this.suspendLcwPrompt && this.appWin.getMsgBox().show({
+            title: this.title,
+            msg: "ddd",
+            buttons: {
+                yes: {
+                    text: Ext.MessageBox.buttonText.yes,
+                    btnStyle: "red"
+                },
+                no: {
+                    text: Ext.MessageBox.buttonText.no
+                }
+            },
+            fn: function (e) {
+                "yes" !== e && this.form.findField("lcw_enabled").setValue(!1)
+            },
+            scope: this,
+            icon: Ext.MessageBox.ERRORRED,
+            minWidth: Ext.MessageBox.minWidth
+        })
+    }
 });

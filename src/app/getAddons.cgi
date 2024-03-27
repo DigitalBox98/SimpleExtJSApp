@@ -3,7 +3,7 @@
 import os
 import json
 import sys
-
+import cgi
 from pathlib import Path
 path_root = Path(__file__).parents[1]
 sys.path.append(str(path_root)+'/libs')
@@ -11,7 +11,8 @@ sys.path.append(str(path_root)+'/libs')
 import libs.yaml as yaml
 print("Content-type: application/json\n")
 
-
+arguments = cgi.FieldStorage()
+category = arguments.getvalue('category') 
 #Function to read user configuration from a YAML file
 def read_user_config():
     userConfigPath = "/mnt/p1/user-config.yml"
@@ -36,7 +37,13 @@ def read_manifests_in_subdirs(parent_directory):
                 try:
                     manifest = yaml.safe_load(file)
                     manifest['installed'] = subdir in userConfig['addons']
-                    manifests.append(manifest)
+                    # Filter by category if specified
+                    if category == "system":
+                        # Ensure 'system' key exists and is boolean True
+                        if manifest.get('system') is True:
+                            manifests.append(manifest)
+                    else:
+                        manifests.append(manifest)
                     
                 except yaml.YAMLError as exc:
                     print(f"Error reading {manifest_path}: {exc}")
@@ -51,7 +58,6 @@ ADDONS_PATH = '/mnt/p3/addons/'
 response = {}
 
 if len(user) > 0:
-
     addons = read_manifests_in_subdirs(ADDONS_PATH)
     response['result'] = addons
     response['success'] = True
