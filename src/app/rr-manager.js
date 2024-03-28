@@ -1277,17 +1277,17 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
                 btnStyle: "blue",
                 scope: e,
             })),
-            // (e.searchField = new SYNOCOMMUNITY.RRManager.AdvancedSearchField({
-            //     iconStyle: "filter",
-            //     owner: e,
-            // })),
-            // (e.searchField.searchPanel = e.searchPanel),
+            (e.searchField = new SYNOCOMMUNITY.RRManager.AdvancedSearchField({
+                iconStyle: "filter",
+                owner: e,
+            })),
+            (e.searchField.searchPanel = e.searchPanel),
             // t.add(e.clearButton),
             t.add(e.saveButton),
             t.add("->"),
             t.add(e.initCategoryComboBox(e.getCategoryStore())),
             t.add({ xtype: "tbspacer", width: 4 }),
-            // t.add(e.searchField),
+            t.add(e.searchField),
             t
         );
         // return [];
@@ -1409,8 +1409,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     },
     fillConfig: function (e) {
         const t = this;
-        (t.searchPanel = t.initSearchForm()),
-            (t.logStore = t.getStore()),
+        // (t.searchPanel = t.initSearchForm()),
+        (t.logStore = t.getStore()),
             (t.paging = t.initPagingToolbar());
         const i = {
             border: !1,
@@ -1471,7 +1471,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         const i = this,
             s = i.logStore;
         if (!i.isTheSame(s.baseParams, t)) {
-            const e = ["date_from", "date_to", "keyword", "log_level"];
+            const e = ["name", "description"];
             if (
                 (t.date_from &&
                     (t.date_from =
@@ -1494,22 +1494,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         }
         i.searchField.searchPanel.hide();
     },
-    setUnread: function () {
-        this.sendWebAPI({
-            api: "SYNO.Core.ISCSI.Node",
-            version: 1,
-            method: "log_list",
-            params: { additional: ["update_unread"] },
-            scope: this,
-        });
-    },
     onActive: function () {
         this.loadData();
     },
     enableButtonCheck: function () {
-        // this.logStore.getTotalCount()
-        //     ? (this.clearButton.enable())
-        //     : (this.clearButton.disable());
+        this.logStore.getTotalCount()
+            ? (this.saveButton.enable())
+            : (this.saveButton.disable());
     },
     loadData: function () {
         const e = this.logStore;
@@ -1531,7 +1522,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             this.enableButtonCheck();
     },
     setMask: function (e) {
-        // SYNO.SDS.iSCSI.Utils.SetEmptyIcon(this, e);
+        SYNOCOMMUNITY.RRManager.SetEmptyIcon(this, e);
     },
     setPagingToolbar: function (e, t) {
         this.setPagingToolbarVisible(t, e.getTotalCount() > this.itemsPerPage);
@@ -1554,33 +1545,14 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             this.appWin.clearStatusBusy();
     },
     onAddonsSave: function (e) {
-        debugger;
+        //     var installedAddonsJson =localStorage.getItem('rrInstalledAddons');
+        //     var installedAddons = JSON.stringify(installedAddonsJson);
+        //    //collect installed modules
+        //    that[''] = grid.getStore().getRange().filter(x => { return x.data.installed == true }).map((x) => {
+        //     return x.id
+        // });
     },
     onLogClear: function () {
-        // const e = this;
-        // e.appWin.getMsgBox().confirmDelete(
-        //     e.appWin.title,
-        //     "log_cfrm_clear",
-        //     (t) => {
-        //         "yes" === t &&
-        //             (e.appWin.setStatusBusy(),
-        //                 e.appWin.sendWebAPI({
-        //                     api: "SYNO.Core.ISCSI.Node",
-        //                     version: 1,
-        //                     method: "log_clear",
-        //                     callback: e.onClearLogDone,
-        //                     scope: e,
-        //                 }));
-        //     },
-        //     e,
-        //     {
-        //         yes: {
-        //             text: "Clear",
-        //             btnStyle: "red",
-        //         },
-        //         no: { text: Ext.MessageBox.buttonText.no },
-        //     }
-        // );
     },
     onExportCSV: function () {
         this.onLogSave("csv");
@@ -1589,26 +1561,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         this.onLogSave("html");
     },
     onLogSave: function (e) {
-        // _S("demo_mode")
-        //     ? this.appWin
-        //         .getMsgBox()
-        //         .alert(this.appWin.title, _JSLIBSTR("uicommon", "error_demo"))
-        //     : this.saveLog(e);
     },
     saveLog: function (e) {
-        // const t = this,
-        //     i = t.logStore,
-        //     s = { export_format: e };
-        // Ext.apply(s, i.baseParams),
-        //     t.downloadWebAPI({
-        //         webapi: {
-        //             version: 1,
-        //             api: "SYNO.Core.ISCSI.Node",
-        //             method: "log_export",
-        //             params: s,
-        //         },
-        //         scope: t,
-        //     });
     },
     destroy: function () {
         this.rowNav && (Ext.destroy(this.rowNav), (this.rowNav = null)),
@@ -1617,13 +1571,22 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     },
 });
 
-Ext.define("SYNOCOMMUNITY.RRManager.AdvancedSearchField", {
+SYNOCOMMUNITY.RRManager.SetEmptyIcon = (e, t) => {
+    let i = e.el.child(".contentwrapper");
+    if (i) {
+        for (; i.child(".contentwrapper");)
+            i = i.child(".contentwrapper");
+        t && !i.hasClass("san-is-empty") ? i.addClass("san-is-empty") : !t && i.hasClass("san-is-empty") && i.removeClass("san-is-empty")
+    }
+};
 
+Ext.define("SYNOCOMMUNITY.RRManager.AdvancedSearchField", {
     extend: "SYNO.ux.SearchField",
     initEvents: function () {
         this.callParent(arguments),
             this.mon(Ext.getDoc(), "mousedown", this.onMouseDown, this),
             this.mon(this, "keypress", (function (e, t) {
+                debugger;
                 t.getKey() === Ext.EventObject.ENTER && (this.searchPanel.setKeyWord(this.getValue()),
                     this.searchPanel.onSearch())
             }
@@ -1711,15 +1674,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         return Ext.apply(i, e), i;
     },
     loadAllForms: function (e) {
-        console.log(e);
         this.items.each((t) => {
-            if(Ext.isFunction(t.loadForm)){
-                if(t.itemId== "SynoInfoTab"){
+            if (Ext.isFunction(t.loadForm)) {
+                if (t.itemId == "SynoInfoTab") {
                     t.loadForm(e.synoinfo);
-                }else{
+                } else {
                     t.loadForm(e);
                 }
-                console.log(t);
             }
         });
     },
@@ -1753,24 +1714,20 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         this.clearStatusBusy(), this.setStatusOK();
     },
     getParams: function () {
-        // const e = {};
-        //if (this.generalTab.isFormDirty()) {
-            //TODO:
-            const t = this.generalTab.getForm().getValues();
-            const t2 = this.iscsiTab.getForm().getValues();
-        //}
-        
-        const t3 = this.synoInfoTab.getForm().getValues()?.each();
-        const t4 ={};
-        t3.forEach(x=>{
-            t4["syno_"+x] = t3[x];
-        });
-         Object.assign({},t,t2,t4);
-         return e;
+        const generalTab = this.generalTab.getForm().getValues();
+        const iscsiTab = this.iscsiTab.getForm().getValues();
+
+        const synoInfoTab = this.synoInfoTab.getForm().getValues();
+        const synoInfoTabFixed = {
+            synoinfo: synoInfoTab
+        };
+
+        return Object.assign({}, generalTab, iscsiTab, synoInfoTabFixed);
     },
     getConf: function () {
         var rrConfigJson = localStorage.getItem("rrConfig");
         var rrConfig = JSON.parse(rrConfigJson);
+
         return rrConfig?.user_config;
     },
     _prefix: '/webman/3rdparty/rr-manager/',
@@ -1814,8 +1771,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         });
     },
     setConf: function () {
-        data = this.getParams();
-        return this.handleFileUpload(data);
+        var user_config = this.getParams();
+        var rrConfigJson = localStorage.getItem("rrConfig");
+        var rrConfigOrig = JSON.parse(rrConfigJson);
+        rrConfigOrig.user_config = user_config;
+        localStorage.setItem("rrConfig", JSON.stringify(rrConfigOrig));
+
+        return this.handleFileUpload(user_config);
     },
     confirmApply: function () {
         if (!this.isAnyFormDirty())
