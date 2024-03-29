@@ -124,23 +124,19 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     },
     onActivate: function () {
         const e = this;
+        e.appWin.setStatusBusy(null, null, 50);
         (async () => {
-            // e.loaded = false;
-            var systemInfo = await e.getSytemInfo();
-            var packages = await e.getPackagesList();
-            if (systemInfo && packages) {
-                e.systemInfoTxt = `Model: ${systemInfo?.model}, RAM: ${systemInfo?.ram} MB, DSM version: ${systemInfo?.version_string} `;
-                var rrManagerPackage = packages.packages.find(p => p.id == 'rr-manager');
+            e.systemInfo = await e.getSytemInfo();
+            e.packages = await e.getPackagesList();
+            if (e.systemInfo && e.packages) {
+                e.systemInfoTxt = `Model: ${e.systemInfo?.model}, RAM: ${e.systemInfo?.ram} MB, DSM version: ${e.systemInfo?.version_string} `;
+                var rrManagerPackage = e.packages.packages.find(p => p.id == 'rr-manager');
                 e.rrManagerVersionText = `🛡️RR Manager v.: ${rrManagerPackage?.version}`;
-                // e.loaded = true;
                 e.panels.healthPanel.fireEvent(
                     "select",
                     e.panels.healthPanel.clickedBox
                 ),
-                    e.panels.healthPanel.fireEvent("data_ready", function () {
-                    })
-                e.loaded || e.appWin.setStatusBusy(null, null, 50),
-                    e.appWin.fireEvent("poll_activate");
+                    e.panels.healthPanel.fireEvent("data_ready");
                 this.updateAllForm();
             }
         })();
@@ -280,7 +276,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             //populate rr config path
             that['rrManagerConfig'] = that[configName]['rr_manager_config'];
             this.opts.params.path = `/${that['rrManagerConfig']['SHARE_NAME']}/${that['rrManagerConfig']['RR_TMP_DIR']}`;
-            // this.loadAllForms(e), this.updateEnv(e);
         } catch (e) {
             SYNO.Debug(e);
         } finally {
@@ -360,20 +355,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             that.sendWebAPI(args);
         });
     },
-    onDataReady: function () {
+    onDataReady: async function () {
         const e = this;
         console.log("--onDataReady1");
-        (async () => {
-            // e.loaded = false;
-            e.systemInfo = await e.getSytemInfo();
-            e.packages = await e.getPackagesList();
 
-            e.loaded = true;
-            e.appWin.clearStatusBusy();
-            if (!e.loaded || e.loaded !== true) {
-                e.panels.healthPanel.fireEvent("data_ready");
-            }
-        })();
+        e.loaded = true;
+        // need to clean the spinner when form has been loaded
+        e.appWin.clearStatusBusy();
     },
 });
 
@@ -399,6 +387,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 status: s,
             }),
             this.updateDesc("cur");
+        this.getComponent("rrActionsPanel")?.setVisible(true);
         this.owner.fireEvent("data_ready");
     },
     createUploadPannel: function () {
@@ -748,17 +737,18 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     itemId: "rightPanel",
                     cls: "health-text-block",
                     flex: 1,
-                    height: 120,
+                    height: 140,
                     layout: "vbox",
                     layoutConfig: { align: "stretch" },
                     items: [this.upperPanel, this.lowerPanel],
                 },
                 {//RR actions
                     xtype: "syno_panel",
-                    itemId: "rightPanel2",
+                    itemId: "rrActionsPanel",
                     // cls: "health-text-block",
                     flex: 1,
                     height: 96,
+                    hidden: true,
                     layout: "vbox",
                     layoutConfig: { align: "stretch" },
                     items: [this.createActionsSection()],
@@ -839,7 +829,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     itemId: "desc2",
                     cls: "health-text-content",
                     htmlEncode: !1,
-                    value: "This is value"
+                },
+                {
+                    xtype: "syno_displayfield",
+                    itemId: "desc3",
+                    cls: "health-text-content",
+                    htmlEncode: !1,
                 },
             ],
         });
@@ -854,7 +849,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
             a = this.descs.length,
             o = this.getComponent("rightPanel"),
             r = this.lowerPanel.getComponent("desc"),
-            m = this.lowerPanel.getComponent("desc2"),
+            m = this.lowerPanel.getComponent("desc3"),
+            mm = this.lowerPanel.getComponent("desc2"),
             l = this.upperPanel.getComponent("leftBtn"),
             S = this.upperPanel.getComponent("rightBtn"),
             c = r.getHeight();
@@ -863,6 +859,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         s = this.descMapping.normal;
         r.setValue(t.owner.systemInfoTxt);
         m.setValue(t.owner.rrManagerVersionText);
+        //TODO: fix showing rr Version
+        mm.setValue(`💊RR v. ${1}`);
         const u = r.getHeight();
         if (
             (u !== c && ((d = d - c + u), (p = !0)),
