@@ -202,24 +202,25 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             that.sendWebAPI(args);
         });
     },
+    showMsg: function (msg) {
+        this.owner.getMsgBox().alert("title", msg);
+    },
     onRunRrUpdateManuallyClick: function () {
         that = this;
+        var rrConfigJson = localStorage.getItem('rrConfig');
+        var rrConfig = JSON.parse(rrConfigJson);
+        var rrManagerConfig = rrConfig.rr_manager_config;
 
-        showMsg = function (msg) {
-            that.owner.getMsgBox().alert("title", msg);
-        }
-        var rrConfig = this.owner.rrManagerConfig;
-        var url = `${rrConfig?.UPLOAD_DIR_PATH}${rrConfig?.RR_TMP_DIR}/update.zip`;
-        // var tabs = Ext.getCmp('tabsControl');
+        var url = `${rrManagerConfig?.UPLOAD_DIR_PATH}${rrManagerConfig?.RR_TMP_DIR}/update.zip`;
         this.getUpdateFileInfo(url).then((responseText) => {
             if (!responseText.success) {
                 that.owner.getEl()?.unmask();
-                showMsg('title', that.formatString(that._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
+                this.showMsg(that.formatString(that._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
                 return;
             }
             var configName = 'rrUpdateFileVersion';
             that.owner[configName] = responseText;
-            let currentRrVersion = that.owner["rrConfig"]?.rr_version;
+            let currentRrVersion = rrConfig.rr_version;
             let updateRrVersion = that.owner[configName].updateVersion;
 
             async function runUpdate() {
@@ -234,7 +235,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
                         that.owner.getEl()?.unmask();
-                        showMsg(checksStatusResponse?.status);
+                        that.showMsg(checksStatusResponse?.status);
                     }
                     var response = checksStatusResponse.result;
                     that.owner.getEl()?.mask(that.formatString(that._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
@@ -242,11 +243,11 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
                         that.owner.getEl()?.unmask();
-                        showMsg(that.formatString(that._V('ui'), response?.progress, response?.progressmsg));
+                        that.showMsg(that.formatString(that._V('ui'), response?.progress, response?.progressmsg));
                     } else if (response?.progress == '100') {
                         that.owner.getEl()?.unmask();
                         clearInterval(updateStatusInterval);
-                        showMsg(that._V('ui', 'update_rr_completed'));
+                        that.showMsg(that._V('ui', 'update_rr_completed'));
                     }
                 }, 1500);
             }
@@ -265,7 +266,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     no: { text: Ext.MessageBox.buttonText.no },
                 });
         }).catch(error => {
-            showMsg(`Error. ${error}`);
+            this.showMsg(`Error. ${error}`);
         });
     },
     updateAllForm: async function () {
@@ -483,8 +484,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                         that._V('ui', 'file_uploading_succesfull_msg'),
                         (t) => {
                             if ("yes" === t) {
-                                var c = that.owner.onRunRrUpdateManuallyClick.bind(that.owner);
-                                c();
+                                that.owner.onRunRrUpdateManuallyClick();
                             }
                         },
                         e,
@@ -507,6 +507,10 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         }
     },
     MAX_POST_FILESIZE: Ext.isWebKit ? -1 : window.console && window.console.firebug ? 20971521 : 4294963200,
+    showMsg: function (msg) {
+        //TODO: use native alerts
+        alert(msg);
+    },
     showUpdateUploadDialog: function () {
         that = this;
         var window = new SYNO.SDS.ModalWindow({
@@ -534,7 +538,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                         const form = that["upload_form"].getForm();
                         var fileObject = form.el.dom[1].files[0];
                         if (!form.isValid()) {
-                            that.showMsg('error', this._V('ui', 'upload_update_file_form_validation_invalid_msg'));
+                            that.showMsg(this._V('ui', 'upload_update_file_form_validation_invalid_msg'));
                             return;
                         }
                         this.appWin.setStatusBusy();
@@ -551,10 +555,14 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     },
     onUploadFile: function (e, d) {
         that = d.appWin;
+        var rrConfigJson = localStorage.getItem('rrConfig');
+        var rrConfig = JSON.parse(rrConfigJson);
+        var rrManagerConfig = rrConfig.rr_manager_config;
+
         //create rr tmp folder
         SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
-            folder_path: `/${that['rrManagerConfig']['SHARE_NAME']}`,
-            name: that['rrManagerConfig']['RR_TMP_DIR'],
+            folder_path: `/${rrManagerConfig.SHARE_NAME}`,
+            name: rrManagerConfig.RR_TMP_DIR,
             force_parent: false
         });
         //rename file to update.zip
@@ -745,7 +753,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     layoutConfig: { align: "stretch" },
                     items: [this.upperPanel, this.lowerPanel],
                 },
-                {
+                {//RR actions
                     xtype: "syno_panel",
                     itemId: "rightPanel2",
                     // cls: "health-text-block",
@@ -761,7 +769,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         };
         return Ext.apply(t, e), t;
 
-    }, createIconTpl: function () {
+    },
+    createIconTpl: function () {
         return new Ext.XTemplate('<div class="health-icon {status}"></div>', {
             compiled: !0,
             disableFormats: !0,
@@ -1586,13 +1595,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.AdvancedSearchField", {
         this.callParent(arguments),
             this.mon(Ext.getDoc(), "mousedown", this.onMouseDown, this),
             this.mon(this, "keypress", (function (e, t) {
-                debugger;
-                t.getKey() === Ext.EventObject.ENTER && (this.searchPanel.setKeyWord(this.getValue()),
-                    this.searchPanel.onSearch())
+                t.getKey() === Ext.EventObject.ENTER && (this.searchPanel?.setKeyWord(this.getValue()),
+                    this.searchPanel?.onSearch())
             }
             ), this),
             this.mon(this, "destroy", (function () {
-                this.searchPanel.destroy()
+                this.searchPanel?.destroy()
             }
             ), this)
     },
