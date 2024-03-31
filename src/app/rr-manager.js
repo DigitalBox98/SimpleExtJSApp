@@ -619,55 +619,59 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
             overwrite: true
         }
     },
-    prepareStartFormdata: function (e) {
-        e.chunkmode = (-1 !== this.MAX_POST_FILESIZE && e.size > this.MAX_POST_FILESIZE);
-        if (this.opts.chunkmode) {
-            var boundary = "----html5upload-" + (new Date).getTime().toString() + Math.floor(65535 * Math.random()).toString();
-            var contentPrefix = "";
+    prepareStartFormdata: function (file) {
+        const isChunkMode = (-1 !== this.MAX_POST_FILESIZE && file.size > this.MAX_POST_FILESIZE);
+        if (isChunkMode) {
+            const boundary = `----html5upload-${new Date().getTime()}${Math.floor(65535 * Math.random())}`;
+            let contentPrefix = "";
 
-            if (this.opts.params)
-                for (var paramName in this.opts.params) {
+            if (this.opts.params) {
+                for (const paramName in this.opts.params) {
                     if (this.opts.params.hasOwnProperty(paramName)) {
-                        contentPrefix += "--" + boundary + '\r\n';
-                        contentPrefix += 'Content-Disposition: form-data; name="' + paramName + '"\r\n\r\n';
-                        contentPrefix += unescape(encodeURIComponent(this.opts.params[paramName])) + "\r\n";
+                        contentPrefix += `--${boundary}\r\n`;
+                        contentPrefix += `Content-Disposition: form-data; name="${paramName}"\r\n\r\n`;
+                        contentPrefix += `${unescape(encodeURIComponent(this.opts.params[paramName]))}\r\n`;
                     }
                 }
+            }
 
-            if (e.params)
-                for (var paramName in e.params) {
-                    if (e.params.hasOwnProperty(paramName)) {
-                        contentPrefix += "--" + boundary + '\r\n';
-                        contentPrefix += 'Content-Disposition: form-data; name="' + paramName + '"\r\n\r\n';
-                        contentPrefix += unescape(encodeURIComponent(e.params[paramName])) + "\r\n";
+            if (file.params) {
+                for (const paramName in file.params) {
+                    if (file.params.hasOwnProperty(paramName)) {
+                        contentPrefix += `--${boundary}\r\n`;
+                        contentPrefix += `Content-Disposition: form-data; name="${paramName}"\r\n\r\n`;
+                        contentPrefix += `${unescape(encodeURIComponent(file.params[paramName]))}\r\n`;
                     }
                 }
+            }
 
-            var filename = unescape(encodeURIComponent(e.name));
-            contentPrefix += "--" + boundary + '\r\n';
-            contentPrefix += 'Content-Disposition: form-data; name="' + (this.opts.filefiledname || "file") + '"; filename="' + filename + '"\r\n';
+            const filename = unescape(encodeURIComponent(file.name));
+            contentPrefix += `--${boundary}\r\n`;
+            contentPrefix += `Content-Disposition: form-data; name="${this.opts.filefiledname || "file"}"; filename="${filename}"\r\n`;
             contentPrefix += 'Content-Type: application/octet-stream\r\n\r\n';
 
             return {
-                formdata: contentPrefix,
+                formData: contentPrefix,
                 boundary: boundary
             };
         } else {
-            var formData = new FormData();
+            const formData = new FormData();
 
-            if (this.opts.params)
-                for (var paramName in this.opts.params) {
+            if (this.opts.params) {
+                for (const paramName in this.opts.params) {
                     if (this.opts.params.hasOwnProperty(paramName)) {
                         formData.append(paramName, this.opts.params[paramName]);
                     }
                 }
+            }
 
-            if (e.params)
-                for (var paramName in e.params) {
-                    if (e.params.hasOwnProperty(paramName)) {
-                        formData.append(paramName, e.params[paramName]);
+            if (file.params) {
+                for (const paramName in file.params) {
+                    if (file.params.hasOwnProperty(paramName)) {
+                        formData.append(paramName, file.params[paramName]);
                     }
                 }
+            }
 
             return formData;
         }
