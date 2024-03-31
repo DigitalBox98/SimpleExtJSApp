@@ -141,11 +141,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             }
         })();
     },
-    opts: {
-        params: {
-            path: ""
-        }
-    },
     getUpdateFileInfo: function (file) {
         return new Promise((resolve, reject) => {
             Ext.Ajax.request({
@@ -273,10 +268,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             var configName = 'rrConfig';
             that[configName] = responseText;
             localStorage.setItem(configName, JSON.stringify(responseText));
-            //populate rr config path
-            that['rrManagerConfig'] = that[configName]['rr_manager_config'];
-            this.opts.params.path = `/${that['rrManagerConfig']['SHARE_NAME']}/${that['rrManagerConfig']['RR_TMP_DIR']}`;
-        } catch (e) {
+                  } catch (e) {
             SYNO.Debug(e);
         } finally {
             this.owner.clearStatusBusy();
@@ -452,7 +444,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 }
             else
                 e.append("size", t.size),
-                    t.name ? e.append(this.opts.filefiledname, t, this.opts.params.fileName) : e.append(this.opts.filefiledname, t.file),
+                    t.name ? e.append(this.opts.filefiledname, t, this.opts.params.filename) : e.append(this.opts.filefiledname, t.file),
                     n = e;
             this.conn = new Ext.data.Connection({
                 method: 'POST',
@@ -460,7 +452,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 defaultHeaders: l,
                 timeout: null
             });
-            // var tabs = Ext.getCmp('tabsControl');
             var m = this.conn.request({
                 headers: s,
                 html5upload: !0,
@@ -491,7 +482,11 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     that.showMsg("title", "Error file uploading.");
                     console.log(x);
                 },
-                progress: (x) => { },
+                progress: (x) => {
+                    //TODO: use fix indicate progress
+                    // const percentage = ((x.loaded / x.total) * 100).toFixed(2);
+                    // that.owner.getEl().mask(`${_T("common", "loading")}. Completed: ${percentage}`, "x-mask-loading");
+                },
             });
         }
     },
@@ -547,14 +542,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         var rrConfigJson = localStorage.getItem('rrConfig');
         var rrConfig = JSON.parse(rrConfigJson);
         var rrManagerConfig = rrConfig.rr_manager_config;
-
+        this.opts.params.path = `/${rrManagerConfig.SHARE_NAME}/${rrManagerConfig.RR_TMP_DIR}`;
         //create rr tmp folder
         SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
             folder_path: `/${rrManagerConfig.SHARE_NAME}`,
             name: rrManagerConfig.RR_TMP_DIR,
             force_parent: false
         });
-        //rename file to update.zip
         e = new File([e], this.opts.params.filename);
         var t, i = !1;
         if (-1 !== this.MAX_POST_FILESIZE && e.size > this.MAX_POST_FILESIZE && i)
