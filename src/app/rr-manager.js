@@ -1722,7 +1722,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             synoinfo: synoInfoTab
         };
 
-        return Object.assign({}, generalTab, iscsiTab, synoInfoTabFixed);
+        var rrConfigJson = localStorage.getItem("rrConfig");
+        var rrConfig = JSON.parse(rrConfigJson);       
+        return Object.assign(rrConfig?.user_config, generalTab, iscsiTab, synoInfoTabFixed);
     },
     getConf: function () {
         var rrConfigJson = localStorage.getItem("rrConfig");

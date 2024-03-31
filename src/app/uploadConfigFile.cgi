@@ -12,12 +12,6 @@ sys.path.append(str(path_root)+'/libs')
 
 import libs.yaml as yaml
 print("Content-type: application/json\n")
-# Custom Dumper that uses double quotes for strings
-class DoubleQuotedDumper(yaml.Dumper):
-    def represent_scalar(self, tag, value, style=None):
-        if isinstance(value, str):
-            style = '"'
-        return super(DoubleQuotedDumper, self).represent_scalar(tag, value, style)
 
 response = {}
 response['success'] = False
@@ -45,7 +39,7 @@ if len(user) > 0:
             data = json.loads(request_body)
 
             # Convert JSON data to YAML using the custom dumper
-            yaml_data = yaml.dump(data, Dumper=DoubleQuotedDumper, default_flow_style=False, sort_keys=False)
+            yaml_data = yaml.dump(data, sort_keys=False)
             try:
                 # existing_config = read_user_config()
                 # message ='after read existing_config' 
