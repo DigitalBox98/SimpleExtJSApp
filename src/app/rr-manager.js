@@ -86,10 +86,59 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             return typeof args[number] !== 'undefined' ? args[number] : match;
         });
     },
-
+    _prefix: '/webman/3rdparty/rr-manager/',
+    handleFileUpload: function (jsonData) {
+        this._handleFileUpload(jsonData).then(x => {
+            this.runScheduledTask('ApplyRRConfig');
+            this.showMsg('The RR config has been successfully applied. Please restart the NAS to apply the changes.');
+            this.appWin.clearStatusBusy();
+        });
+    },
+    _handleFileUpload: function (jsonData) {
+        let url = `${this._prefix}uploadConfigFile.cgi`;
+        return new Promise((resolve, reject) => {
+            Ext.Ajax.request({
+                url: url,
+                method: 'POST',
+                jsonData: jsonData,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                success: function (response) {
+                    resolve(Ext.decode(response.responseText));
+                },
+                failure: function (response) {
+                    reject('Failed with status: ' + response.status);
+                }
+            });
+        });
+    },
+    runScheduledTask: function (taskName) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: taskName
+            };
+            let args = {
+                api: 'SYNO.Core.EventScheduler',
+                method: 'run',
+                version: 1,
+                params: params,
+                stop_when_error: false,
+                mode: 'sequential',
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
     constructor: function (e) {
         const t = this;
-        (this.loaded = !1),
+        (this.appWin = e.appWin),
+            (this.appWin.handleFileUpload = this.handleFileUpload.bind(this)),
+            (this.appWin.runScheduledTask = this.runScheduledTask.bind(this)),
+            (this.loaded = !1),
             t.callParent([t.fillConfig(e)]),
             t.mon(
                 t,
@@ -173,26 +222,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             });
         });
     },
-    runTask: function (taskName) {
-        that = this;
-        return new Promise((resolve, reject) => {
-            let params = {
-                task_name: taskName
-            };
-            let args = {
-                api: 'SYNO.Core.EventScheduler',
-                method: 'run',
-                version: 1,
-                params: params,
-                stop_when_error: false,
-                mode: 'sequential',
-                callback: function (success, message) {
-                    success ? resolve(message) : reject('Unable to get packages!');
-                }
-            };
-            that.sendWebAPI(args);
-        });
-    },
     showMsg: function (msg) {
         this.owner.getMsgBox().alert("title", msg);
     },
@@ -217,7 +246,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             async function runUpdate() {
                 //show the spinner
                 that.owner.getEl().mask(_T("common", "loading"), "x-mask-loading");
-                that.runTask('RunRrUpdate');
+                that.appWin.runScheduledTask('RunRrUpdate');
                 var maxCountOfRefreshUpdateStatus = 350;
                 var countUpdatesStatusAttemp = 0;
 
@@ -268,7 +297,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             var configName = 'rrConfig';
             that[configName] = responseText;
             localStorage.setItem(configName, JSON.stringify(responseText));
-                  } catch (e) {
+        } catch (e) {
             SYNO.Debug(e);
         } finally {
             this.owner.clearStatusBusy();
@@ -349,8 +378,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     },
     onDataReady: async function () {
         const e = this;
-        console.log("--onDataReady1");
-
         e.loaded = true;
         // need to clean the spinner when form has been loaded
         e.appWin.clearStatusBusy();
@@ -370,6 +397,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     },
 
     constructor: function (e) {
+        this.appWin = e.appWin;
+        this.owner = e.owner;
         this.callParent([this.fillConfig(e)]);
     },
     onDataReady: function () {
@@ -483,9 +512,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     console.log(x);
                 },
                 progress: (x) => {
-                    //TODO: use fix indicate progress
-                    // const percentage = ((x.loaded / x.total) * 100).toFixed(2);
-                    // that.owner.getEl().mask(`${_T("common", "loading")}. Completed: ${percentage}`, "x-mask-loading");
+                    const percentage = ((x.loaded / x.total) * 100).toFixed(2);
+                    that.appWin.clearStatusBusy();
+                    that.appWin.setStatusBusy({text: `${_T("common", "loading")}. Completed: ${percentage}%.`},percentage);
                 },
             });
         }
@@ -939,6 +968,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxTmpl", {
         ];
     },
 });
+
 Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBox", {
     extend: "SYNO.ux.Panel",
     constructor: function (e) {
@@ -1151,22 +1181,20 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     extend: "SYNO.ux.GridPanel",
     itemsPerPage: 1e3,
     constructor: function (e) {
-        const t = this;
-        let i;
-        Ext.apply(t, e),
-            (i = t.fillConfig(e)),
-            (t.itemsPerPage =
-                t.appWin.appInstance.getUserSettings(t.itemId + "-dsPageLimit") ||
-                t.itemsPerPage),
-            t.callParent([i]),
-            t.mon(
-                t,
-                "resize",
-                (e, i, s) => {
-                    t.updateFbarItems(i);
-                },
-                t
-            );
+        this.appWin = e.appWin;
+        const self = this;
+        Ext.apply(self, e);
+        let config = self.fillConfig(e);
+        self.itemsPerPage = self.appWin.appInstance.getUserSettings(self.itemId + "-dsPageLimit") || self.itemsPerPage;
+        self.callParent([config]);
+        self.mon(
+            self,
+            "resize",
+            (e, width, height) => {
+            self.updateFbarItems(width);
+            },
+            self
+        );
     },
     getPageRecordStore: function () {
         return new Ext.data.SimpleStore({
@@ -1189,20 +1217,22 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         });
     },
     onChangeDisplayRecord: function (e, t, i) {
-        const s = this,
-            n = s.logStore;
-        s.itemsPerPage !== e.getValue() &&
-            ((s.itemsPerPage = e.getValue()),
-                (s.paging.pageSize = s.itemsPerPage),
-                n.load({ params: { offset: 0, limit: s.itemsPerPage } }),
-                s.appWin.appInstance.setUserSettings(
-                    s.itemId + "-dsPageLimit",
-                    s.itemsPerPage
-                ));
+        const self = this,
+            addonsStore = self.addonsStore;
+        const newItemsPerPage = e.getValue();
+        if (self.itemsPerPage !== newItemsPerPage) {
+            self.itemsPerPage = newItemsPerPage;
+            self.paging.pageSize = self.itemsPerPage;
+            addonsStore.load({ params: { offset: 0, limit: self.itemsPerPage } });
+            self.appWin.appInstance.setUserSettings(
+            self.itemId + "-dsPageLimit",
+            self.itemsPerPage
+            );
+        }
     },
     onChangeCategory: function (e, t, i) {
         const s = this,
-            n = s.logStore,
+            n = s.addonsStore,
             a = e.getValue();
         a !== n.baseParams.category &&
             (Ext.apply(n.baseParams, { category: a }), s.loadData());
@@ -1237,7 +1267,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     },
     initPagingToolbar: function () {
         return new SYNO.ux.PagingToolbar({
-            store: this.logStore,
+            store: this.addonsStore,
             displayInfo: !0,
             pageSize: this.itemsPerPage,
             showRefreshBtn: !0,
@@ -1411,7 +1441,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     fillConfig: function (e) {
         const t = this;
         // (t.searchPanel = t.initSearchForm()),
-        (t.logStore = t.getStore()),
+        (t.addonsStore = t.getStore()),
             (t.paging = t.initPagingToolbar());
         const i = {
             border: !1,
@@ -1422,7 +1452,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             enableColumnMove: !1,
             enableHdMenu: !1,
             bbar: t.paging,
-            store: t.logStore,
+            store: t.addonsStore,
             colModel: t.getColumnModel(),
             view: new SYNO.ux.FleXcroll.grid.BufferView({
                 rowHeight: 27,
@@ -1457,8 +1487,10 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     onCellClick: function (grid, recordIndex, i, s) {
         var record = grid.store.data.get(recordIndex);
         var id = grid.getColumnModel().getColumnAt(i).id;
-        record.data[id] = !record.data[id];
-        grid.getView().refresh();
+        if (id !== 'system') {
+            record.data[id] = !record.data[id];
+            grid.getView().refresh();
+        }
     },
     isBelong: function (e, t) {
         let i;
@@ -1470,7 +1502,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     },
     onSearch: function (e, t) {
         const i = this,
-            s = i.logStore;
+            s = i.addonsStore;
         if (!i.isTheSame(s.baseParams, t)) {
             const e = ["name", "description"];
             if (
@@ -1499,12 +1531,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         this.loadData();
     },
     enableButtonCheck: function () {
-        this.logStore.getTotalCount()
+        this.addonsStore.getTotalCount()
             ? (this.saveButton.enable())
             : (this.saveButton.disable());
     },
     loadData: function () {
-        const e = this.logStore;
+        const e = this.addonsStore;
         const t = { offset: 0, limit: this.itemsPerPage };
         e.load({ params: t });
         this.enableButtonCheck();
@@ -1534,6 +1566,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     updateFbarItems: function (e) {
         this.isVisible();
     },
+    showMsg: function (msg) {
+        this.owner.getMsgBox().alert("title", msg);
+    },
     onClearLogDone: function (e, t, i, s) {
         e
             ? this.loadData()
@@ -1546,12 +1581,16 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             this.appWin.clearStatusBusy();
     },
     onAddonsSave: function (e) {
-        //     var installedAddonsJson =localStorage.getItem('rrInstalledAddons');
-        //     var installedAddons = JSON.stringify(installedAddonsJson);
-        //    //collect installed modules
-        //    that[''] = grid.getStore().getRange().filter(x => { return x.data.installed == true }).map((x) => {
-        //     return x.id
-        // });
+        var installedAddons = this.addonsStore.getRange().filter(x => { return x.data.installed == true }).map((x) => { return x.id });
+        var newAddons = {};
+        installedAddons.forEach((x) => {
+            newAddons[x] = '';
+        });
+        var rrConfigJson = localStorage.getItem("rrConfig");
+        var rrConfig = JSON.parse(rrConfigJson);
+        rrConfig.user_config.addons = newAddons;
+        this.appWin.setStatusBusy();
+        this.appWin.handleFileUpload(rrConfig.user_config);
     },
     onLogClear: function () {
     },
@@ -1702,16 +1741,17 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     doApply: async function () {
         this.setStatusBusy();
         try {
-            await this.setConf(), await this.updateAllForm(), this.runTask('ApplyRRConfig');
+            await this.setConf();
+            await this.updateAllForm();
+            await this.appWin.runScheduledTask('ApplyRRConfig');
+            this.clearStatusBusy();
+            this.setStatusOK();
         } catch (e) {
-            throw (
-                (SYNO.Debug(e),
-                    this.clearStatusBusy(),
-                    this.appWin.getMsgBox().alert(this.title, this.API.getErrorString(e)),
-                    e)
-            );
+            SYNO.Debug(e);
+            this.clearStatusBusy();
+            this.appWin.getMsgBox().alert(this.title, this.API.getErrorString(e));
+            throw e;
         }
-        this.clearStatusBusy(), this.setStatusOK();
     },
     getParams: function () {
         const generalTab = this.generalTab.getForm().getValues();
@@ -1723,7 +1763,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         };
 
         var rrConfigJson = localStorage.getItem("rrConfig");
-        var rrConfig = JSON.parse(rrConfigJson);       
+        var rrConfig = JSON.parse(rrConfigJson);
         return Object.assign(rrConfig?.user_config, generalTab, iscsiTab, synoInfoTabFixed);
     },
     getConf: function () {
@@ -1732,46 +1772,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
 
         return rrConfig?.user_config;
     },
-    _prefix: '/webman/3rdparty/rr-manager/',
-    handleFileUpload: function (jsonData) {
-        let url = `${this._prefix}uploadConfigFile.cgi`;
-        return new Promise((resolve, reject) => {
-            Ext.Ajax.request({
-                url: url,
-                method: 'POST',
-                jsonData: jsonData,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                success: function (response) {
-                    resolve(Ext.decode(response.responseText));
-                },
-                failure: function (response) {
-                    reject('Failed with status: ' + response.status);
-                }
-            });
-        });
-    },
-    runTask: function (taskName) {
-        that = this;
-        return new Promise((resolve, reject) => {
-            let params = {
-                task_name: taskName
-            };
-            let args = {
-                api: 'SYNO.Core.EventScheduler',
-                method: 'run',
-                version: 1,
-                params: params,
-                stop_when_error: false,
-                mode: 'sequential',
-                callback: function (success, message) {
-                    success ? resolve(message) : reject('Unable to get packages!');
-                }
-            };
-            that.sendWebAPI(args);
-        });
-    },
     setConf: function () {
         var user_config = this.getParams();
         var rrConfigJson = localStorage.getItem("rrConfig");
@@ -1779,7 +1779,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         rrConfigOrig.user_config = user_config;
         localStorage.setItem("rrConfig", JSON.stringify(rrConfigOrig));
 
-        return this.handleFileUpload(user_config);
+        return this.appWin.handleFileUpload(user_config);
     },
     confirmApply: function () {
         if (!this.isAnyFormDirty())
@@ -1904,12 +1904,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.GeneralTab", {
     onActivate: function () {
     },
     loadForm: function (e) {
-        // const t = Ext.getCmp(this.lcw_enabled);
-        // this.appWin.setTpHardThreshold(e.tp_hard_threshold_bytes),
-        //     e.lcw_enabled = this.appWin.isLowCapacityWriteEnable(),
-        //     t.suspendEvents(),
         this.getForm().setValues(e);
-        // t.resumeEvents()
     },
     promptLcwDialog: function (e, t) {
         t && !this.suspendLcwPrompt && this.appWin.getMsgBox().show({
@@ -1951,11 +1946,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.RRConfigTab", {
                         {
                             fieldLabel: 'lkm',
                             name: 'lkm',
-                            allowBlank: false,
-                            xtype: 'syno_textfield',
-                        }, {
-                            fieldLabel: 'kernel',
-                            name: 'kernel',
                             allowBlank: false,
                             xtype: 'syno_textfield',
                         }, {
@@ -2021,12 +2011,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.RRConfigTab", {
     onActivate: function () {
     },
     loadForm: function (e) {
-        // const t = Ext.getCmp(this.lcw_enabled);
-        // this.appWin.setTpHardThreshold(e.tp_hard_threshold_bytes),
-        //     e.lcw_enabled = this.appWin.isLowCapacityWriteEnable(),
-        //     t.suspendEvents(),
         this.getForm().setValues(e);
-        // t.resumeEvents()
     },
     promptLcwDialog: function (e, t) {
         t && !this.suspendLcwPrompt && this.appWin.getMsgBox().show({
