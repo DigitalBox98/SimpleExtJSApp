@@ -172,21 +172,22 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         return Ext.apply(t, e), t;
     },
     onActivate: function () {
-        const e = this;
-        e.appWin.setStatusBusy(null, null, 50);
+        const self = this;
+        self.appWin.setStatusBusy(null, null, 50);
         (async () => {
-            e.systemInfo = await e.getSytemInfo();
-            e.packages = await e.getPackagesList();
-            if (e.systemInfo && e.packages) {
-                e.systemInfoTxt = `Model: ${e.systemInfo?.model}, RAM: ${e.systemInfo?.ram} MB, DSM version: ${e.systemInfo?.version_string} `;
-                var rrManagerPackage = e.packages.packages.find(p => p.id == 'rr-manager');
-                e.rrManagerVersionText = `🛡️RR Manager v.: ${rrManagerPackage?.version}`;
-                e.panels.healthPanel.fireEvent(
+            self.systemInfo = await self.getSytemInfo();
+            self.packages = await self.getPackagesList();
+            if (self.systemInfo && self.packages) {
+                self.systemInfoTxt = `Model: ${self.systemInfo?.model}, RAM: ${self.systemInfo?.ram} MB, DSM version: ${self.systemInfo?.version_string} `;
+                const rrManagerPackage = self.packages.packages.find(package => package.id == 'rr-manager');
+                self.rrManagerVersionText = `🛡️RR Manager v.: ${rrManagerPackage?.version}`;
+                self.panels.healthPanel.fireEvent(
                     "select",
-                    e.panels.healthPanel.clickedBox
-                ),
-                    e.panels.healthPanel.fireEvent("data_ready");
-                this.updateAllForm();
+                    self.panels.healthPanel.clickedBox
+                );
+                await self.updateAllForm();
+                self.rrVersionText = self.rrConfig.rr_version;
+                self.panels.healthPanel.fireEvent("data_ready");
             }
         })();
     },
@@ -226,52 +227,52 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         this.owner.getMsgBox().alert("title", msg);
     },
     onRunRrUpdateManuallyClick: function () {
-        that = this;
-        var rrConfigJson = localStorage.getItem('rrConfig');
-        var rrConfig = JSON.parse(rrConfigJson);
-        var rrManagerConfig = rrConfig.rr_manager_config;
+        const self = this;
+        const rrConfigJson = localStorage.getItem('rrConfig');
+        const rrConfig = JSON.parse(rrConfigJson);
+        const rrManagerConfig = rrConfig.rr_manager_config;
 
-        var url = `${rrManagerConfig?.UPLOAD_DIR_PATH}${rrManagerConfig?.RR_TMP_DIR}/update.zip`;
+        const url = `${rrManagerConfig?.UPLOAD_DIR_PATH}${rrManagerConfig?.RR_TMP_DIR}/update.zip`;
         this.getUpdateFileInfo(url).then((responseText) => {
             if (!responseText.success) {
-                that.owner.getEl()?.unmask();
-                this.showMsg(that.formatString(that._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
+                self.owner.getEl()?.unmask();
+                this.showMsg(self.formatString(self._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
                 return;
             }
-            var configName = 'rrUpdateFileVersion';
-            that.owner[configName] = responseText;
-            let currentRrVersion = rrConfig.rr_version;
-            let updateRrVersion = that.owner[configName].updateVersion;
+            const configName = 'rrUpdateFileVersion';
+            self.owner[configName] = responseText;
+            const currentRrVersion = rrConfig.rr_version;
+            const updateRrVersion = self.owner[configName].updateVersion;
 
             async function runUpdate() {
                 //show the spinner
-                that.owner.getEl().mask(_T("common", "loading"), "x-mask-loading");
-                that.appWin.runScheduledTask('RunRrUpdate');
-                var maxCountOfRefreshUpdateStatus = 350;
-                var countUpdatesStatusAttemp = 0;
+                self.owner.getEl().mask(_T("common", "loading"), "x-mask-loading");
+                self.appWin.runScheduledTask('RunRrUpdate');
+                const maxCountOfRefreshUpdateStatus = 350;
+                let countUpdatesStatusAttemp = 0;
 
-                var updateStatusInterval = setInterval(async function () {
-                    var checksStatusResponse = await that.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
+                const updateStatusInterval = setInterval(async function () {
+                    const checksStatusResponse = await self.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
-                        that.owner.getEl()?.unmask();
-                        that.showMsg(checksStatusResponse?.status);
+                        self.owner.getEl()?.unmask();
+                        self.showMsg(checksStatusResponse?.status);
                     }
-                    var response = checksStatusResponse.result;
-                    that.owner.getEl()?.mask(that.formatString(that._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
+                    const response = checksStatusResponse.result;
+                    self.owner.getEl()?.mask(self.formatString(self._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
                     countUpdatesStatusAttemp++;
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
-                        that.owner.getEl()?.unmask();
-                        that.showMsg(that.formatString(that._V('ui'), response?.progress, response?.progressmsg));
+                        self.owner.getEl()?.unmask();
+                        self.showMsg(self.formatString(self._V('ui'), response?.progress, response?.progressmsg));
                     } else if (response?.progress == '100') {
-                        that.owner.getEl()?.unmask();
+                        self.owner.getEl()?.unmask();
                         clearInterval(updateStatusInterval);
-                        that.showMsg(that._V('ui', 'update_rr_completed'));
+                        self.showMsg(self._V('ui', 'update_rr_completed'));
                     }
                 }, 1500);
             }
-            that.appWin.getMsgBox().confirmDelete("title", that.formatString(that._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
+            self.appWin.getMsgBox().confirmDelete("title", self.formatString(self._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
                 (t) => {
                     if ("yes" === t) {
                         runUpdate();
@@ -293,10 +294,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         that = this.appWin;
         this.owner.setStatusBusy();
         try {
-            const responseText = await this.getConf();
+            const rrConfig = await this.getConf();
             var configName = 'rrConfig';
-            that[configName] = responseText;
-            localStorage.setItem(configName, JSON.stringify(responseText));
+            that[configName] = rrConfig;
+            this[configName] = rrConfig;
+
+            localStorage.setItem(configName, JSON.stringify(rrConfig));
         } catch (e) {
             SYNO.Debug(e);
         } finally {
@@ -402,12 +405,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         this.callParent([this.fillConfig(e)]);
     },
     onDataReady: function () {
-        let s = "normal";
-        this.iconTpl.overwrite(this.getComponent("icon").getEl(), { status: s }),
-            this.titleTpl.overwrite(this.upperPanel.getComponent("title").getEl(), {
-                status: s,
+        let status = "normal";
+        this.iconTemplate.overwrite(this.getComponent("icon").getEl(), { status: status }),
+            this.titleTemplate.overwrite(this.upperPanel.getComponent("title").getEl(), {
+                status: status,
             }),
-            this.updateDesc("cur");
+            this.updateDescription("current");
         this.getComponent("rrActionsPanel")?.setVisible(true);
         this.owner.fireEvent("data_ready");
     },
@@ -500,7 +503,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 progress: (progressEvent) => {
                     const percentage = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2);
                     self.appWin.clearStatusBusy();
-                    self.appWin.setStatusBusy({text: `${_T("common", "loading")}. Completed: ${percentage}%.`},percentage);
+                    self.appWin.setStatusBusy({ text: `${_T("common", "loading")}. Completed: ${percentage}%.` }, percentage);
                 },
             });
         }
@@ -587,29 +590,33 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     opts: {
         chunkmode: false,
         filefiledname: "file",
-        file: function (t) {
-            var FileObj = function (e, t, i, o) {
-                var r = SYNO.SDS.copy(t || {})
-                    , n = SYNO.webfm.utils.getLastModifiedTime(e);
-                return n && (r = Ext.apply(r, {
-                    mtime: n
-                })),
-                {
-                    id: i,
-                    file: e,
-                    dtItem: o,
-                    name: e.name || e.fileName,
-                    size: e.size || e.fileSize,
+        file: function (file) {
+            var createFileObject = function (file, params, id, dtItem) {
+                var modifiedParams = SYNO.SDS.copy(params || {});
+                var lastModifiedTime = SYNO.webfm.utils.getLastModifiedTime(file);
+
+                if (lastModifiedTime) {
+                    modifiedParams = Ext.apply(modifiedParams, {
+                        mtime: lastModifiedTime
+                    });
+                }
+
+                return {
+                    id: id,
+                    file: file,
+                    dtItem: dtItem,
+                    name: file.name || file.fileName,
+                    size: file.size || file.fileSize,
                     progress: 0,
                     status: "NOT_STARTED",
-                    params: r,
-                    chunkmode: !1
-                }
+                    params: modifiedParams,
+                    chunkmode: false
+                };
             }
 
-            mtime = SYNO.webfm.utils.getLastModifiedTime(t);
-            var i = new FileObj(t, { mtime: mtime });
-            return i;
+            var lastModifiedTime = SYNO.webfm.utils.getLastModifiedTime(file);
+            var fileObject = new createFileObject(file, { mtime: lastModifiedTime });
+            return fileObject;
         },
         //TODO: remove hard coding
         params: {
@@ -729,20 +736,20 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     },
     fillConfig: function (e) {
         this.poolLinkId = Ext.id();
-        this.iconTpl = this.createIconTpl();
-        this.titleTpl = this.createTitleTpl();
+        this.iconTemplate = this.createIconTpl();
+        this.titleTemplate = this.createTitleTpl();
         this.upperPanel = this.createUpperPanel();
         this.lowerPanel = this.createLowerPanel();
 
-        this.descMapping = {
+        this.descriptionMapping = {
             normal: this._V('ui', 'greetings_text'),
             target_abnormal: []
         };
 
-        const t = {
+        const panelConfig = {
             layout: "hbox",
             cls: "iscsi-overview-health-panel",
-            autoHeight: !0,
+            autoHeight: true,
             items: [
                 { xtype: "box", itemId: "icon", cls: "health-icon-block" },
                 {
@@ -755,10 +762,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     layoutConfig: { align: "stretch" },
                     items: [this.upperPanel, this.lowerPanel],
                 },
-                {//RR actions
+                {
                     xtype: "syno_panel",
                     itemId: "rrActionsPanel",
-                    // cls: "health-text-block",
                     flex: 1,
                     height: 96,
                     hidden: true,
@@ -766,11 +772,10 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     layoutConfig: { align: "stretch" },
                     items: [this.createActionsSection()],
                 },
-
             ],
             listeners: { scope: this, data_ready: this.onDataReady },
         };
-        return Ext.apply(t, e), t;
+        return Ext.apply(panelConfig, e), panelConfig;
 
     },
     createIconTpl: function () {
@@ -852,38 +857,39 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
             ],
         });
     },
-    updateDesc: function (e) {
-        const t = this;
-        this.descs = [];
-        let i,
-            s,
-            n = -1;
+    updateDescription: function (status) {
+        const self = this;
+        this.descriptions = [];
+        let description,
+            statusDescription,
+            index = -1;
         const
-            a = this.descs.length,
-            o = this.getComponent("rightPanel"),
-            r = this.lowerPanel.getComponent("desc"),
-            m = this.lowerPanel.getComponent("desc3"),
-            mm = this.lowerPanel.getComponent("desc2"),
-            l = this.upperPanel.getComponent("leftBtn"),
-            S = this.upperPanel.getComponent("rightBtn"),
-            c = r.getHeight();
-        let d = o.getHeight(),
-            p = !1;
-        s = this.descMapping.normal;
-        r.setValue(t.owner.systemInfoTxt);
-        m.setValue(t.owner.rrManagerVersionText);
-        //TODO: fix showing rr Version
-        mm.setValue(`💊RR v. ${1}`);
-        const u = r.getHeight();
+            descriptionCount = this.descriptions.length,
+            rightPanel = this.getComponent("rightPanel"),
+            descriptionField = this.lowerPanel.getComponent("desc"),
+            versionField = this.lowerPanel.getComponent("desc3"),
+            rrVersionField = this.lowerPanel.getComponent("desc2"),
+            leftButton = this.upperPanel.getComponent("leftBtn"),
+            rightButton = this.upperPanel.getComponent("rightBtn"),
+            initialHeight = descriptionField.getHeight();
+        let panelHeight = rightPanel.getHeight(),
+            isHeightChanged = false;
+        statusDescription = this.descriptionMapping.normal;
+        descriptionField.setValue(self.owner.systemInfoTxt);
+        versionField.setValue(self.owner.rrManagerVersionText);
+        rrVersionField.setValue(`💊RR v. ${self.owner.rrVersionText}`);
+
+        const updatedHeight = descriptionField.getHeight();
         if (
-            (u !== c && ((d = d - c + u), (p = !0)),
-                p && ((o.height = d), this.doLayout(), this.owner.doLayout()),
-                this.descs.length <= 1)
+            (updatedHeight !== initialHeight && ((panelHeight = panelHeight - initialHeight + updatedHeight), (isHeightChanged = true)),
+                isHeightChanged && ((rightPanel.height = panelHeight), this.doLayout(), this.owner.doLayout()),
+                this.descriptions.length <= 1)
         )
-            return l.hide(), void S.hide();
-        (l.hidden || S.hidden) && (l.show(), S.show(), this.doLayout());
+            return leftButton.hide(), void rightButton.hide();
+        (leftButton.hidden || rightButton.hidden) && (leftButton.show(), rightButton.show(), this.doLayout());
     },
-    prepareSummaryStatus: function (e, t) {
+    prepareSummaryStatus: function (status, data) {
+        // Function body goes here
     },
 });
 
@@ -903,24 +909,25 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxTmpl", {
         t.push(this.fillConfig(e)), this.callParent(t);
     },
     fillConfig: function (e) {
-        const t = { compiled: !0, disableFormats: !0 },
-            i = {
-            };
+        const templateConfig = { compiled: true, disableFormats: true },
+            translations = {};
+
         return (
-            (t.getTranslate = (e) => i[e]),
-            (t.getStatusText = (e, t) =>
-                "fctarget" === e
-                    ? i.status.fctarget[t]
-                    : "target" === e
-                        ? i.status.target[t]
-                        : "lun" === e
-                            ? i.status.lun[t]
-                            : "event" === e
-                                ? i.status.event[t]
-                                : void 0),
-            (t.isBothErrorWarn = (e, t) => 0 !== e && 0 !== t),
-            (t.showNumber = (e) => (e > 99 ? "99+" : e)),
-            Ext.apply(t, e)
+            {
+                getTranslate: (key) => translations[key],
+                getStatusText: (type, status) => {
+                    const statusTexts = {
+                        'fctarget': translations.status.fctarget[status],
+                        'target': translations.status.target[status],
+                        'lun': translations.status.lun[status],
+                        'event': translations.status.event[status]
+                    };
+                    return statusTexts[type];
+                },
+                isBothErrorWarn: (error, warning) => error !== 0 && warning !== 0,
+                showNumber: (number) => number > 99 ? '99+' : number
+            },
+            Ext.apply(templateConfig, e)
         );
     },
     createTpl: function () {
@@ -1009,21 +1016,21 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBox", {
         this.owner.fireEvent("selectchange", this.type);
     },
     processFCTrgSummary: function () {
-        const e = this,
-            t = e.appWin.fcTargets.getAll();
-        (e.data.total = 0),
-            Ext.each(
-                t,
-                (t) => {
-                    e.data.total++,
-                        "connected" === t.get("status")
-                            ? e.data.healthy++
-                            : t.get("is_enabled") ||
-                            !1 !== t.get("status") ||
-                            e.data.warning++;
-                },
-                e
-            );
+        const self = this;
+        const targets = self.appWin.fcTargets.getAll();
+        self.data.total = 0;
+        Ext.each(
+            targets,
+            (target) => {
+                self.data.total++;
+                if ("connected" === target.get("status")) {
+                    self.data.healthy++;
+                } else if (target.get("is_enabled") || target.get("status") !== false) {
+                    self.data.warning++;
+                }
+            },
+            self
+        );
     },
     processTrgSummary: function () {
         const e = this,
@@ -1100,55 +1107,57 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.StatusBoxsPanel", {
         this.callParent([this.fillConfig(e)]);
     },
     fillConfig: function (e) {
-        const t = { owner: this, appWin: e.appWin, flex: 1 };
-        (this.clickedBox = "lun"),
-            (this.statusBoxs = [
-                new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
-                    Ext.apply({ type: "lun", title: "LUN", storeKey: "lun_summ" }, t)
-                ),
-                new SYNO.ux.Panel({ width: 10 }),
-                new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
-                    Ext.apply(
-                        { type: "target", title: "Target", storeKey: "target_summ" },
-                        t
-                    )
-                ),
-                new SYNO.ux.Panel({ width: 10 }),
-                new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
-                    Ext.apply(
-                        {
-                            type: "fctarget",
-                            title: "FCTarget",
-                            storeKey: "fc_target_summ",
-                        },
-                        t
-                    )
-                ),
-                new SYNO.ux.Panel({ width: 10 }),
-                new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
-                    Ext.apply(
-                        {
-                            type: "event",
-                            title: "Events",
-                            storeKey: "event_summ",
-                        },
-                        t
-                    )
-                ),
-            ]),
-            e.appWin.supportFC || this.statusBoxs.splice(4, 2);
-        const i = {
+        const statusBoxConfig = { owner: this, appWin: e.appWin, flex: 1 };
+        this.selectedBox = "lun";
+        this.statusBoxes = [
+            new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
+                Ext.apply({ type: "lun", title: "LUN", storeKey: "lun_summ" }, statusBoxConfig)
+            ),
+            new SYNO.ux.Panel({ width: 10 }),
+            new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
+                Ext.apply(
+                    { type: "target", title: "Target", storeKey: "target_summ" },
+                    statusBoxConfig
+                )
+            ),
+            new SYNO.ux.Panel({ width: 10 }),
+            new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
+                Ext.apply(
+                    {
+                        type: "fctarget",
+                        title: "FCTarget",
+                        storeKey: "fc_target_summ",
+                    },
+                    statusBoxConfig
+                )
+            ),
+            new SYNO.ux.Panel({ width: 10 }),
+            new SYNOCOMMUNITY.RRManager.Overview.StatusBox(
+                Ext.apply(
+                    {
+                        type: "event",
+                        title: "Events",
+                        storeKey: "event_summ",
+                    },
+                    statusBoxConfig
+                )
+            ),
+        ];
+        if (!e.appWin.supportFC) {
+            this.statusBoxes.splice(4, 2);
+        }
+        const panelConfig = {
             cls: "iscsi-overview-status-panel",
             layout: "hbox",
             layoutConfig: { align: "stretch" },
-            items: this.statusBoxs,
+            items: this.statusBoxes,
             listeners: {
                 scope: this,
                 selectchange: this.onSelectChange,
                 data_ready: this.onDataReady,
             },
         };
-        return Ext.apply(i, e), i;
+        return Ext.apply(panelConfig, e), panelConfig;
     },
     onSelectChange: function (e) {
         (this.clickedBox = e),
@@ -1181,7 +1190,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             self,
             "resize",
             (e, width, height) => {
-            self.updateFbarItems(width);
+                self.updateFbarItems(width);
             },
             self
         );
@@ -1215,8 +1224,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             self.paging.pageSize = self.itemsPerPage;
             addonsStore.load({ params: { offset: 0, limit: self.itemsPerPage } });
             self.appWin.appInstance.setUserSettings(
-            self.itemId + "-dsPageLimit",
-            self.itemsPerPage
+                self.itemId + "-dsPageLimit",
+                self.itemsPerPage
             );
         }
     },
@@ -1625,24 +1634,29 @@ Ext.define("SYNOCOMMUNITY.RRManager.AdvancedSearchField", {
             }
             ), this)
     },
-    isInnerComponent: function (e, t) {
-        let i = !1;
-        return e.getTarget(".syno-datetimepicker-inner-menu") && (i = !0),
-            t.items.each((function (t) {
-                if (t instanceof Ext.form.ComboBox) {
-                    if (t.view && e.within(t.view.getEl()))
-                        return i = !0,
-                            !1
-                } else if (t instanceof Ext.form.DateField) {
-                    if (t.menu && e.within(t.menu.getEl()))
-                        return i = !0,
-                            !1
-                } else if (t instanceof Ext.form.CompositeField && this.isInnerComponent(e, t))
-                    return i = !0,
-                        !1
+    isInnerComponent: function (event, form) {
+        let isInside = false;
+        if (event.getTarget(".syno-datetimepicker-inner-menu")) {
+            isInside = true;
+        }
+        form.items.each((item) => {
+            if (item instanceof Ext.form.ComboBox) {
+                if (item.view && event.within(item.view.getEl())) {
+                    isInside = true;
+                    return false;
+                }
+            } else if (item instanceof Ext.form.DateField) {
+                if (item.menu && event.within(item.menu.getEl())) {
+                    isInside = true;
+                    return false;
+                }
+            } else if (item instanceof Ext.form.CompositeField && this.isComponentInside(event, item)) {
+                isInside = true;
+                return false;
             }
-            ), this),
-            i
+        }, this);
+        return isInside;
+
     },
     onMouseDown: function (e) {
         const t = this.searchPanel;
@@ -1669,38 +1683,42 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             this.callParent([this.fillConfig(e)]);
     },
     fillConfig: function (e) {
-        (this.generalTab = new SYNOCOMMUNITY.RRManager.Setting.GeneralTab({
+        this.generalTab = new SYNOCOMMUNITY.RRManager.Setting.GeneralTab({
             appWin: this.appWin,
             owner: this,
             itemId: "GeneralTab",
-        })),
-            (this.iscsiTab = new SYNOCOMMUNITY.RRManager.Setting.RRConfigTab({
-                appWin: this.appWin,
-                owner: this,
-                itemId: "RRConfigTab",
-            })),
-            (this.synoInfoTab = new SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab({
-                appWin: this.appWin,
-                owner: this,
-                itemId: "SynoInfoTab",
-            }))
-            ;
-        const t = [];
-        t.push(this.generalTab);
-        t.push(this.iscsiTab);
-        t.push(this.synoInfoTab);
-        const i = {
+        });
+
+        this.rrConfigTab = new SYNOCOMMUNITY.RRManager.Setting.RRConfigTab({
+            appWin: this.appWin,
+            owner: this,
+            itemId: "RRConfigTab",
+        });
+
+        this.synoInfoTab = new SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab({
+            appWin: this.appWin,
+            owner: this,
+            itemId: "SynoInfoTab",
+        });
+
+        const tabs = [this.generalTab, this.rrConfigTab, this.synoInfoTab];
+
+        const settingsConfig = {
             title: "Settings",
-            autoScroll: !0,
-            useDefaultBtn: !0,
+            autoScroll: true,
+            useDefaultBtn: true,
             labelWidth: 200,
             fieldWidth: 240,
             activeTab: 0,
-            deferredRender: !1,
-            items: t,
-            listeners: { activate: this.updateAllForm, scope: this },
+            deferredRender: false,
+            items: tabs,
+            listeners: {
+                activate: this.updateAllForm,
+                scope: this
+            },
         };
-        return Ext.apply(i, e), i;
+
+        return Ext.apply(settingsConfig, e);
     },
     loadAllForms: function (e) {
         this.items.each((t) => {
