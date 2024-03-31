@@ -429,74 +429,60 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         return myFormPanel;
     },
     _baseUrl: 'webapi/entry.cgi?',
-    sendArray: function (e, t, i, o, r) {
-        var that = this;
-        if ("CANCEL" !== t.status) {
-            var n, s = {}, l = {};
-            if (!0 === t.chunkmode)
-                if (l = {
-                    "Content-Type": "multipart/form-data; boundary=" + e.boundary
-                },
-                    s = {
-                        "X-TYPE-NAME": "SLICEUPLOAD",
-                        "X-FILE-SIZE": t.size,
-                        "X-FILE-CHUNK-END": 1 > o.total || o.index === o.total - 1 ? "true" : "false"
-                    },
-                    r && Ext.apply(s, {
-                        "X-TMP-FILE": r
-                    }),
-                    window.XMLHttpRequest.prototype.sendAsBinary)
-                    n = e.formdata + ("" !== i ? i : "") + "\r\n--" + e.boundary + "--\r\n";
-                else if (window.Blob) {
-                    var a, d = 0, p = 0, h = 0, c = "\r\n--" + e.boundary + "--\r\n", f = e.formdata.length + c.length;
-                    for (h = Ext.isString(i) ? i.length : new Uint8Array(i).byteLength,
-                        a = new Uint8Array(f += h),
-                        d = 0; d < e.formdata.length; d++)
-                        a[d] = e.formdata.charCodeAt(d);
-                    if (Ext.isString(i))
-                        for (p = 0; p < i.length; p++)
-                            a[d + p] = i.charCodeAt(p);
-                    else
-                        a.set(new Uint8Array(i), d);
-                    for (d += h,
-                        p = 0; p < c.length; p++)
-                        a[d + p] = c.charCodeAt(p);
-                    n = a
-                } else {
-                    var u;
-                    window.MSBlobBuilder ? u = new MSBlobBuilder : window.BlobBuilder && (u = new BlobBuilder),
-                        u.append(e.formdata),
-                        "" !== i && u.append(i),
-                        u.append("\r\n--" + e.boundary + "--\r\n"),
-                        n = u.getBlob(),
-                        u = null
+    sendArray: function (formData, fileDetails, fileData, chunkDetails, tempFile) {
+        var self = this;
+        var headers = {}, requestParams = {};
+        var uploadData;
+
+        if (fileDetails.status !== "CANCEL") {
+            if (fileDetails.chunkmode) {
+                headers = {
+                    "Content-Type": "multipart/form-data; boundary=" + formData.boundary
+                };
+                requestParams = {
+                    "X-TYPE-NAME": "SLICEUPLOAD",
+                    "X-FILE-SIZE": fileDetails.size,
+                    "X-FILE-CHUNK-END": chunkDetails.total <= 1 || chunkDetails.index === chunkDetails.total - 1 ? "true" : "false"
+                };
+                if (tempFile) {
+                    Ext.apply(requestParams, {
+                        "X-TMP-FILE": tempFile
+                    });
                 }
-            else
-                e.append("size", t.size),
-                    t.name ? e.append(this.opts.filefiledname, t, this.opts.params.filename) : e.append(this.opts.filefiledname, t.file),
-                    n = e;
+                if (window.XMLHttpRequest.prototype.sendAsBinary) {
+                    uploadData = formData.formdata + (fileData !== "" ? fileData : "") + "\r\n--" + formData.boundary + "--\r\n";
+                } else if (window.Blob) {
+                    var data = new Uint8Array(formData.formdata.length + fileData.length + "\r\n--" + formData.boundary + "--\r\n".length);
+                    data.set(new TextEncoder().encode(formData.formdata + fileData + "\r\n--" + formData.boundary + "--\r\n"));
+                    uploadData = data;
+                }
+            } else {
+                formData.append("size", fileDetails.size);
+                fileDetails.name ? formData.append(this.opts.filefiledname, fileDetails, this.opts.params.filename) : formData.append(this.opts.filefiledname, fileDetails.file);
+                uploadData = formData;
+            }
             this.conn = new Ext.data.Connection({
                 method: 'POST',
                 url: `${this._baseUrl}api=SYNO.FileStation.Upload&method=upload&version=2&SynoToken=${localStorage['SynoToken']}`,
-                defaultHeaders: l,
+                defaultHeaders: headers,
                 timeout: null
             });
-            var m = this.conn.request({
-                headers: s,
-                html5upload: !0,
-                chunkmode: t.chunkmode,
-                uploadData: n,
-                success: (x) => {
-                    that.appWin.clearStatusBusy();
-                    that.appWin.getMsgBox().confirmDelete(
-                        that.appWin.title,
-                        that._V('ui', 'file_uploading_succesfull_msg'),
-                        (t) => {
-                            if ("yes" === t) {
-                                that.owner.onRunRrUpdateManuallyClick();
+            var request = this.conn.request({
+                headers: requestParams,
+                html5upload: true,
+                chunkmode: fileDetails.chunkmode,
+                uploadData: uploadData,
+                success: (response) => {
+                    self.appWin.clearStatusBusy();
+                    self.appWin.getMsgBox().confirmDelete(
+                        self.appWin.title,
+                        self._V('ui', 'file_uploading_succesfull_msg'),
+                        (result) => {
+                            if (result === "yes") {
+                                self.owner.onRunRrUpdateManuallyClick();
                             }
                         },
-                        e,
+                        formData,
                         {
                             yes: {
                                 text: "Yes",
@@ -506,15 +492,15 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                         }
                     );
                 },
-                failure: (x) => {
-                    that.appWin.clearStatusBusy();
-                    that.showMsg("title", "Error file uploading.");
-                    console.log(x);
+                failure: (response) => {
+                    self.appWin.clearStatusBusy();
+                    self.showMsg("title", "Error file uploading.");
+                    console.log(response);
                 },
-                progress: (x) => {
-                    const percentage = ((x.loaded / x.total) * 100).toFixed(2);
-                    that.appWin.clearStatusBusy();
-                    that.appWin.setStatusBusy({text: `${_T("common", "loading")}. Completed: ${percentage}%.`},percentage);
+                progress: (progressEvent) => {
+                    const percentage = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2);
+                    self.appWin.clearStatusBusy();
+                    self.appWin.setStatusBusy({text: `${_T("common", "loading")}. Completed: ${percentage}%.`},percentage);
                 },
             });
         }
