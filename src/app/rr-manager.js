@@ -134,6 +134,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     },
     constructor: function (e) {
         const t = this;
+        this.installed = false;
         (this.appWin = e.appWin),
             (this.appWin.handleFileUpload = this.handleFileUpload.bind(this)),
             (this.appWin.runScheduledTask = this.runScheduledTask.bind(this)),
@@ -459,6 +460,17 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 );
                 await self.updateAllForm();
                 self.rrVersionText = self.rrConfig.rr_version;
+                if (!self.installed) {
+                    //create rr tmp folder
+                    const rrManagerConfig = self.rrConfig.rr_manager_config;
+                    SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
+                        folder_path: `/${rrManagerConfig.SHARE_NAME}`,
+                        name: rrManagerConfig.RR_TMP_DIR,
+                        force_parent: false
+                    });
+                    self.installed = true;
+                }
+
                 self.panels.healthPanel.fireEvent("data_ready");
             }
         })();
@@ -832,36 +844,32 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         window.open();
     },
     onUploadFile: function (e, d) {
-        that = d.appWin;
-        var rrConfigJson = localStorage.getItem('rrConfig');
-        var rrConfig = JSON.parse(rrConfigJson);
-        var rrManagerConfig = rrConfig.rr_manager_config;
+        let rrConfigJson = localStorage.getItem('rrConfig');
+        let rrConfig = JSON.parse(rrConfigJson);
+        let rrManagerConfig = rrConfig.rr_manager_config;
         this.opts.params.path = `/${rrManagerConfig.SHARE_NAME}/${rrManagerConfig.RR_TMP_DIR}`;
-        //create rr tmp folder
-        SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
-            folder_path: `/${rrManagerConfig.SHARE_NAME}`,
-            name: rrManagerConfig.RR_TMP_DIR,
-            force_parent: false
-        });
-        e = new File([e], this.opts.params.filename);
-        var t, i = !1;
-        if (-1 !== this.MAX_POST_FILESIZE && e.size > this.MAX_POST_FILESIZE && i)
+        let file = new File([e], this.opts.params.filename);
+        let isChunkMode = false;
+        if (-1 !== this.MAX_POST_FILESIZE && file.size > this.MAX_POST_FILESIZE && isChunkMode)
             this.onError({
                 errno: {
                     section: "error",
                     key: "upload_too_large"
                 }
-            }, e);
-        else if (t = this.prepareStartFormdata(e), e.chunkmode) {
-            var o = this.opts.chunksize,
-                r = Math.ceil(e.size / o);
-            this.onUploadPartailFile(t, e, {
-                start: 0,
-                index: 0,
-                total: r
-            })
-        } else
-            this.sendArray(t, e)
+            }, file);
+        else {
+            let formData = this.prepareStartFormdata(file);
+            if (file.chunkmode) {
+                let chunkSize = this.opts.chunksize;
+                let totalChunks = Math.ceil(file.size / chunkSize);
+                this.onUploadPartailFile(formData, file, {
+                    start: 0,
+                    index: 0,
+                    total: totalChunks
+                })
+            } else
+                this.sendArray(formData, file)
+        }
     },
     opts: {
         chunkmode: false,
