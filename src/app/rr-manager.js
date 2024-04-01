@@ -2298,7 +2298,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.RRConfigTab", {
                     }, {
                         fieldLabel: 'keymap',
                         name: 'keymap',
-                        allowBlank: false,
+                        allowBlank: true,
                         xtype: 'syno_textfield',
                     }
                     ]
