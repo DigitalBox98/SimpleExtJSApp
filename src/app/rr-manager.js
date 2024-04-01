@@ -2079,7 +2079,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             !e ||
             (this.setActiveTab(e.itemId),
                 this.setStatusError({
-                    text: "forminvalid"
+                    text: "Please fill in the required field(s).",
                 }),
                 !1)
         );
@@ -2293,7 +2293,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.RRConfigTab", {
                     }, {
                         fieldLabel: 'layout',
                         name: 'layout',
-                        allowBlank: false,
+                        allowBlank: true,
                         xtype: 'syno_textfield',
                     }, {
                         fieldLabel: 'keymap',
@@ -2397,7 +2397,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab", {
                         }, {
                             fieldLabel: 'Buzzer offen',
                             name: 'buzzeroffen',
-                            allowBlank: false,
+                            allowBlank: true,
                             xtype: 'syno_textfield',
                         }
                     ]
