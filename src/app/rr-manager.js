@@ -1770,7 +1770,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     onCellClick: function (grid, recordIndex, i, s) {
         var record = grid.store.data.get(recordIndex);
         var id = grid.getColumnModel().getColumnAt(i).id;
-        if (id !== 'system') {
+        if (id !== 'system' && record.data['system'] === false) {
             record.data[id] = !record.data[id];
             grid.getView().refresh();
         }
