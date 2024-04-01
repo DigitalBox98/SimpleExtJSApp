@@ -1950,62 +1950,81 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.RRConfigTab", {
                 new SYNO.ux.FieldSet({
                     title: 'RR Config',
                     collapsible: true,
-                    items: [
-                        {
-                            fieldLabel: 'lkm',
-                            name: 'lkm',
-                            allowBlank: false,
-                            xtype: 'syno_textfield',
-                        }, {
-                            boxLabel: 'dsmlogo',
-                            name: 'dsmlogo',
-                            xtype: 'syno_checkbox',
+                    items: [{
+                        fieldLabel: 'lkm',
+                        name: 'lkm',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'kernel',
+                        name: 'kernel',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        boxLabel: 'dsmlogo',
+                        name: 'dsmlogo',
+                        xtype: 'syno_checkbox',
 
-                        }, {
-                            boxLabel: 'directboot',
-                            name: 'directboot',
-                            xtype: 'syno_checkbox',
-                        }, {
-                            boxLabel: 'prerelease',
-                            name: 'prerelease',
-                            xtype: 'syno_checkbox',
-                            formBind: true,
-                            value: false,
-
-                        }, {
-                            fieldLabel: 'bootwait',
-                            name: 'bootwait',
-                            xtype: 'syno_numberfield',
-                        }, {
-                            fieldLabel: 'bootipwait',
-                            name: 'bootipwait',
-                            xtype: 'syno_numberfield',
-                        }, {
-                            fieldLabel: 'kernelway',
-                            name: 'kernelway',
-                            allowBlank: false,
-                            xtype: 'syno_textfield',
-                        }, {
-                            fieldLabel: 'kernelpanic',
-                            name: 'kernelpanic',
-                            allowBlank: false,
-                            xtype: 'syno_numberfield',
-                        }, {
-                            boxLabel: 'odp',
-                            name: 'odp',
-                            xtype: 'syno_checkbox',
-
-                        }, {
-                            boxLabel: 'hddsort',
-                            name: 'hddsort',
-                            xtype: 'syno_checkbox',
-
-                        }, {
-                            fieldLabel: 'smallnum',
-                            name: 'smallnum',
-                            allowBlank: false,
-                            xtype: 'syno_numberfield',
-                        }
+                    }, {
+                        boxLabel: 'directboot',
+                        name: 'directboot',
+                        xtype: 'syno_checkbox',
+                    }, {
+                        boxLabel: 'prerelease',
+                        name: 'prerelease',
+                        xtype: 'syno_checkbox',
+                    }, {
+                        fieldLabel: 'bootwait',
+                        name: 'bootwait',
+                        xtype: 'syno_numberfield',
+                    }, {
+                        fieldLabel: 'bootipwait',
+                        name: 'bootipwait',
+                        xtype: 'syno_numberfield',
+                    }, {
+                        fieldLabel: 'kernelway',
+                        name: 'kernelway',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'kernelpanic',
+                        name: 'kernelpanic',
+                        allowBlank: false,
+                        xtype: 'syno_numberfield',
+                    }, {
+                        boxLabel: 'odp',
+                        name: 'odp',
+                        xtype: 'syno_checkbox',
+                    }, {
+                        boxLabel: 'hddsort',
+                        name: 'hddsort',
+                        xtype: 'syno_checkbox',
+                    }, {
+                        fieldLabel: 'smallnum',
+                        name: 'smallnum',
+                        allowBlank: false,
+                        xtype: 'syno_numberfield',
+                    }, {
+                        fieldLabel: 'paturl',
+                        name: 'paturl',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'patsum',
+                        name: 'patsum',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'layout',
+                        name: 'layout',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }, {
+                        fieldLabel: 'keymap',
+                        name: 'keymap',
+                        allowBlank: false,
+                        xtype: 'syno_textfield',
+                    }
                     ]
                 })
             ]
