@@ -69,7 +69,6 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     },
 
     onOpen: function (a) {
-        var that = this;
         SYNOCOMMUNITY.RRManager.AppWindow.superclass.onOpen.call(this, a);
     }
 });
@@ -170,10 +169,283 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             },
         };
         return Ext.apply(t, e), t;
+    }, _getRrConfig: function () {
+        const rrConfigJson = localStorage.getItem('rrConfig');
+        return JSON.parse(rrConfigJson);
+    },
+    __checkDownloadFolder: function (callback) {
+        var self = this;
+
+        const rrConfig = this._getRrConfig();
+        const config = rrConfig.rr_manager_config;
+        this.getSharesList().then(x => {
+            var shareName = `/${config['SHARE_NAME']}`;
+            var sharesList = x.shares;
+            var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName);
+            if (!downloadsShareMetadata) {
+                var msg = formatString(_V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
+                self.appWin.setStatusBusy({ text: 'Checking the dependencies...' });
+                self.showMsg('error', msg);
+                return;
+            }
+            if (callback) callback();
+        });
+    },
+    getPasswordConfirm: function (data) {
+        self = this;
+        return new Promise((resolve, reject) => {
+            let args = {
+                api: "SYNO.Core.User.PasswordConfirm",
+                method: "auth",
+                version: 2,
+                params: {
+                    password: data
+                }, callback: function (success, message) {
+                    success ? resolve(message?.SynoConfirmPWToken)
+                        : reject('Unable to create task!');
+                },
+            };
+            self.sendWebAPI(args);
+        });
+    },
+    __checkRequiredTasks: async function () {
+        var self = this;
+        var requiredTasks = [{
+            name: "RunRrUpdate",
+            createTaskCallback: self.createAndRunSchedulerTask.bind(this)
+        }, {
+            name: "SetRootPrivsToRrManager",
+            createTaskCallback: self.createAndRunSchedulerTaskSetRootPrivilegesForRrManager.bind(this)
+        }, {
+            name: "ApplyRRConfig",
+            createTaskCallback: self.createSchedulerTaskApplyRRConfig.bind(this)
+        }];
+
+        try {
+            let response = await self.getTaskList();
+            var tasks = response.tasks;
+            var tasksToCreate = requiredTasks.filter(task => !tasks.find(x => x.name === task.name));
+            if (tasksToCreate.length > 0) {
+                let tasksNames = tasksToCreate.map(task => task.name).join(', ');
+                async function craeteTasks() {
+                    for (let task of tasksToCreate) {
+                        if (task.createTaskCallback) {
+                            var data = await self.showPasswordConfirmDialog(task.name);
+                            task.createTaskCallback(data);
+                        }
+                    }
+                    // After all tasks have been created, you might want to notify the user.
+                    self.showMsg(self._V('ui', 'tasks_created_msg'));
+                    self.owner.clearStatusBusy();
+                }
+                self.appWin.getMsgBox().confirm(
+                    "Confirmation",
+                    self.formatString(
+                        self.formatString(self._V('ui', 'required_tasks_is_missing'), tasksNames),
+                        self._V('ui', 'required_components_missing')),
+                    (userResponse) => {
+                        if ("yes" === userResponse) {
+                            craeteTasks();
+                        } else {
+                            Ext.getCmp(self.id).getEl().mask(self.formatString(self._V('ui', 'required_components_missing_spinner_msg'), tasksNames), "x-mask-loading");
+                        }
+                    }, self,
+                    {
+                        cancel: { text: 'Cancel' },
+                        yes: { text: 'Agree', btnStyle: 'red' }
+                    }, {
+                    icon: "confirm-delete-icon"
+                }
+                );
+            }
+        } catch (error) {
+            console.error('Error checking or creating tasks:', error);
+        }
+    },
+    showPasswordConfirmDialog: function (taskName) {
+        return new Promise((resolve, reject) => {
+            var window = new SYNO.SDS.ModalWindow({
+                id: "confirm_password_dialog",
+                title: `${_T("common", "enter_password_to_continue")} for task: ${taskName}.`,
+                width: 500,
+                height: 200,
+                resizable: false,
+                layout: "fit",
+                buttons: [
+                    {
+                        xtype: "syno_button",
+                        text: _T("common", "alt_cancel"),
+                        scope: this,
+                        handler: function () {
+                            Ext.getCmp("confirm_password_dialog").close();
+                            // reject(new Error("User cancelled password dialog."));
+                        },
+                    },
+                    {
+                        xtype: "syno_button",
+                        text: _T("common", "submit"),
+                        btnStyle: "blue",
+                        scope: this,
+                        handler: function () {
+                            const passwordValue = Ext.getCmp("confirm_password").getValue();
+                            Ext.getCmp("confirm_password_dialog").close();
+                            resolve(passwordValue);
+                        }
+                    },
+                ],
+                items: [
+                    {
+                        xtype: "syno_formpanel",
+                        id: "password_form_panel",
+                        bodyStyle: "padding: 0",
+                        items: [
+                            {
+                                xtype: "syno_displayfield",
+                                value: String.format(_T("common", "enter_user_password")),
+                            },
+                            {
+                                xtype: "syno_textfield",
+                                fieldLabel: _T("common", "password"),
+                                textType: "password",
+                                id: "confirm_password",
+                            },
+                        ],
+                    },
+                ],
+            });
+            window.open();
+        });
+    },
+    createAndRunSchedulerTask: function (data) {
+        this.getPasswordConfirm(data).then(data => {
+            this.createTask("RunRrUpdate",
+                ".%20%2Fvar%2Fpackages%2Frr-manager%2Ftarget%2Fapp%2Fconfig.txt%20%26%26%20%2Fusr%2Fbin%2Frr-update.sh%20updateRR%20%22%24UPLOAD_DIR_PATH%24RR_TMP_DIR%22%2Fupdate.zip%20%2Ftmp%2Frr_update_progress",
+                data
+            );
+        });
+    },
+    createAndRunSchedulerTaskSetRootPrivilegesForRrManager: function (data) {
+        that = this;
+        this.getPasswordConfirm(data).then(data => {
+            this.createTask("SetRootPrivsToRrManager",
+                "sed%20-i%20's%2Fpackage%2Froot%2Fg'%20%2Fvar%2Fpackages%2Frr-manager%2Fconf%2Fprivilege%20%26%26%20synopkg%20restart%20rr-manager",
+                data
+            ).then(x => {
+                that.sendRunSchedulerTaskWebAPI(data);
+            });
+        });
+    },
+    createSchedulerTaskApplyRRConfig: function (data) {
+        this.getPasswordConfirm(data).then(data => {
+            this.createTask("ApplyRRConfig",
+                "cp%20%2Ftmp%2Fuser-config.yml%20%2Fmnt%2Fp1%2Fuser-config.yml%20%26%26%20cp%20%2Ftmp%2F.build%20%2Fmnt%2Fp1%2F.build",
+                data
+            );
+        });
+    },
+    createTask: function (task_name, operation, token) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: task_name,
+                owner: { 0: "root" },
+                event: "bootup",
+                enable: false,
+                depend_on_task: "",
+                notify_enable: false,
+                notify_mail: "",
+                notify_if_error: false,
+                operation_type: "script",
+                operation: decodeURIComponent(operation)
+            };
+
+            if (token != "") {
+                params.SynoConfirmPWToken = token
+            }
+
+            let args = {
+                api: token != "" ? "SYNO.Core.EventScheduler.Root" : "SYNO.Core.EventScheduler",
+                method: "create",
+                version: 1,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to create task!');
+                },
+                scope: this,
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    sendRunSchedulerTaskWebAPI: function (token) {
+        args = {
+            api: "SYNO.Core.EventScheduler",
+            method: "run",
+            version: 1,
+            params: {
+                task_name: "SetRootPrivsToRrManager",
+            },
+            callback: function (success, message, data) {
+                if (!success) {
+                    console.log("error run EventScheduler task");
+                    return;
+                }
+            },
+            scope: this,
+        };
+
+        if (token != "") {
+            args.params.SynoConfirmPWToken = token
+        }
+        this.sendWebAPI(args);
+    },
+    getSharesList: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                filetype: 'dir', // URL-encode special characters if needed
+                sort_by: 'name',
+                check_dir: true,
+                additional: '["real_path","owner","time","perm","mount_point_type","sync_share","volume_status","indexed","hybrid_share","worm_share"]',
+                enum_cluster: true,
+                node: 'fm_root'
+            };
+            let args = {
+                api: 'SYNO.FileStation.List',
+                method: 'list_share',
+                version: 2,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get getSytemInfo!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
+    getTaskList: function () {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                sort_by: "next_trigger_time",
+                sort_direction: "ASC",
+                offset: 0,
+                limit: 50
+            };
+            let args = {
+                api: 'SYNO.Core.TaskScheduler',
+                method: 'list',
+                version: 3,
+                params: params,
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
     },
     onActivate: function () {
         const self = this;
         self.appWin.setStatusBusy(null, null, 50);
+        self.runScheduledTask('MountLoaderDisk');
         (async () => {
             self.systemInfo = await self.getSytemInfo();
             self.packages = await self.getPackagesList();
@@ -190,6 +462,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 self.panels.healthPanel.fireEvent("data_ready");
             }
         })();
+        self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
     },
     getUpdateFileInfo: function (file) {
         return new Promise((resolve, reject) => {
@@ -272,20 +545,23 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     }
                 }, 1500);
             }
-            self.appWin.getMsgBox().confirmDelete("title", self.formatString(self._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
-                (t) => {
-                    if ("yes" === t) {
+            self.appWin.getMsgBox().confirmDelete(
+                "Confirmation",
+                self.formatString(self._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
+                (userResponse) => {
+                    if ("yes" === userResponse) {
                         runUpdate();
                     }
                 },
                 e,
                 {
                     yes: {
-                        text: "Yes",
+                        text: "Proceed",
                         btnStyle: "red",
                     },
-                    no: { text: Ext.MessageBox.buttonText.no },
-                });
+                    no: { text: "Cancel" },
+                }
+            );
         }).catch(error => {
             this.showMsg(`Error. ${error}`);
         });
