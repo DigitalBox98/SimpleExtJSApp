@@ -2033,11 +2033,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     doApply: async function () {
         this.setStatusBusy();
         try {
-            await this.setConf();
-            await this.updateAllForm();
-            await this.appWin.runScheduledTask('ApplyRRConfig');
-            this.clearStatusBusy();
-            this.setStatusOK();
+            (async () => {
+                await this.setConf();
+                await this.updateAllForm();
+                await this.appWin.runScheduledTask('ApplyRRConfig');
+                this.clearStatusBusy();
+                this.setStatusOK();
+            })();
         } catch (e) {
             SYNO.Debug(e);
             this.clearStatusBusy();
@@ -2047,7 +2049,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     },
     getParams: function () {
         const generalTab = this.generalTab.getForm().getValues();
-        const iscsiTab = this.iscsiTab.getForm().getValues();
+        const rrConfigTab = this.rrConfigTab.getForm().getValues();
 
         const synoInfoTab = this.synoInfoTab.getForm().getValues();
         const synoInfoTabFixed = {
@@ -2056,7 +2058,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
 
         var rrConfigJson = localStorage.getItem("rrConfig");
         var rrConfig = JSON.parse(rrConfigJson);
-        return Object.assign(rrConfig?.user_config, generalTab, iscsiTab, synoInfoTabFixed);
+        return Object.assign(rrConfig?.user_config, generalTab, rrConfigTab, synoInfoTabFixed);
     },
     getConf: function () {
         var rrConfigJson = localStorage.getItem("rrConfig");
