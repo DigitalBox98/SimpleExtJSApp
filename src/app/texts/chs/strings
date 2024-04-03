@@ -5,8 +5,9 @@ index_title = "Help documentation"
 
 [ui]
 greetings_text = "Welcome to RR Manager!"
-tab_general = "General"
+tab_general = "设置"
 tab_addons = "Addons"
+tab_configuration = "配置"
 
 lb_select_update_file = "请选择 update 文件: "
 upload_update_file_form_validation_invalid_msg = "请选择 update/updateAll 文件后开始上传。"
@@ -14,7 +15,7 @@ alt_confirm = "确认"
 update_rr_progress_msg = "更新 RR 中: {0}. 状态: {1}."
 update_rr_completed = "RR 更新已完成. 请重新启动 NAS."
 update_rr_error_msg = "RR 更新未完成: {0}, 错误: {1}"
-update_rr_confirmation = "当前 RR 版本: {0}. Update 文件版本: {1}"
+update_rr_confirmation = "当前 RR 版本: {0}. update 文件版本: {1}"
 update_rr_confirmation_title = "确认更新"
 confirm_system_clean_up_msg = "您想运行清理系统分区脚本吗?"
 confirm_system_clean_up_title = "确认清除"
@@ -36,3 +37,22 @@ file_uploading_succesfull_msg = "文件上传完成. 是否进行更新?"
 update_confirm_title = "确认更新"
 uploading_file = "上传文件中 ..."
 save_addons_changes = "保存 addons 修改"
+
+rr_config_applied="RR 配置已成功应用. 请重新启动 NAS 以应用更改."
+checking_dependencies_loader="检查依赖关系 ..."
+file_uploading_failed_msg="文件上传错误"
+completed="Completed:"
+
+section_rr_actions="RR Actions"
+run_update="更新"
+
+frm_validation_fill_required_fields="请填写必填字段."
+frm_validation_no_change="未修改"
+
+save_addons_btn="保存 Addons"
+
+col_system="系统"
+col_installed="已安装"
+col_version="版本"
+col_name="名字"
+col_description="描述"
