@@ -7,6 +7,7 @@ index_title = "Help documentation"
 greetings_text = "Welcome to RR Manager!"
 tab_general = "设置"
 tab_addons = "Addons"
+tab_configuration = "配置"
 
 lb_select_update_file = "请选择 update 文件: "
 upload_update_file_form_validation_invalid_msg = "请选择 update/updateAll 文件后开始上传。"
