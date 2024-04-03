@@ -60,7 +60,7 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 // help: "overview.html",
             },
             {
-                text: "Configuration",
+                text: this._V('ui', 'tab_configuration'),
                 iconCls: "icon-settings",
                 fn: "SYNOCOMMUNITY.RRManager.Setting.Main",
                 // help: "setting.html",
@@ -186,7 +186,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             if (!downloadsShareMetadata) {
                 var msg = this.formatString(this._V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
                 self.appWin.setStatusBusy({ text: this._V('ui', 'checking_dependencies_loader') });
-                self.showMsg('error', msg);
+                self.showMsg(msg);
                 return;
             }
             if (callback) callback();
@@ -785,7 +785,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 },
                 failure: (response) => {
                     self.appWin.clearStatusBusy();
-                    self.showMsg("title", self._V('ui', 'file_uploading_failed_msg'));
+                    self.showMsg(self._V('ui', 'file_uploading_failed_msg'));
+                    console.error(self._V('ui', 'file_uploading_failed_msg'));
                     console.log(response);
                 },
                 progress: (progressEvent) => {

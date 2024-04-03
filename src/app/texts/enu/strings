@@ -7,6 +7,7 @@ index_title = "Help documentation"
 greetings_text = "Welcome to RR Manager!"
 tab_general = "General"
 tab_addons = "Addons"
+tab_configuration = "Configuration"
 
 lb_select_update_file = "Please select the update file:"
 upload_update_file_form_validation_invalid_msg = "Please select the update/updateAll file before start uploading."
