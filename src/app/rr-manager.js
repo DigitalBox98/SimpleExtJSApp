@@ -89,7 +89,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     handleFileUpload: function (jsonData) {
         this._handleFileUpload(jsonData).then(x => {
             this.runScheduledTask('ApplyRRConfig');
-            this.showMsg('The RR config has been successfully applied. Please restart the NAS to apply the changes.');
+            this.showMsg(this._V('ui', 'rr_config_applied'));
             this.appWin.clearStatusBusy();
         });
     },
@@ -184,8 +184,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             var sharesList = x.shares;
             var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName);
             if (!downloadsShareMetadata) {
-                var msg = formatString(_V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
-                self.appWin.setStatusBusy({ text: 'Checking the dependencies...' });
+                var msg = this.formatString(this._V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
+                self.appWin.setStatusBusy({ text: this._V('ui', 'checking_dependencies_loader') });
                 self.showMsg('error', msg);
                 return;
             }
@@ -252,8 +252,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                         }
                     }, self,
                     {
-                        cancel: { text: 'Cancel' },
-                        yes: { text: 'Agree', btnStyle: 'red' }
+                        cancel: { text: _T("common", "cancel") },
+                        yes: { text: _T("common", "agree"), btnStyle: 'red' }
                     }, {
                     icon: "confirm-delete-icon"
                 }
@@ -785,13 +785,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 },
                 failure: (response) => {
                     self.appWin.clearStatusBusy();
-                    self.showMsg("title", "Error file uploading.");
+                    self.showMsg("title", self._V('ui', 'file_uploading_failed_msg'));
                     console.log(response);
                 },
                 progress: (progressEvent) => {
                     const percentage = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2);
                     self.appWin.clearStatusBusy();
-                    self.appWin.setStatusBusy({ text: `${_T("common", "loading")}. Completed: ${percentage}%.` }, percentage);
+                    self.appWin.setStatusBusy({ text: `${_T("common", "loading")}. ${self._V("ui", "completed")} ${percentage}%.` }, percentage);
                 },
             });
         }
@@ -990,7 +990,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     },
     createActionsSection: function () {
         return new SYNO.ux.FieldSet({
-            title: 'RR Actions',
+            title: this._V('ui', 'section_rr_actions'),
             items: [
                 {
                     xtype: 'syno_panel',
@@ -1003,7 +1003,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                             hideLabel: true,
                             items: [{
                                 xtype: 'syno_displayfield',
-                                value: 'Run Update: ',
+                                value: this._V('ui', 'run_update'),
                                 width: 140
                             }, {
                                 xtype: 'syno_button',
@@ -2079,7 +2079,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         if (!this.isAnyFormDirty())
             return (
                 this.setStatusError({
-                    text: "Nothing to save",
+                    text: this._V("ui", "frm_validation_no_change"),
                     clear: !0,
                 }),
                 !1
@@ -2089,7 +2089,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             !e ||
             (this.setActiveTab(e.itemId),
                 this.setStatusError({
-                    text: "Please fill in the required field(s).",
+                    text: this._V("ui", "frm_validation_fill_required_fields"),
                 }),
                 !1)
         );

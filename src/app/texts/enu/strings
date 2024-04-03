@@ -36,3 +36,14 @@ file_uploading_succesfull_msg = "File has been successfully uploaded. Would you 
 update_confirm_title = "Confirm update"
 uploading_file = "Uploading file..."
 save_addons_changes = "Save addons changes"
+
+rr_config_applied="The RR config has been successfully applied. Please restart the NAS to apply the changes."
+checking_dependencies_loader="Checking the dependencies..."
+file_uploading_failed_msg="Error file uploading."
+completed="Completed:"
+
+section_rr_actions="RR Actions"
+run_update="Run Update"
+
+frm_validation_fill_required_fields="Please fill in the required field(s)."
+frm_validation_no_change="Nothing to save"

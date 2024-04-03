@@ -1,6 +1,6 @@
 SPK_NAME = rr-manager
 SPK_VERS = 2.0
-SPK_REV = 11
+SPK_REV = 12
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
@@ -85,7 +85,7 @@ rr-manager_extra_install:
 		install -m 644 src/app/help/$${language}/simpleapp_index.html $(STAGING_DIR)/app/help/$${language}/simpleapp_index.html; \
 	done
 	install -m 755 -d $(STAGING_DIR)/app/texts
-	for language in enu fre; do \
+	for language in enu fre chs; do \
 		install -m 755 -d $(STAGING_DIR)/app/texts/$${language}; \
 		install -m 644 src/app/texts/$${language}/strings $(STAGING_DIR)/app/texts/$${language}/strings; \
 	done
