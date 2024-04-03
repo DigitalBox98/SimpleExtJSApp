@@ -1586,7 +1586,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             // })),
             (e.saveButton = new SYNO.ux.Button({
                 xtype: "syno_button",
-                text: e._V("ui", "save_addons_btn"),
+                text: e.owner._V("ui", "save_addons_btn"),
                 handler: e.onAddonsSave,
                 btnStyle: "blue",
                 scope: e,
@@ -1677,7 +1677,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
     getColumnModel: function () {
         var currentLngCode = this._getLng(SYNO?.SDS?.Session?.lang || "enu");
         this.Col1 = new SYNO.ux.EnableColumn({
-            header: this._V("ui", "col_system"),
+            header: this.owner._V("ui", "col_system"),
             dataIndex: "system",
             id: "system",
             name: "system",
@@ -1688,7 +1688,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
             bindRowClick: true
         })
         this.Col2 = new SYNO.ux.EnableColumn({
-            header: this._V("ui", "col_installed"),
+            header: this.owner._V("ui", "col_installed"),
             dataIndex: "installed",
             name: "installed",
             id: "installed",
@@ -1702,15 +1702,15 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         return new Ext.grid.ColumnModel({
             columns: [
                 {
-                    header: this._V("ui", "col_name"),
+                    header: this.owner._V("ui", "col_name"),
                     width: 60,
                     dataIndex: 'name'
                 }, {
-                    header: this._V("ui", "col_version"),
+                    header: this.owner._V("ui", "col_version"),
                     width: 30,
                     dataIndex: 'version'
                 }, {
-                    header: this._V("ui", "col_description"),
+                    header: this.owner._V("ui", "col_description"),
                     width: 300,
                     dataIndex: 'description',
                     renderer: function (value, metaData, record, row, col, store, gridView) {
