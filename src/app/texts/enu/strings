@@ -47,3 +47,12 @@ run_update="Run Update"
 
 frm_validation_fill_required_fields="Please fill in the required field(s)."
 frm_validation_no_change="Nothing to save"
+
+save_addons_btn="Save Addons"
+
+col_system="System"
+col_installed="Installed"
+col_version="Verison"
+col_name="Name"
+col_description="Description"
+
