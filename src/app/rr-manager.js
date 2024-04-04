@@ -690,6 +690,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     constructor: function (e) {
         this.appWin = e.appWin;
         this.owner = e.owner;
+        this.callCustomScript = this.owner.callCustomScript.bind(this.owner);
         this.callParent([this.fillConfig(e)]);
     },
     onDataReady: function () {
@@ -1011,6 +1012,15 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                                 btnStyle: 'green',
                                 text: this._V('ui', 'upload_file_dialog_title'),
                                 handler: this.showUpdateUploadDialog.bind(this)
+                            },{
+                                xtype: 'syno_displayfield',
+                                value: 'Get NetworkInfo',
+                                width: 140
+                            }, {
+                                xtype: 'syno_button',
+                                btnStyle: 'green',
+                                text: 'Get NetworkInfo',
+                                handler: this.getNetworkInfo.bind(this)
                             }]
                         },
                     ],
@@ -1018,6 +1028,10 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 },
             ]
         });
+    },
+    getNetworkInfo: async function () {
+        var result = await this.callCustomScript('getNetworkInfo.cgi');
+        debugger;
     },
     fillConfig: function (e) {
         this.poolLinkId = Ext.id();
