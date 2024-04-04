@@ -39,7 +39,46 @@ else
   done
   # Close the ethernetInterfaces array and result object
   echo ""
+  echo "    ],"
+
+  # Extract and format /proc/cmdline information without the last comma
+  echo "    \"bootParameters\": {"
+  cmdline=$(cat /proc/cmdline)
+  # Splitting cmdline into key-value pairs
+  IFS=' ' read -ra ADDR <<< "$cmdline"
+  len=${#ADDR[@]}
+  for (( i=0; i<$len; i++ )); do
+    key=$(echo ${ADDR[$i]} | cut -f1 -d=)
+    value=$(echo ${ADDR[$i]} | cut -f2 -d=)
+    if [ $i -lt $((len - 1)) ]; then
+      echo "      \"$key\": \"$value\","
+    else
+      echo "      \"$key\": \"$value\""
+    fi
+  done
+  echo "    },"
+
+  echo "    \"syno_mac_addresses\": ["
+  file_path="/proc/sys/kernel/syno_mac_addresses"
+  declare -a mac_addresses
+  while IFS= read -r line; do
+    # Append each line (MAC address) to the array
+    mac_addresses+=("$line")
+  done < "$file_path"
+
+  # Get the length of the array for reference in the loop
+  len=${#mac_addresses[@]}
+  for (( i=0; i<$len; i++ )); do
+    # Check if it's the last element to avoid adding a comma
+    if [ $i -eq $((len-1)) ]; then
+      echo "    \"${mac_addresses[$i]}\""
+    else
+      echo "    \"${mac_addresses[$i]}\","
+    fi
+  done
+
   echo "    ]"
+
   echo "  }"
   echo "}"
 fi
