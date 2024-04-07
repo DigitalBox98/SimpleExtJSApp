@@ -1,10 +1,11 @@
 SPK_NAME = rr-manager
 SPK_VERS = 2.0
-SPK_REV = 16
+SPK_REV = 17
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
 DSM_UI_CONFIG = src/app/config
+DSM_APP_NAME = SYNOCOMMUNITY.RRManager.AppInstance
 
 PYTHON_PACKAGE = python311
 SPK_DEPENDS = "python311>=3.11.5-8"

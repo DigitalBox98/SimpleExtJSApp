@@ -1018,10 +1018,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                                 btnStyle: 'green',
                                 text: this._V('ui', 'upload_file_dialog_title'),
                                 handler: this.showUpdateUploadDialog.bind(this)
-                            }, {
-                                xtype: 'syno_displayfield',
-                                value: 'Get NetworkInfo',
-                                width: 140
                             }]
                         },
                     ],
