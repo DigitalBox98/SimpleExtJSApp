@@ -188,7 +188,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         this.getSharesList().then(x => {
             var shareName = `/${config['SHARE_NAME']}`;
             var sharesList = x.shares;
-            var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName);
+            var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName.toLowerCase());
             if (!downloadsShareMetadata) {
                 var msg = this.formatString(this._V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
                 self.appWin.setStatusBusy({ text: this._V('ui', 'checking_dependencies_loader') });
