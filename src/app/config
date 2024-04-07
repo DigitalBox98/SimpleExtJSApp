@@ -23,7 +23,7 @@
             "type": "widget",
             "title": "RR Manager",
             "icon": "images/rr-manager-{0}.png",
-            "appInstance": "SYNO.SDS.AdminCenter.Application",
+            "appInstance": "SYNOCOMMUNITY.RRManager.AppInstance",
             "launchParam": "{\"fn\":\"SYNOCOMMUNITY.RRManager.Overview.Main\"}",
             "depend": ["SYNO.SDS._Widget.GridPanel"],
             "texts": "texts"            
