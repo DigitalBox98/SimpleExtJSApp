@@ -65,6 +65,12 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
                 fn: "SYNOCOMMUNITY.RRManager.Setting.Main",
                 // help: "setting.html",
             },
+            {
+                text: this._V('ui', 'tab_debug'),
+                iconCls: "icon-debug",
+                fn: "SYNOCOMMUNITY.RRManager.Debug.Main",
+                // help: "setting.html",
+            },
         ];
     },
 
@@ -1012,15 +1018,10 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                                 btnStyle: 'green',
                                 text: this._V('ui', 'upload_file_dialog_title'),
                                 handler: this.showUpdateUploadDialog.bind(this)
-                            },{
+                            }, {
                                 xtype: 'syno_displayfield',
                                 value: 'Get NetworkInfo',
                                 width: 140
-                            }, {
-                                xtype: 'syno_button',
-                                btnStyle: 'green',
-                                text: 'Get NetworkInfo',
-                                handler: this.getNetworkInfo.bind(this)
                             }]
                         },
                     ],
@@ -1028,10 +1029,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 },
             ]
         });
-    },
-    getNetworkInfo: async function () {
-        var result = await this.callCustomScript('getNetworkInfo.cgi');
-        debugger;
     },
     fillConfig: function (e) {
         this.poolLinkId = Ext.id();
@@ -2460,5 +2457,199 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.SynoInfoTab", {
             icon: Ext.MessageBox.ERRORRED,
             minWidth: Ext.MessageBox.minWidth
         })
+    }
+});
+
+
+//Settings tab
+Ext.define("SYNOCOMMUNITY.RRManager.Debug.Main", {
+    extend: "SYNO.SDS.Utils.TabPanel",
+    API: {},
+    constructor: function (e) {
+        (this.appWin = e.appWin),
+            (this.owner = e.owner),
+            this.callParent([this.fillConfig(e)]);
+    },
+    _prefix: '/webman/3rdparty/rr-manager/',
+    callCustomScript: function (scriptName) {
+
+        return new Promise((resolve, reject) => {
+            Ext.Ajax.request({
+                url: `${this._prefix}${scriptName}`,
+                method: 'GET',
+                timeout: 60000,
+                headers: {
+                    'Content-Type': 'text/html'
+                },
+                success: function (response) {
+                    // if response text is string need to decode it
+                    if (typeof response?.responseText === 'string') {
+                        resolve(Ext.decode(response?.responseText));
+                    } else {
+                        resolve(response?.responseText);
+                    }
+                },
+                failure: function (result) {
+                    if (typeof result?.responseText === 'string' && result?.responseText && !result?.responseText.startsWith('<')) {
+                        var response = Ext.decode(result?.responseText);
+                        reject(response?.error);
+                    }
+                    else {
+                        reject('Failed with status: ' + result?.status);
+                    }
+                }
+            });
+        });
+    },
+    fillConfig: function (e) {
+        this.generalTab = new SYNOCOMMUNITY.RRManager.Debug.GeneralTab({
+            appWin: this.appWin,
+            owner: this,
+            itemId: "GeneralTab",
+        });
+
+        const tabs = [this.generalTab];
+
+        const settingsConfig = {
+            title: "Settings",
+            autoScroll: true,
+            useDefaultBtn: true,
+            labelWidth: 200,
+            fieldWidth: 240,
+            activeTab: 0,
+            deferredRender: false,
+            items: tabs,
+            listeners: {
+                activate: this.updateAllForm,
+                scope: this
+            },
+        };
+
+        return Ext.apply(settingsConfig, e);
+    },
+    loadAllForms: function (e) {
+        this.items.each((t) => {
+            if (Ext.isFunction(t.loadForm)) {
+                if (t.itemId == "SynoInfoTab") {
+                    t.loadForm(e.synoinfo);
+                } else {
+                    t.loadForm(e);
+                }
+            }
+        });
+    },
+    updateEnv: function (e) {
+    },
+    updateAllForm: async function () {
+        this.setStatusBusy();
+        try {
+            const e = await this.getConf();
+            this.loadAllForms(e), this.updateEnv(e);
+        } catch (e) {
+            SYNO.Debug(e);
+        }
+        this.clearStatusBusy();
+    },
+    getConf: function () {
+        return this.callCustomScript('getNetworkInfo.cgi')
+    },
+    setConf: function () {
+        var user_config = this.getParams();
+        var rrConfigJson = localStorage.getItem("rrConfig");
+        var rrConfigOrig = JSON.parse(rrConfigJson);
+        rrConfigOrig.user_config = user_config;
+        localStorage.setItem("rrConfig", JSON.stringify(rrConfigOrig));
+
+        return this.appWin.handleFileUpload(user_config);
+    }
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.Debug.GeneralTab", {
+    extend: "SYNO.SDS.Utils.FormPanel",
+    constructor: function (e) {
+        this.getConf = e.owner.getConf.bind(e.owner);
+        this.callParent([this.fillConfig(e)])
+    },
+    fillConfig: function (e) {
+        this.suspendLcwPrompt = !1;
+        const t = {
+            title: "General",
+            name: 'debugGeneral',
+            id: 'debugGeneral',
+            items: [new SYNO.ux.FieldSet({
+                title: 'CMD Line',
+                collapsible: true,
+                collapsed: false,
+                name: 'cmdLine',
+                id: 'cmdLine',
+                columns: 2,
+                items: [],
+            }), new SYNO.ux.FieldSet({
+                title: 'Ethernet Interfaces',
+                collapsible: true,
+                name: 'ethernetInterfaces',
+                id: 'ethernetInterfaces',
+                columns: 2,
+                items: [],
+            }), new SYNO.ux.FieldSet({
+                title: 'Syno Mac Addresses',
+                collapsible: true,
+                name: 'macAdresses',
+                id: 'macAdresses',
+                columns: 2,
+                items: [],
+            })
+            ]
+        };
+        return Ext.apply(t, e),
+            t
+    },
+    initEvents: function () {
+        this.mon(this, "activate", this.onActivate, this)
+    },
+    onActivate: function () {
+        this.getConf().then((e) => {
+            var config = e.result;
+            var cmdLineFieldSet = Ext.getCmp('cmdLine');
+            Object.keys(config.bootParameters).forEach((key) => {
+                cmdLineFieldSet.add(
+                    {
+                        fieldLabel: key,
+                        name: key,
+                        xtype: 'syno_displayfield',
+                        value: config.bootParameters[key]
+                    });
+            });
+            cmdLineFieldSet.doLayout();
+
+            var ethernetInterfacesFieldSet = Ext.getCmp('ethernetInterfaces');
+            config.ethernetInterfaces.forEach((eth) => {
+                ethernetInterfacesFieldSet.add(
+                    {
+                        fieldLabel: eth.interface,
+                        name: eth.interface,
+                        xtype: 'syno_displayfield',
+                        value: `MAC: ${eth.address}, Status: ${eth.operstate}, Speed: ${eth.speed}, Duplex: ${eth.duplex}`
+                    });
+            });
+            ethernetInterfacesFieldSet.doLayout();
+
+            var macAdressesFieldSet = Ext.getCmp('macAdresses');
+            config.syno_mac_addresses.forEach((mac_address, index) => {
+                macAdressesFieldSet.add(
+                    {
+                        fieldLabel: `Mac ${index}`,
+                        columns: 2,
+                        xtype: 'syno_displayfield',
+                        value: mac_address
+                    });
+            });
+
+            var debugGeneral = Ext.getCmp('debugGeneral');
+            debugGeneral.doLayout();
+        });
+    },
+    loadForm: function (e) {
+        // this.getForm().setValues(e);
     }
 });
