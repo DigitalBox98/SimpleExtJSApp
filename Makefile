@@ -1,6 +1,6 @@
 SPK_NAME = rr-manager
 SPK_VERS = 2.0
-SPK_REV = 18
+SPK_REV = 19
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
