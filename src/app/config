@@ -21,10 +21,10 @@
     "rr-manager.widget.js": {
         "SYNOCOMMUNITY.RRManager.Widget": {
             "type": "widget",
-            "title": "Customized",
-            "icon": "images\/{1}\/wdgt_icn_title_system_info.png",
+            "title": "RR Manager",
+            "icon": "images/rr-manager-{0}.png",
             "appInstance": "SYNO.SDS.AdminCenter.Application",
-            "launchParam": "{\"fn\":\"SYNO.SDS.AdminCenter.InfoCenter.Main\"}",
+            "launchParam": "{\"fn\":\"SYNOCOMMUNITY.RRManager.Overview.Main\"}",
             "depend": ["SYNO.SDS._Widget.GridPanel"],
             "texts": "texts"            
         }
