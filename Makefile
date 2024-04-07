@@ -1,6 +1,6 @@
 SPK_NAME = rr-manager
 SPK_VERS = 2.0
-SPK_REV = 17
+SPK_REV = 18
 SPK_ICON = src/rr-manager.png
 
 DSM_UI_DIR = app
@@ -17,8 +17,6 @@ STARTABLE = no
 DISPLAY_NAME = RR Manager
 
 HOMEPAGE = https://github.com/T-REX-XP/RRManager
-
-ADMIN_URL = /rr-manager/
 
 CONF_DIR = src/conf
 SYSTEM_GROUP = http

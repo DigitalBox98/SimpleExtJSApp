@@ -451,6 +451,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     },
     onActivate: function () {
         const self = this;
+        if (this.loaded) return;
         self.appWin.setStatusBusy(null, null, 50);
         self.runScheduledTask('MountLoaderDisk');
         (async () => {
@@ -478,6 +479,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 }
 
                 self.panels.healthPanel.fireEvent("data_ready");
+                self.loaded = true;
             }
         })();
         self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
@@ -1819,6 +1821,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         i.searchField.searchPanel.hide();
     },
     onActive: function () {
+        if(this.loaded) return;
         this.loadData();
     },
     enableButtonCheck: function () {
@@ -1831,6 +1834,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         const t = { offset: 0, limit: this.itemsPerPage };
         e.load({ params: t });
         this.enableButtonCheck();
+        this.loaded = true;
     },
     loadException: function () {
         this.appWin.clearStatusBusy(), this.setMask(!0);
@@ -2604,6 +2608,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Debug.GeneralTab", {
         this.mon(this, "activate", this.onActivate, this)
     },
     onActivate: function () {
+        self = this;
+        if (self.loaded) return;
         this.getConf().then((e) => {
             var config = e.result;
             var cmdLineFieldSet = Ext.getCmp('cmdLine');
@@ -2643,6 +2649,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Debug.GeneralTab", {
 
             var debugGeneral = Ext.getCmp('debugGeneral');
             debugGeneral.doLayout();
+            self.loaded = true;
         });
     },
     loadForm: function (e) {
