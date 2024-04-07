@@ -1053,7 +1053,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     itemId: "rightPanel",
                     cls: "health-text-block",
                     flex: 1,
-                    height: 140,
+                    height: 180,
                     layout: "vbox",
                     layoutConfig: { align: "stretch" },
                     items: [this.upperPanel, this.lowerPanel],
