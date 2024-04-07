@@ -449,6 +449,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             that.sendWebAPI(args);
         });
     },
+    checkRRVersion: function () {
+        return this.callCustomScript('getRrReleaseInfo.cgi');
+    },
     onActivate: function () {
         const self = this;
         if (this.loaded) return;
@@ -457,6 +460,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         (async () => {
             self.systemInfo = await self.getSytemInfo();
             self.packages = await self.getPackagesList();
+            self.rrCheckVersion = await self.checkRRVersion();
             if (self.systemInfo && self.packages) {
                 self.systemInfoTxt = `Model: ${self.systemInfo?.model}, RAM: ${self.systemInfo?.ram} MB, DSM version: ${self.systemInfo?.version_string} `;
                 const rrManagerPackage = self.packages.packages.find(package => package.id == 'rr-manager');
@@ -480,6 +484,30 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
 
                 self.panels.healthPanel.fireEvent("data_ready");
                 self.loaded = true;
+            }
+            function donwloadUpdate(){
+                //TODO: implement download update
+                debugger;
+            }
+            if (self?.rrCheckVersion?.status == "update available") {
+                self.appWin.getMsgBox().confirmDelete(
+                    "Confirmation",//TODO: implement translation
+                    `The new version ${self.rrCheckVersion.tag} of RR is available. Do you want to update it?`,
+                    //self.formatString(self._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
+                    (userResponse) => {
+                        if ("yes" === userResponse) {
+                            donwloadUpdate();
+                        }
+                    },
+                    e,
+                    {
+                        yes: {
+                            text: "Proceed",
+                            btnStyle: "red",
+                        },
+                        no: { text: "Cancel" },
+                    }
+                );
             }
         })();
         self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
@@ -1821,7 +1849,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         i.searchField.searchPanel.hide();
     },
     onActive: function () {
-        if(this.loaded) return;
+        if (this.loaded) return;
         this.loadData();
     },
     enableButtonCheck: function () {
