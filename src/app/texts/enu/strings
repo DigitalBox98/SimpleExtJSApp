@@ -59,3 +59,6 @@ col_version="Verison"
 col_name="Name"
 col_description="Description"
 
+
+[widget]
+message="Hello world!"
