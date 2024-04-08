@@ -452,6 +452,53 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     checkRRVersion: function () {
         return this.callCustomScript('getRrReleaseInfo.cgi');
     },
+    showPrompt: function (title, message, text, yesCallback) {
+        var window = new SYNO.SDS.ModalWindow({
+            closeAction: "hide",
+            cls: "x-window-dlg",
+            layout: 'anchor',
+            width: 750,
+            height: 600,
+            resizable: false,
+            modal: true,
+            title: title,
+            buttons: [{
+                text: _T("common", "alt_cancel"),
+                // Handle Cancel
+                handler: function () {
+                    window.close();
+                }
+            }, {
+                text: _V("ui", "alt_confirm"),
+                itemId: "confirm",
+                btnStyle: "blue",
+                // Handle Confirm
+                handler: function () {
+                    if (yesCallback) yesCallback();
+                    window.close();
+                }
+            }],
+            items: [
+                {
+                    // Display the prompt message
+                    xtype: 'box',
+                    autoEl: { tag: 'div', html: message },
+                    style: 'margin: 10px;',
+                    anchor: '100%'
+                },
+                {
+                    // Display the changelog in a scrollable view
+                    xtype: 'box',
+                    boxLabel: 'Changelog',
+                    autoEl: { tag: 'div', html: text.replace(/\n/g, '<br>') },
+                    style: 'margin: 10px; overflow-y: auto;',
+                    height: 150, // Fixed height for the scrollable area
+                    anchor: '100%'
+                }            
+            ]            
+        });
+        window.open();
+    },
     onActivate: function () {
         const self = this;
         if (this.loaded) return;
@@ -493,25 +540,9 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     url: [self.rrCheckVersion.updateAllUrl]
                 });
             }
-            if (self?.rrCheckVersion?.status == "update available") {
-                self.appWin.getMsgBox().confirmDelete(
-                    "Confirmation",//TODO: implement translation
-                    `The new version ${self.rrCheckVersion.tag} of RR is available. Do you want to update it?`,
-                    //self.formatString(self._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
-                    (userResponse) => {
-                        if ("yes" === userResponse) {
-                            donwloadUpdate();
-                        }
-                    },
-                    e,
-                    {
-                        yes: {
-                            text: "Proceed",
-                            btnStyle: "red",
-                        },
-                        no: { text: "Cancel" },
-                    }
-                );
+            if (self?.rrCheckVersion?.status == "update available" && self?.rrCheckVersion?.tag !="null") {
+                self.showPrompt('Update Available',
+                    `The new version ${self.rrCheckVersion.tag} of RR is available. Do you want to download it?`, self.rrCheckVersion.notes, donwloadUpdate);
             }
         })();
         self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
