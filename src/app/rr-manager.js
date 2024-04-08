@@ -473,10 +473,10 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 self.rrVersionText = self.rrConfig.rr_version;
                 if (!self.installed) {
                     //create rr tmp folder
-                    const rrManagerConfig = self.rrConfig.rr_manager_config;
+                    self.rrManagerConfig = self.rrConfig.rr_manager_config;
                     SYNO.API.currentManager.requestAPI('SYNO.FileStation.CreateFolder', "create", "2", {
-                        folder_path: `/${rrManagerConfig.SHARE_NAME}`,
-                        name: rrManagerConfig.RR_TMP_DIR,
+                        folder_path: `/${self.rrManagerConfig.SHARE_NAME}`,
+                        name: self.rrManagerConfig.RR_TMP_DIR,
                         force_parent: false
                     });
                     self.installed = true;
@@ -485,9 +485,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 self.panels.healthPanel.fireEvent("data_ready");
                 self.loaded = true;
             }
-            function donwloadUpdate(){
-                //TODO: implement download update
-                debugger;
+            function donwloadUpdate() {
+                SYNO.API.currentManager.requestAPI('SYNO.DownloadStation2.Task', "create", "2", {
+                    type: "url",
+                    destination: `${self.rrManagerConfig.SHARE_NAME}/${self.rrManagerConfig.RR_TMP_DIR}`,
+                    create_list: true,
+                    url: [self.rrCheckVersion.updateAllUrl]
+                });
             }
             if (self?.rrCheckVersion?.status == "update available") {
                 self.appWin.getMsgBox().confirmDelete(
