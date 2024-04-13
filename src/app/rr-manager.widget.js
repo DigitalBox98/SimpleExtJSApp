@@ -31,12 +31,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
             launchParam: "SYNOCOMMUNITY.RRManager.Overview.Main"
         };
     },
-    getHealthSummary: function () {
-        const e = this.getIcon(this.TYPE_NORMAL);
-        s = "hostname";
-        message = "this is text message";
-        return `<div class = "${e}" ext:qtip="${message}"></div>\n\t\t\t\t<div class = "system-health-widget-mini-hostname">${s}</div>`;
-    },
     loadInfo: async function () {
         if (this.isActive) {
             this.mask(_T("common", "loading"));
@@ -68,6 +62,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
         self.runScheduledTask('MountLoaderDisk');
         const rrRR = await this.checkRRVersion();
         const rrConf = await this.getRRConf();
+        let rr_health_status = rrConf.rr_health == 'health' ? this.TYPE_NORMAL : this.TYPE_ATTENTION;
+        self.setInfo({
+            title: self.getTitle(rr_health_status),
+            message: self.getStatusMessage(rr_health_status),
+            type: rr_health_status
+        });
         self.packages = await self.getPackagesList();
         const rrManagerPackage = self?.packages?.packages?.find(package => package.id == 'rr-manager');
         self.versionInfo = {
@@ -77,6 +77,79 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
         };
         this.southTable.add(self.renderVersionInfo(self.versionInfo));
         this.southTable.doLayout();
+    },
+    getTitle: function (t) {
+        switch (t) {
+            case this.TYPE_DANGER:
+                return _V("widget", "danger_status");
+            case this.TYPE_ATTENTION:
+                return _V("widget", "attention_status");
+            case this.TYPE_NORMAL:
+            default:
+                return _V("widget", "good_status");
+        }
+    },
+    getStatusMessage: function (t) {
+        switch (t) {
+            case this.TYPE_DANGER:
+                return _V("widget", "danger_status_message");
+            case this.TYPE_ATTENTION:
+                return _V("widget", "attention_status_message");
+            case this.TYPE_NORMAL:
+            default:
+                return _V("widget", "good_status_message");
+        }
+    },
+    setInfo: function (status) {
+        // If the component is destroyed, we don't need to do anything
+        if (this.isDestroyed) return;
+        // Remove any loading mask
+        this.unmask();
+        this.setStatus(status);
+    },
+    setStatus: function (rule) {
+        this.currentRule = rule;
+
+        let contentComponent = this.getContentComponent();
+
+        // if (this.getTaskButton()) {
+        //   this.getTaskButton().setStatus(rule);
+        // }
+
+        if (this.rendered) {
+            this.getIconComponent().update(this.getIcon(rule.type));
+            contentComponent.update(this.formatContent(rule));
+
+            let northPanel = this.getComponent("layoutPanel").getComponent("northPanel");
+            northPanel.doLayout();
+        }
+    },
+    formatContent: function (t) {
+        const e = this.getContent(t);
+        return (
+            '<div class="syno-sysinfo-system-health-content-wrap">' +
+            String.format(
+                '<div class = "syno-sysinfo-system-health-summary {0}" ext:qtip="{1}">{1}</div>',
+                e,
+                t.title
+            ) +
+            String.format(
+                '<div class = "syno-sysinfo-system-health-content" ext:qtip="{0}">{0}</div>',
+                t.message
+            ) +
+            "</div>"
+        );
+    },
+    getContent: function (t) {
+        switch (t) {
+            case this.TYPE_DANGER:
+                return "syno-sysinfo-system-health-content-header-emergency red-status";
+            case this.TYPE_ATTENTION:
+                return "syno-sysinfo-system-health-content-header-warning";
+            case this.TYPE_NORMAL:
+            default:
+                return "syno-sysinfo-system-health-content-header-normal";
+        }
     },
     getPackagesList: function () {
         that = this;
@@ -131,6 +204,11 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
     TYPE_ATTENTION: 1,
     TYPE_NORMAL: 2,
     getIcon: function (t) {
+        return `<div class = "${self._getIcon(
+            t.type
+        )}"></div>`;
+    },
+    _getIcon: function (t) {
         switch (t) {
             case this.TYPE_DANGER:
                 return "syno-sysinfo-system-health-west-emergency";
@@ -154,7 +232,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
             defaults: {
                 border: false
             },
-            items: [this.getViewConfig()]
+            items: [this.getViewConfig()],
+            listeners: { scope: this, render: { fn: this.loadInfo, single: !0 } },
         }
     },
     getViewConfig: function getViewConfig() {
@@ -177,7 +256,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
                 items: [{
                     xtype: "box",
                     itemId: "westIcon",
-                    cls: "syno-sysinfo-system-health-west-normal",
                 }, {
                     xtype: "box",
                     itemId: "centerContent",
@@ -207,7 +285,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
         return this.getComponent("layoutPanel").getComponent("northPanel").getComponent("westIcon")
     },
     getContentComponent: function getContentComponent() {
-        return this.getComponent("layoutPanel").getComponent("northPanel").getComponent("centerContent")
+        return this.getComponent("layoutPanel").getComponent("northPanel").getComponent("centerContent");
     },
     onClickTitle: function onClickTitle() {
         SYNO.SDS.AppLaunch(this.appSetting.appInstance, this.appSetting.launchParam)

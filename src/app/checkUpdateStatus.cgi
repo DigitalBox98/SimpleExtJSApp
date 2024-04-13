@@ -10,13 +10,29 @@ print("Content-Type: application/json\n")  # JSON is following, with an extra ne
 f = os.popen('/usr/syno/synoman/webman/modules/authenticate.cgi', 'r')
 user = f.read().strip()
 
+def read_rrmanager_config(file_path):
+    try:
+        config = {}
+        with open(file_path, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    key, value = line.split('=')
+                    config[key.strip()] = value.strip()
+        return config
+    except IOError as e:
+        return f"Error reading user-config.yml: {e}"
+    except e:
+        return "{}"
+
 response = {}
 response['success'] = False
 
 if len(user) > 0:
     # Parse query string
     arguments = cgi.FieldStorage()
-    filename = arguments.getvalue('filename')
+    rr_manager_config = read_rrmanager_config('/var/packages/rr-manager/target/app/config.txt')
+    filename = rr_manager_config.get('RR_UPDATE_PROGRESS_FILE')
 
     if filename:
         # Construct file path

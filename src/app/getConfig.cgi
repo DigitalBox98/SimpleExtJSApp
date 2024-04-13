@@ -46,8 +46,9 @@ def read_rrmanager_config(file_path):
 
 # implement check that the file exists and read it to get progress and if exists return status "awaiting_reboot". If not return status "healthy"
 def read_rr_awaiting_update(fileName):
+    file_path = os.path.join('/tmp', fileName)
     try:
-        with open(fileName, 'r') as file:
+        with open(file_path, 'r') as file:
             return "awaiting_reboot"
     except IOError as e:
         return "healthy"

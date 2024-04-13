@@ -615,7 +615,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
 
                 const updateStatusInterval = setInterval(async function () {
                     debugger;
-                    const checksStatusResponse = await self.callCustomScript(`checkUpdateStatus.cgi?filename=${12}`); //rr_update_progress
+                    const checksStatusResponse = await self.callCustomScript('checkUpdateStatus.cgi'); //rr_update_progress
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
                         self.owner.getEl()?.unmask();

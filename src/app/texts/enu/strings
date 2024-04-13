@@ -61,4 +61,11 @@ col_description="Description"
 
 
 [widget]
-message="Hello world!"
+danger_status="Danger!"
+danger_status_message="Your RR is not working properly."
+
+attention_status="Attention!"
+attention_status_message="Your RR is waiting for reboot."
+
+good_status="Healtly"
+good_status_message="Your RR is working well."
