@@ -117,7 +117,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
         // }
 
         if (this.rendered) {
-            this.getIconComponent().update(this.getIcon(rule.type));
+            this.getIconComponent().update(this.getIcon(rule));
             contentComponent.update(this.formatContent(rule));
 
             let northPanel = this.getComponent("layoutPanel").getComponent("northPanel");
@@ -125,7 +125,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
         }
     },
     formatContent: function (t) {
-        const e = this.getContent(t);
+        const e = this.getContent(t.type);
         return (
             '<div class="syno-sysinfo-system-health-content-wrap">' +
             String.format(
@@ -321,7 +321,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
         });
     },
     renderVersionInfo: function (versionInfo) {
-        return [
+        let labels = [
             {
                 xtype: "box",
                 html: String.format('<p ext:qtip="{1}" class="syno-sysinfo-system-health-south-title">{0}</p>', "💊RR:", Ext.util.Format.htmlEncode("💊RR:"))
@@ -339,16 +339,20 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
                 id: "rrMVersion",
                 xtype: "box",
                 html: String.format('<p ext:qtip="{1}" class="syno-sysinfo-system-health-south-data">{0}</p>', versionInfo.rr_manager_version, Ext.util.Format.htmlEncode(versionInfo.rr_manager_version))
-            },
-            {
+            }
+        ];
+        if (versionInfo.rr_version !== versionInfo.rr_update_version) {
+            labels.push({
                 xtype: "box",
                 html: String.format('<p ext:qtip="{1}" class="syno-sysinfo-system-health-south-title">{0}</p>', "RR update available!", Ext.util.Format.htmlEncode("RR update available!"))
-            }, {
+            });
+            labels.push({
                 xtype: "box",
                 id: "rrUpdateVersionAvailable",
                 html: String.format('<a ext:qtip="{0}" href="{1}" class="syno-sysinfo-system-health-south-data">{0}</a>', versionInfo.rr_update_version, Ext.util.Format.htmlEncode("http://"))
-            }
-        ];
+            });
+        }
+        return labels;
     },
     destroy: function destroy() {
         var a = this;
