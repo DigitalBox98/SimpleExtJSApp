@@ -10,6 +10,7 @@ tab_addons = "애드온"
 tab_configuration = "설정"
 tab_debug = "디버그"
 
+
 lb_select_update_file = "업데이트 파일을 선택하세요:"
 upload_update_file_form_validation_invalid_msg = "업로드를 시작하기 전에 update/updaeAll 파일을 선택하세요."
 alt_confirm = "확인"
@@ -57,3 +58,7 @@ col_installed="설치됨"
 col_version="버전"
 col_name="이름"
 col_description="설명"
+
+
+[widget]
+message="Hello world!"
