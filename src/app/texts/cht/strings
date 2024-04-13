@@ -57,3 +57,6 @@ col_installed="已安装"
 col_version="版本"
 col_name="名字"
 col_description="描述"
+
+[widget]
+message="Hello world!"
