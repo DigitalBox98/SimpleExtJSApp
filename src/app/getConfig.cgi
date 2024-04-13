@@ -43,6 +43,18 @@ def read_rrmanager_config(file_path):
         return f"Error reading user-config.yml: {e}"
     except e:
         return "{}"
+
+# implement check that the file exists and read it to get progress and if exists return status "awaiting_reboot". If not return status "healthy"
+def read_rr_awaiting_update(fileName):
+    try:
+        with open(fileName, 'r') as file:
+            return "awaiting_reboot"
+    except IOError as e:
+        return "healthy"
+    except e:
+        return "healthy"
+
+    
 # Authenticate the user
 f = os.popen('/usr/syno/synoman/webman/modules/authenticate.cgi', 'r')
 user = f.read().strip()
@@ -57,6 +69,7 @@ if len(user) > 0:
     response["rr_version"] = read_rr_version()
     response["user_config"] = read_user_config()
     response["rr_manager_config"] = read_rrmanager_config('/var/packages/rr-manager/target/app/config.txt')
+    response["rr_health"] = read_rr_awaiting_update(response["rr_manager_config"].get("RR_UPDATE_PROGRESS_FILE"))
 else:
     response["status"] = "not authenticated"
 

@@ -487,12 +487,18 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     anchor: '100%'
                 },
                 {
+                    // Display changelog title
+                    xtype: 'syno_displayfield',
+                    anchor: '100%',
+                    style: 'margin: 10px; font-weight: bold;',
+                    value: 'Changelog:'
+                },
+                {
                     // Display the changelog in a scrollable view
                     xtype: 'box',
-                    boxLabel: 'Changelog',
                     autoEl: { tag: 'div', html: text.replace(/\n/g, '<br>') },
-                    style: 'margin: 10px; overflow-y: auto;',
-                    height: 150, // Fixed height for the scrollable area
+                    style: 'margin: 10px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;',
+                    height: '75%', // Fixed height for the scrollable area
                     anchor: '100%'
                 }            
             ]            
@@ -608,7 +614,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 let countUpdatesStatusAttemp = 0;
 
                 const updateStatusInterval = setInterval(async function () {
-                    const checksStatusResponse = await self.callCustomScript('checkUpdateStatus.cgi?filename=rr_update_progress');
+                    debugger;
+                    const checksStatusResponse = await self.callCustomScript(`checkUpdateStatus.cgi?filename=${12}`); //rr_update_progress
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
                         self.owner.getEl()?.unmask();

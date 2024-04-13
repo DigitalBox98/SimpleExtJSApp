@@ -43,8 +43,29 @@ Ext.define("SYNOCOMMUNITY.RRManager.Widget", {
             await this.startPolling();
         }
     },
+    runScheduledTask: function (taskName) {
+        that = this;
+        return new Promise((resolve, reject) => {
+            let params = {
+                task_name: taskName
+            };
+            let args = {
+                api: 'SYNO.Core.EventScheduler',
+                method: 'run',
+                version: 1,
+                params: params,
+                stop_when_error: false,
+                mode: 'sequential',
+                callback: function (success, message) {
+                    success ? resolve(message) : reject('Unable to get packages!');
+                }
+            };
+            that.sendWebAPI(args);
+        });
+    },
     startPolling: async function () {
         const self = this;
+        self.runScheduledTask('MountLoaderDisk');
         const rrRR = await this.checkRRVersion();
         const rrConf = await this.getRRConf();
         self.packages = await self.getPackagesList();
