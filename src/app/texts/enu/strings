@@ -59,6 +59,10 @@ col_name="Name"
 col_description="Description"
 
 
+prompt_update_available_title='Update Available'
+prompt_update_available_message="The new version {0} of RR is available. Do you want to download it?"
+
+
 [widget]
 danger_status="Danger!"
 danger_status_message="Your RR is not working properly."

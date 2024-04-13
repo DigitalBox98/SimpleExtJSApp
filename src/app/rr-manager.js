@@ -500,8 +500,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     style: 'margin: 10px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;',
                     height: '75%', // Fixed height for the scrollable area
                     anchor: '100%'
-                }            
-            ]            
+                }
+            ]
         });
         window.open();
     },
@@ -546,9 +546,11 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                     url: [self.rrCheckVersion.updateAllUrl]
                 });
             }
-            if (self?.rrCheckVersion?.status == "update available" && self?.rrCheckVersion?.tag !="null") {
-                self.showPrompt('Update Available',
-                    `The new version ${self.rrCheckVersion.tag} of RR is available. Do you want to download it?`, self.rrCheckVersion.notes, donwloadUpdate);
+            if (self?.rrCheckVersion?.status == "update available"
+                && self?.rrCheckVersion?.tag != "null"
+                && self.rrConfig.rr_version !== self?.rrCheckVersion?.tag) {
+                self.showPrompt(self._T('ui', 'prompt_update_available_title'),
+                    self.formatString(self._T('ui', 'prompt_update_available_message'), self.rrCheckVersion.tag), self.rrCheckVersion.notes, donwloadUpdate);
             }
         })();
         self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
@@ -614,8 +616,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                 let countUpdatesStatusAttemp = 0;
 
                 const updateStatusInterval = setInterval(async function () {
-                    debugger;
-                    const checksStatusResponse = await self.callCustomScript('checkUpdateStatus.cgi'); //rr_update_progress
+                    const checksStatusResponse = await self.callCustomScript('checkUpdateStatus.cgi');
                     if (!checksStatusResponse?.success) {
                         clearInterval(updateStatusInterval);
                         self.owner.getEl()?.unmask();
