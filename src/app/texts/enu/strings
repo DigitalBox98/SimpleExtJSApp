@@ -10,7 +10,6 @@ tab_addons = "Addons"
 tab_configuration = "Configuration"
 tab_debug = "Debug"
 
-
 lb_select_update_file = "Please select the update file:"
 upload_update_file_form_validation_invalid_msg = "Please select the update/updateAll file before start uploading."
 alt_confirm = "Confirm"
