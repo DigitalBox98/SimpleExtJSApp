@@ -285,7 +285,6 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                         scope: this,
                         handler: function () {
                             Ext.getCmp("confirm_password_dialog").close();
-                            // reject(new Error("User cancelled password dialog."));
                         },
                     },
                     {
@@ -325,6 +324,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     },
     createAndRunSchedulerTask: function (data) {
         this.getPasswordConfirm(data).then(data => {
+            //TODO: remove hardcoded update.zip file name
             this.createTask("RunRrUpdate",
                 ".%20%2Fvar%2Fpackages%2Frr-manager%2Ftarget%2Fapp%2Fconfig.txt%20%26%26%20%2Fusr%2Fbin%2Frr-update.sh%20updateRR%20%22%24UPLOAD_DIR_PATH%24RR_TMP_DIR%22%2Fupdate.zip%20%2Ftmp%2Frr_update_progress",
                 data
@@ -595,7 +595,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         const rrConfigJson = localStorage.getItem('rrConfig');
         const rrConfig = JSON.parse(rrConfigJson);
         const rrManagerConfig = rrConfig.rr_manager_config;
-
+        //TODO: remove hardcoded update.zip file name
         const url = `${rrManagerConfig?.UPLOAD_DIR_PATH}${rrManagerConfig?.RR_TMP_DIR}/update.zip`;
         this.getUpdateFileInfo(url).then((responseText) => {
             if (!responseText.success) {
@@ -987,6 +987,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         params: {
             // populating from the config in onOpen
             path: '',
+            //TODO: remove hardcoding of the filename
             filename: "update.zip",
             overwrite: true
         }
@@ -1091,6 +1092,11 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                                 btnStyle: 'green',
                                 text: this._V('ui', 'upload_file_dialog_title'),
                                 handler: this.showUpdateUploadDialog.bind(this)
+                            }, {
+                                xtype: 'syno_button',
+                                btnStyle: 'green',
+                                text: "New Upload Update",
+                                handler: this.showUpdateUploadWizard.bind(this)
                             }]
                         },
                     ],
@@ -1098,6 +1104,23 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 },
             ]
         });
+    },
+    //TODO: modify to zip
+    tabType: "zip",
+    showUpdateUploadWizard: function () {
+        var a = new SYNOCOMMUNITY.RRManager.UpdateWizard.Wizard({
+            owner: this.appWin,
+            //TODO: use localized text
+            title: "Add Update*.zip file",
+            imageType: this.tabType,
+            pollingWindow: this.owner,
+            records: {
+                data: {
+                    items: []
+                }
+            } //this.overviewPanel.store,
+        });
+        a.open();
     },
     fillConfig: function (e) {
         this.poolLinkId = Ext.id();
@@ -1575,8 +1598,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Addons.Main", {
         return new Ext.data.SimpleStore({
             fields: ["value", "display"],
             data: [
-                ["", "All"],
-                ["system", "System"],
+                ["", this.owner._V('ui', 'addons_all')],
+                ["system", this.owner._V('ui', 'addons_system')],
             ],
         });
     },
@@ -2726,4 +2749,1006 @@ Ext.define("SYNOCOMMUNITY.RRManager.Debug.GeneralTab", {
     loadForm: function (e) {
         // this.getForm().setValues(e);
     }
+});
+
+SYNOCOMMUNITY.RRManager.UpdateWizard.Helper = {
+    T: function (a, b) {
+        return _T(a, b);
+    },
+    maskLoading: function (a) {
+        a.getEl().mask(this.T("common", "loading"), "x-mask-loading");
+    },
+    unmask: function (a) {
+        a.getEl().unmask();
+    },
+    mask: function (b, a) {
+        b.getEl().mask(a, "x-mask-loading");
+    },
+    diskSizeRenderer: function (a) {
+        return Ext.util.Format.fileSize(a);
+    },
+    tryUnmaskAndReload: function (a, b, c) {
+        this.unmask(a);
+        b.reload();
+        c();
+    },
+    getError: function (a) {
+        return _T("error", a);
+    },
+};
+
+Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.Utils.Wizard", {
+    extend: "SYNO.SDS.Wizard.ModalWindow",
+    constructor: function (a) {
+        this.callParent([Ext.apply({ width: 700, height: 500 }, a)]);
+        this.setAllStepSize();
+    },
+    getValues: function () {
+        return this.getAllSteps().reduce(function (b, a) {
+            if (Ext.isFunction(a.getValues)) {
+                b[a.itemId] = a.getValues();
+            }
+            return b;
+        }, {});
+    },
+    getSummary: function () {
+        return this.getAllSteps().reduce(function (b, a) {
+            if (Ext.isFunction(a.getSummary)) {
+                b[a.itemId] = a.getSummary();
+            }
+            return b;
+        }, {});
+    },
+    fireEventToAllSteps: function (b, a) {
+        this.getAllSteps().forEach(function (c) {
+            c.fireEvent(b, a);
+        });
+    },
+    setAllStepSize: function () {
+        this.getAllSteps().forEach(function (a) {
+            a.setHeight(Math.max(this.height - 155, 155));
+            a.setWidth(Math.max(this.width - 80, 80));
+            a.doLayout();
+        }, this);
+    },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.Utils.Step", {
+    extend: "SYNO.SDS.Wizard.Step",
+    autoHideBanner: false,
+    constructor: function (a) {
+        if (!a.layout) {
+            a.layout = { type: "vbox", align: "stretch" };
+        }
+        if (!a.height) {
+            a.height = 330;
+        }
+        this.callParent([a]);
+    },
+    hideBanner: function () {
+        if (this.owner.banner) {
+            this.owner.getComponent("banner").hide();
+            this.owner.doLayout();
+        }
+    },
+    showBanner: function () {
+        if (this.owner.banner) {
+            this.owner.getComponent("banner").show();
+            this.owner.doLayout();
+        }
+    },
+    validate: function () {
+        return true;
+    },
+    getValues: Ext.emptyFn,
+    getNext: function () {
+        debugger
+        if (Ext.isFunction(this.validate) && this.validate() !== true) {
+            return false;
+        }
+        this.formPanel.submit();
+       // return this.callParent(arguments);
+    },
+    activate: function () {
+        if (this.autoHideBanner) {
+            this.hideBanner();
+        }
+        this.fireEvent("activate");
+    },
+    deactivate: function () {
+        if (this.autoHideBanner) {
+            this.showBanner();
+        }
+        this.fireEvent("deactivate");
+    },
+    stepWebapiWithMask: function (c) {
+        var a = c.scope || this;
+        var b = c.callback ? c.callback.bind(a) : null;
+        SYNO.SDS.Virtualization.Utils.Helper.maskLoading(this.owner);
+        this.sendWebAPI(
+            Ext.apply(c, {
+                callback: function (g, e, f, d) {
+                    SYNO.SDS.Virtualization.Utils.Helper.unmask(this.owner);
+                    if (b) {
+                        b(g, e, f, d);
+                    }
+                }.bind(this),
+            })
+        );
+    },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.NewImagePanel", {
+    extend: "SYNO.SDS.Utils.FormPanel",
+    uploadTimeout: 86400000,
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
+    exts: {
+        zip: [".zip"],
+    },
+    constructor: function (a) {
+        this.callParent([this.fillConfig(a)]);
+    },
+    fillConfig: function (a) {
+        this.store = this.createStore();
+        this.imageType = a.imageType;
+        this.existNameList = this.createExistNameList(a.records);
+        this.gridPanel = this.createGridPanel(a);
+        this.tbar = this.createTBar(a);
+        var b = {
+            cls: "image-new-image-panel",
+            tbar: this.tbar,
+            labelWidth: 204,
+            labelPad: 20,
+            fileUpload: true,
+            trackResetOnLoad: true,
+            layout: "fit",
+            items: [this.gridPanel],
+        };
+        Ext.apply(b, a);
+        return b;
+    },
+    createTBar: function (a) {
+        return new SYNO.ux.Toolbar({
+            items: [
+                {
+                    xtype: "syno_filebutton",
+                    buttonOnly: true,
+                    itemId: "btn_from_PC",
+                    id: (this.form_pc_id = Ext.id()),
+                    buttonText: this.helper.T("ui", "from_pc"),
+                    listeners: {
+                        scope: this,
+                        afterrender: function (b) {
+                            b.el.set({
+                                accept: this.getFileExtsByImageType().toString(),
+                                multiple: true,
+                            });
+                            this.mon(b.el, "change", this.onFromPC, this);
+                        },
+                    },
+                },
+                {
+                    xtype: "syno_button",
+                    itemId: "btn_from_DS",
+                    id: (this.form_ds_id = Ext.id()),
+                    text: this.helper.T("ui", "from_ds"),
+                    handler: this.onFromDS,
+                    scope: this,
+                },
+                // {
+                //     xtype: "syno_button",
+                //     itemId: "btn_download_vdsm",
+                //     id: (this.download_vdsm_id = Ext.id()),
+                //     text: this.helper.T("image", "download_syno_vdsm"),
+                //     hidden: "vdsm" !== a.imageType,
+                //     scope: this,
+                //     handler: this.onDownloadVDSM,
+                // },
+            ],
+        });
+    },
+    createStore: function () {
+        var a = [
+            { name: "name" },
+            { name: "path" },
+            { name: "get_patch_by" },
+            { name: "action" },
+            { name: "input_elm" },
+            { name: "real_path" },
+            { name: "file_size" },
+            { name: "file" },
+        ];
+        return new Ext.data.JsonStore({
+            autoDestroy: true,
+            idProperty: "name",
+            root: "",
+            fields: a,
+        });
+    },
+    createGridPanel: function (a) {
+        this.nameTextField = new SYNO.ux.TextField({
+            name: "name",
+            allowBlank: false,
+            itemId: "name_field",
+            maxlength: 127,
+            vtype: "taskname",
+            selectOnFocus: true,
+            listeners: {
+                scope: this,
+                focus: function () {
+                    var b = this.gridPanel
+                        .getView()
+                        .getCell(this.nameTextField.gridEditor.row, 0);
+                    var c = b.itip;
+                    if (!c) {
+                        this.nameTextField.clearInvalid();
+                    } else {
+                        this.nameTextField.markInvalid(c);
+                    }
+                },
+            },
+        });
+        return new SYNO.ux.EditorGridPanel({
+            cls: "vm-textfield-grid",
+            store: this.store,
+            flex: 1,
+            clicksToEdit: 1,
+            enableHdMenu: false,
+            enableColumnMove: false,
+            colModel: new Ext.grid.ColumnModel({
+                defaults: { menuDisabled: true },
+                columns: [
+                    {
+                        header: this.helper.T("ui", "image_name"),
+                        dataIndex: "name",
+                        align: "left",
+                        editor: this.nameTextField,
+                    },
+                    {
+                        header: this.helper.T("common", "file"),
+                        dataIndex: "real_path",
+                        renderer: this.helper.toolTipRenderer,
+                    },
+                    {
+                        header: this.helper.T("common", "size"),
+                        dataIndex: "file_size",
+                        renderer: function (b) {
+                            if (0 >= b) {
+                                return "-";
+                            }
+                            return this.helper.diskSizeRenderer(b);
+                        }.createDelegate(this),
+                    },
+                    {
+                        xtype: "actioncolumn",
+                        header: this.helper.T("common", "action"),
+                        dataIndex: "action",
+                        scope: this,
+                        items: [
+                            {
+                                iconCls: "vm-fileupload-delete-icon",
+                                handler: function (d, e, c) {
+                                    var b = this.store.getAt(e).get("input_elm");
+                                    this.store.removeAt(e);
+                                    if (Ext.isObject(b)) {
+                                        Ext.removeNode(Ext.getDom(b));
+                                    }
+                                    this.nameValidate();
+                                }.createDelegate(this),
+                            },
+                        ],
+                        width: 40,
+                        align: "center",
+                    },
+                ],
+            }),
+            listeners: {
+                scope: this,
+                afteredit: function (b) {
+                    this.nameValidate();
+                },
+            },
+        });
+    },
+    createExistNameList: function (b) {
+        var c = [];
+        var a = b.snapshot || b.data;
+        a.items.forEach(function (d) {
+            c.push(d.get("name"));
+        });
+        return c;
+    },
+    getFileExtsByImageType: function () {
+        return this.exts[this.imageType];
+    },
+    getValues: function () {
+        var a = [];
+        for (var b = 0; b < this.store.getCount(); b++) {
+            var c = this.store.getAt(b);
+            a.push({
+                get_patch_by: c.get("get_patch_by"),
+                name: c.get("name"),
+                path: c.get("path"),
+                file: c.get("file"),
+                file_size: c.get("file_size"),
+            });
+        }
+        return a;
+    },
+    addStore: function (a) {
+        this.store.add(new Ext.data.Record(a));
+        this.nameValidate();
+    },
+    isUniqueExistName: function (a) {
+        if (-1 !== this.existNameList.indexOf(a)) {
+            return false;
+        }
+        return true;
+    },
+    isUniqueNewName: function (a, c) {
+        for (var b = 0; b < this.store.getCount(); b++) {
+            if (b === c) {
+                continue;
+            }
+            if (a === this.store.getAt(b).get("name")) {
+                return false;
+            }
+        }
+        return true;
+    },
+    nameValidate: function () {
+        var isValid = true;
+        var errorMessage;
+        for (var index = 0; index < this.store.getCount(); index++) {
+            var record = this.store.getAt(index);
+            var cell = this.gridPanel.getView().getCell(index, 0);
+            var invalidCharactersRegex = /([\\\{\}\|\^\[\]\?\=\:\+\/\*\(\)\$\!"#%&',;<>@`~])/;
+            if (null !== record.get("name").match(invalidCharactersRegex)) {
+                errorMessage = this.helper.T("error", "invalid_name");
+            } else {
+                if (!this.isUniqueExistName(record.get("name")) || !this.isUniqueNewName(record.get("name"), index)) {
+                    errorMessage = this.helper.T("error", "name_conflict");
+                }
+            }
+            var cellFirstChild = Ext.get(Ext.getDom(cell).firstChild);
+            cellFirstChild.removeClass("validCell");
+            cellFirstChild.removeClass("invalidCell");
+            if (errorMessage) {
+                cellFirstChild.addClass("invalidCell");
+                Ext.getDom(cell).setAttribute("ext:anchor", "top");
+                Ext.getDom(cell).itip = errorMessage;
+                isValid = false;
+            } else {
+                cellFirstChild.addClass("validCell");
+                Ext.getDom(cell).itip = "";
+            }
+            errorMessage = "";
+        }
+        return isValid;
+    },
+    onDownloadVDSM: function () {
+        // var a = new SYNOCOMMUNITY.RRManager.Image.DownloadVDSMWindow({
+        //     parent: this,
+        //     owner: this.appWin,
+        // });
+        // a.open();
+    },
+    onFromPC: function (b, d, c) {
+        var a = b.target.files;
+        Ext.each(
+            a,
+            function (f) {
+                var e = {
+                    input_elm: d,
+                    name: f.name.substring(0, f.name.lastIndexOf(".")),
+                    path: f.name,
+                    real_path: f.name,
+                    get_patch_by: "upload",
+                    file_size: f.size,
+                    file: f,
+                };
+                if (!this.preCheck(e)) {
+                    return true;
+                }
+                this.addStore(e);
+            },
+            this
+        );
+        this.getTopToolbar().getComponent("btn_from_PC").reset();
+    },
+    onFromDS: function () {
+        if (!Ext.isDefined(this.dialog)) {
+            var a = this.getFileExtsByImageType().toString().replace(/\./g, "");
+            this.dialog = new SYNO.SDS.Utils.FileChooser.Chooser({
+                parent: this,
+                owner: this.appWin,
+                closeOwnerWhenNoShare: true,
+                closeOwnerNumber: 0,
+                enumRecycle: true,
+                superuser: true,
+                usage: { type: "open", multiple: true },
+                title: this.helper.T("vm", "import_vm_from_ds"),
+                folderToolbar: true,
+                getFilterPattern: function () {
+                    return a;
+                },
+                treeFilter: this.helper.VMMDSChooserTreeFilter,
+                listeners: {
+                    scope: this,
+                    choose: function (d, b, c) {
+                        b.records.forEach(function (f) {
+                            var e = {
+                                name: f
+                                    .get("path")
+                                    .substring(
+                                        f.get("path").lastIndexOf("/") + 1,
+                                        f.get("path").lastIndexOf(".")
+                                    ),
+                                path: f.get("path"),
+                                real_path: _S("hostname") + f.get("path"),
+                                get_patch_by: "from_ds",
+                                file_size: f.get("filesize"),
+                            };
+                            if (!this.preCheck(e)) {
+                                return true;
+                            }
+                            this.addStore(e);
+                        }, this);
+                        this.dialog.close();
+                    },
+                    close: function () {
+                        delete this.dialog;
+                    },
+                },
+            });
+        }
+        this.dialog.show();
+    },
+    preCheck: function (a) {
+        var b = a.path.substring(a.path.lastIndexOf("."));
+        if (-1 === this.getFileExtsByImageType().indexOf(b)) {
+            return false;
+        }
+        return true;
+    },
+    getNext: function () {
+        return this.isValid();
+    },
+    isValid: function () {
+        var c = true;
+        var a = this.getValues();
+        if (!this.nameValidate()) {
+            this.appWin
+                .getMsgBox()
+                .alert(
+                    this.helper.T("app", "displayname"),
+                    this.helper.T("error", "invalid_name")
+                );
+            return false;
+        }
+        if (0 === a.length) {
+            this.appWin
+                .getMsgBox()
+                .alert(
+                    this.helper.T("app", "displayname"),
+                    this.helper.T("error", "error_nochoosefile")
+                );
+            return false;
+        }
+        var d = { zip: this.exts.zip };
+        var b = {
+            zip: [".zip"],
+        };
+        a.forEach(function (i) {
+            if ("upload" === i.get_patch_by || "from_ds" === i.get_patch_by) {
+                var e = i.path.substr(i.path.lastIndexOf("."));
+                var g = d.hasOwnProperty(this.imageType) ? d[this.imageType] : [];
+                var h = b.hasOwnProperty(this.imageType)
+                    ? b[this.imageType]
+                    : Object.values(b).reduce(function (k, j) {
+                        return k.concat(j);
+                    }, []);
+                var f = false;
+                g.forEach(function (j) {
+                    if (e === j) {
+                        f = true;
+                    }
+                });
+                if (f === false) {
+                    this.appWin
+                        .getMsgBox()
+                        .alert(
+                            this.helper.T("app", "displayname"),
+                            String.format(
+                                this.helper.T("error", "image_filename_bad_ext"),
+                                h.join(", ")
+                            )
+                        );
+                    c = false;
+                    return false;
+                }
+            }
+        }, this);
+        return c;
+    },
+    doCreate: function (a) {
+        // this.sendWebAPI({
+        //     api: "SYNO.Virtualization.Guest.Image",
+        //     method: "create",
+        //     version: 2,
+        //     params: a,
+        //     scope: this,
+        //     callback: function (c, b) {
+        //         if (!c) {
+        //             this.owner.owner
+        //                 .getMsgBox()
+        //                 .alert("alert", this.helper.getError(b.code));
+        //         }
+        //         this.nonUploadTaskNum--;
+        //         this.checkAllTaskDone();
+        //     },
+        // });
+    },
+    doUploadAndCreate: function (c, a) {
+        var b = new FormData();
+        b.append("file", a);
+        // this.sendWebAPI({
+        //     api: "SYNO.Virtualization.Guest.Image",
+        //     method: "upload_and_create",
+        //     version: 1,
+        //     params: c,
+        //     uploadData: b,
+        //     html5upload: true,
+        //     timeout: this.uploadTimeout,
+        //     scope: this,
+        //     callback: function (e, d) {
+        //         if (!e) {
+        //             this.owner.owner
+        //                 .getMsgBox()
+        //                 .alert("alert", this.helper.getError(d.code));
+        //         }
+        //         this.uploadTaskNum--;
+        //         this.checkAllTaskDone();
+        //     },
+        // });
+    },
+    doImageCreate: function (b) {
+        // this.uploadTaskNum = 0;
+        // this.nonUploadTaskNum = 0;
+        // var a = this.getValues();
+        // this.waitingSendTaskNum = a.length;
+        // this.uploadTaskNum = a.filter(function (c) {
+        //     return "upload" === c.get_patch_by;
+        // }).length;
+        // this.nonUploadTaskNum = a.length - this.uploadTaskNum;
+        // this.uploadErrorFile = [];
+        // this.helper.maskLoading(this.appWin);
+        // this.helper.maskLoading(this.pollingWindow.getActivateOverviewPanel());
+        // a.forEach(function (c) {
+        //     var d = {
+        //         synovmm_ui_id: SYNO.SDS.Virtualization.Utils.GlobalVar.mainAppId,
+        //         image_repos: JSON.stringify(b),
+        //         type: this.imageType,
+        //         get_patch_by: c.get_patch_by,
+        //         name: c.name,
+        //         ds_file_path: c.path,
+        //     };
+        //     if (d.get_patch_by !== "upload") {
+        //         this.doCreate(d);
+        //         this.waitingSendTaskNum--;
+        //         this.checkAllTaskSend();
+        //     } else {
+        //         this.reader(d, c.file).then(
+        //             function (e) {
+        //                 this.doUploadAndCreate(e.params, e.file);
+        //                 this.waitingSendTaskNum--;
+        //                 this.checkAllTaskSend();
+        //             }.bind(this),
+        //             function (e) {
+        //                 this.uploadErrorFile.push(e);
+        //                 this.uploadTaskNum--;
+        //                 this.waitingSendTaskNum--;
+        //                 this.checkAllTaskSend();
+        //             }.bind(this)
+        //         );
+        //     }
+        // }, this);
+    },
+    checkAllTaskSend: function () {
+        if (0 !== this.waitingSendTaskNum) {
+            return;
+        }
+        if (0 !== this.uploadErrorFile.length) {
+            this.owner.owner
+                .getMsgBox()
+                .alert(
+                    "alert",
+                    String.format(
+                        this.helper.T("image", "upload_file_missing"),
+                        this.uploadErrorFile.join(", ")
+                    )
+                );
+        }
+        this.helper.tryUnmaskAndReload(
+            this,
+            this.pollingWindow.getActivateOverviewPanel(),
+            this.pollingWindow.pollingTask
+        );
+        this.helper.unmask(this.appWin);
+        this.appWin.hide();
+        this.checkAllTaskDone();
+    },
+    checkAllTaskDone: function () {
+        if (0 === this.uploadTaskNum && 0 === this.nonUploadTaskNum) {
+            this.appWin.close();
+        }
+    },
+    reader: function (b, a) {
+        return new Promise(function (f, e) {
+            var d = a.slice(0, 4);
+            if (0 >= d.size) {
+                e(b.name);
+                return;
+            }
+            var c = new FileReader();
+            c.args = { params: b, file: a };
+            c.addEventListener("load", function () {
+                f(this.args);
+            });
+            c.addEventListener("error", function () {
+                e(this.args.params.name);
+            });
+            c.readAsText(d);
+        });
+    },
+    submit: function () {
+        var c = this.getValues();
+        var d = 0;
+        var g = {};
+        c.forEach(function (h) {
+            d += h.file_size;
+        });
+        var b = this.appWin.getMsgBox();
+        // var f = this.appWin.getValues().storage.image_hosts_and_repos;
+        // var a = [];
+        // for (var e = 0; e < f.length; e++) {
+        //     if (-1 === a.indexOf(f[e].host_id)) {
+        //         a.push(f[e].host_id);
+        //     }
+        // }
+        g.file_size = JSON.stringify(d);
+        // g.host_ids = a;
+        this.helper.maskLoading(this.appWin);
+        this.helper.unmask(this.appWin);
+        this.doImageCreate();
+        // this.sendWebAPI({
+        //     api: "SYNO.Virtualization.Cluster",
+        //     method: "check_multi_host_upload",
+        //     version: 1,
+        //     params: g,
+        //     scope: this,
+        //     callback: function (m, l) {
+        //       
+        //         if (!m) {
+        //             b.alert("alert", this.helper.getError(l.code));
+        //             return;
+        //         }
+        //         if (0 < l.unavailabe_hosts.length) {
+        //             var k = "";
+        //             for (e = 0; e < l.unavailabe_hosts.length; e++) {
+        //                 k = k + "[" + l.unavailabe_hosts[e] + "]";
+        //                 if (e !== l.unavailabe_hosts.length - 1) {
+        //                     k += ",";
+        //                 }
+        //             }
+        //             b.alert(
+        //                 "alert",
+        //                 String.format(
+        //                     this.helper.T("error", "guest_image_upload_no_available_repo"),
+        //                     k
+        //                 )
+        //             );
+        //         }
+        //         if (0 < l.availabe_host_ids.length) {
+        //             var i = [];
+        //             for (e = 0; e < l.availabe_host_ids.length; e++) {
+        //                 for (var h = 0; h < f.length; h++) {
+        //                     if (l.availabe_host_ids[e] === f[h].host_id) {
+        //                         i.push(f[h].repo_id);
+        //                     }
+        //                 }
+        //             }
+        //             this.doImageCreate(i);
+        //         }
+        //     },
+        // });
+    },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.ImagePanel", {
+    extend: "SYNOCOMMUNITY.RRManager.UpdateWizard.Utils.Step",
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
+    constructor: function (a) {
+        this.callParent([this.fillConfig(a)]);
+    },
+    fillConfig: function (a) {
+        this.formPanel = new SYNOCOMMUNITY.RRManager.UpdateWizard.NewImagePanel({
+            appWin: a.appWin,
+            owner: a.owner,
+            imageType: a.imageType,
+            pollingWindow: a.pollingWindow,
+            records: a.records,
+            nextId: a.nextId,
+        });
+        var b = {
+            headline: this.helper.T("vm", "specify_image_spec"),
+            layout: "fit",
+            items: [this.formPanel],
+            listeners: { scope: this, activate: this.onActivate },
+        };
+        Ext.apply(b, a);
+        return b;
+    },
+    checkState: function () {
+        this.callParent();
+        this.owner.getButton("back").hide();
+    },
+    onActivate: function () {
+        this.formPanel.fireEvent("activate");
+    },
+    getValues: function () {
+        return this.formPanel.getValues();
+    },
+    validate: function () {
+        return this.formPanel.isValid();
+    },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.StoragePanel", {
+    extend: "SYNOCOMMUNITY.RRManager.UpdateWizard.Utils.Step",
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
+    selectedVolume: {},
+    constructor: function (a) {
+        this.callParent([this.fillConfig(a)]);
+    },
+    fillConfig: function (a) {
+        this.store = this.createStore(a);
+        this.gridPanel = this.createGridPanel(a);
+        var b = {
+            headline: this.helper.T("host", "select_storage_desc_new"),
+            layout: "fit",
+            items: [this.gridPanel],
+            listeners: { scope: this, activate: this.onActivate },
+        };
+        Ext.apply(b, a);
+        return b;
+    },
+    createGridPanel: function (a) {
+        return new SYNO.ux.GridPanel({
+            cls: "vmm-panel-no-padding",
+            flex: 1,
+            store: this.store,
+            enableHdMenu: false,
+            colModel: new Ext.grid.ColumnModel({
+                defaults: { sortable: true, width: 120 },
+                columns: [
+                    { header: this.helper.T("common", "host"), dataIndex: "host_name" },
+                    {
+                        header: this.helper.T("volume", "volume"),
+                        dataIndex: "volume_path",
+                        renderer: SYNO.SDS.Utils.StorageUtils.VolumeNameRenderer,
+                    },
+                    {
+                        header: this.helper.T("common", "total_space"),
+                        dataIndex: "size",
+                        renderer: this.helper.diskSizeRenderer,
+                    },
+                    {
+                        header: this.helper.T("common", "free_space"),
+                        dataIndex: "free_size",
+                        renderer: this.helper.diskSizeRenderer,
+                    },
+                ],
+            }),
+            selModel: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+            viewConfig: { trackResetOnLoad: false },
+        });
+    },
+    createStore: function (a) {
+        return new SYNO.API.JsonStore({
+            api: "SYNO.Virtualization.Repo",
+            method: "list_avail_volume",
+            version: 1,
+            appWindow: a.owner,
+            autoDestroy: true,
+            root: "volumes",
+            fields: [
+                { name: "host_name" },
+                { name: "host_id" },
+                { name: "volume_path" },
+                { name: "size" },
+                { name: "free_size" },
+            ],
+            sortInfo: { field: "host_name", direction: "ASC" },
+            listeners: {
+                scope: this,
+                exception: this.onStoreException,
+                beforeload: this.onStoreBeforeLoad,
+                load: this.onStoreLoad,
+            },
+        });
+    },
+    getSelection: function () {
+        return this.gridPanel.getSelectionModel().getSelected();
+    },
+    saveSelectedVolume: function () {
+        var a = this.getSelection();
+        if (!a) {
+            this.selectedVolume = {};
+            return;
+        }
+        this.selectedVolume = this.getValues();
+    },
+    onStoreException: function () {
+        this.helper.unmask(this.owner);
+        this.helper.mask(
+            this.gridPanel,
+            this.helper.T("error", "cluster_not_ready")
+        );
+        this.owner.getButton("next").disable();
+    },
+    onStoreBeforeLoad: function (a, b) {
+        this.saveSelectedVolume();
+    },
+    onStoreLoad: function (b) {
+        this.helper.unmask(this.owner);
+        if (0 !== b.getTotalCount()) {
+            this.helper.unmask(this.owner);
+            if (
+                !this.selectedVolume.hasOwnProperty("host_id") ||
+                !this.selectedVolume.hasOwnProperty("volume_path")
+            ) {
+                return;
+            }
+            var a = b.findBy(
+                function (c) {
+                    return (
+                        c.get("host_id") === this.selectedVolume.host_id &&
+                        c.get("volume_path") === this.selectedVolume.volume_path
+                    );
+                }.createDelegate(this)
+            );
+            if (a !== -1) {
+                this.gridPanel.getSelectionModel().selectRow(a);
+            }
+            this.owner.getButton("next").enable();
+        } else {
+            this.helper.mask(
+                this.gridPanel,
+                this.helper.T("storage", "no_available_storage")
+            );
+            this.owner.getButton("next").disable();
+        }
+    },
+    onActivate: function () {
+      //  this.helper.unmask(this.gridPanel);
+      // this.helper.maskLoading(this.owner);
+       // this.store.load();
+       this.owner.getButton("next").enable();
+    },
+    validate: function () {
+        // var a = this.getSelection();
+        // if (!a) {
+        //     this.owner
+        //         .getMsgBox()
+        //         .alert("alert", this.helper.T("error", "no_storage_error"));
+        //     return false;
+        // }
+        return true;
+    },
+    getValues: function () {
+        return {
+            host_id: this.getSelection().get("host_id"),
+            volume_path: this.getSelection().get("volume_path"),
+        };
+    },
+    getNext: function () {
+        if (!this.validate()) {
+            return false;
+        }
+        this.saveSelectedVolume();
+        this.owner.goNext(this.nextId);
+        return false;
+    },
+});
+
+Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.Wizard", {
+    extend: "SYNOCOMMUNITY.RRManager.UpdateWizard.Utils.Wizard",
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
+    constructor: function (a) {
+        this.callParent([this.fillConfig(a)]);
+    },
+    fillConfig: function (a) {
+        var b = {
+            cls: "vm-create-wizard",
+            steps: [
+                new SYNOCOMMUNITY.RRManager.UpdateWizard.ImagePanel({
+                    appWin: this,
+                    owner: this,
+                    imageType: a.imageType,
+                    pollingWindow: a.pollingWindow,
+                    records: a.records,
+                    itemId: "image",
+                    nextId: "storage",
+                }),
+                new SYNOCOMMUNITY.RRManager.UpdateWizard.StoragePanel({
+                    appWin: this,
+                    owner: this,
+                    itemId: "storage",
+                    nextId: null,
+                }),
+            ],
+        };
+        Ext.apply(b, a);
+        return b;
+    },
+    onOpen: function () {
+        this.helper.maskLoading(this);
+        // this.sendWebAPI({
+        //     api: "SYNO.Virtualization.Repo",
+        //     method: "list",
+        //     version: 2,
+        //     scope: this,
+        //     callback: function (f, d, e, b) {
+        //         if (!f) {
+        //             this.getMsgBox().alert(
+        //                 "alert",
+        //                 this.helper.getError(d.code),
+        //                 function () {
+        //                     this.close();
+        //                 },
+        //                 this
+        //             );
+        //             return;
+        //         }
+        //         var a = false;
+        //         d.repos.every(function (g) {
+        //             if ("healthy" === g.status_type || "warning" === g.status_type) {
+        //                 a = true;
+        //                 return false;
+        //             }
+        //             return true;
+        //         });
+        //         if (!a) {
+        //             var c = this.helper.createLinkText(
+        //                 this.helper.T("common", "here_to_go")
+        //             );
+        //             this.getMsgBox().alert(
+        //                 "alert",
+        //                 String.format(
+        //                     "{0} ({1})",
+        //                     this.helper.T("error", "no_available_storage"),
+        //                     c.linkText
+        //                 ),
+        //                 function () {
+        //                     this.close();
+        //                 },
+        //                 this
+        //             );
+        //             Ext.get(c.id).on(
+        //                 {
+        //                     click: function () {
+        //                         this.owner.selectPage("SYNO.SDS.Virtualization.Storage.Panel");
+        //                         this.close();
+        //                     }.createDelegate(this),
+        //                 },
+        //                 this
+        //             );
+        //             return;
+        //         }
+                this.helper.unmask(this);
+        //     },
+        // });
+        this.callParent(arguments);
+    },
 });

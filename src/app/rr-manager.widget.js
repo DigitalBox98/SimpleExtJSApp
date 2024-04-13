@@ -1,5 +1,6 @@
 // Namespace definition
 Ext.ns('SYNOCOMMUNITY.RRManager');
+SYNOCOMMUNITY.RRManager.UpdateWizard = SYNOCOMMUNITY.RRManager.UpdateWizard || {};
 
 // Translator
 _V = function (category, element) {

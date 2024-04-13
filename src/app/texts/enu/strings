@@ -62,6 +62,13 @@ col_description="Description"
 prompt_update_available_title='Update Available'
 prompt_update_available_message="The new version {0} of RR is available. Do you want to download it?"
 
+addons_all="All"
+addons_system="System"
+
+from_pc="From PC"
+from_ds="From DiskStation"
+
+image_name="Image Name"
 
 [widget]
 danger_status="Danger!"
