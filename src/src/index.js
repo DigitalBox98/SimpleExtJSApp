@@ -8,7 +8,7 @@ import HealthPanel from './panels/healthPanel';
 
 //tab addons
 import Addons from './tabs/addons';
-import AdvancedSearchField from './components/AdvancedSearchField';
+import AdvancedSearchField from './components/advancedSearchField';
 
 //tab settings(configuration)
 import Settings from './tabs/setting';
