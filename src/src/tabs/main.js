@@ -468,8 +468,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             if (self?.rrCheckVersion?.status == "update available"
                 && self?.rrCheckVersion?.tag != "null"
                 && self.rrConfig.rr_version !== self?.rrCheckVersion?.tag) {
-                self.showPrompt(self._T('ui', 'prompt_update_available_title'),
-                    self.formatString(self._T('ui', 'prompt_update_available_message'), self.rrCheckVersion.tag), self.rrCheckVersion.notes, donwloadUpdate);
+                self.showPrompt(self._V('ui', 'prompt_update_available_title'),
+                    self.formatString(self._V('ui', 'prompt_update_available_message'), self.rrCheckVersion.tag), self.rrCheckVersion.notes, donwloadUpdate);
             }
         })();
         self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
