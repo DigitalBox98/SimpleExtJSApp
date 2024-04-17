@@ -36,7 +36,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.NewImagePanel", {
                     buttonOnly: true,
                     itemId: "btn_from_PC",
                     id: (this.form_pc_id = Ext.id()),
-                    buttonText: this.helper.T("ui", "from_pc"),
+                    buttonText: this.helper.V("ui", "from_pc"),
                     listeners: {
                         scope: this,
                         afterrender: function (b) {
@@ -52,7 +52,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.UpdateWizard.NewImagePanel", {
                     xtype: "syno_button",
                     itemId: "btn_from_DS",
                     id: (this.form_ds_id = Ext.id()),
-                    text: this.helper.T("ui", "from_ds"),
+                    text: this.helper.V("ui", "from_ds"),
                     handler: this.onFromDS,
                     scope: this,
                 },

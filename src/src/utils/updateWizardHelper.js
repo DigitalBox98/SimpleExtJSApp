@@ -3,6 +3,9 @@ SYNOCOMMUNITY.RRManager.UpdateWizard.Helper = {
     T: function (a, b) {
         return _T(a, b);
     },
+    V: function (category, element) {
+        return _TT("SYNOCOMMUNITY.RRManager.AppInstance", category, element)
+    },
     maskLoading: function (a) {
         a.getEl().mask(this.T("common", "loading"), "x-mask-loading");
     },

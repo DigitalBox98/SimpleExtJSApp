@@ -1,10 +1,7 @@
 export default
 Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     extend: "SYNO.ux.Panel",
-    _V: function (category, element) {
-        return _TT("SYNOCOMMUNITY.RRManager.AppInstance", category, element)
-    },
-
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
     formatString: function (str, ...args) {
         return str.replace(/{(\d+)}/g, function (match, number) {
             return typeof args[number] !== 'undefined' ? args[number] : match;
@@ -14,7 +11,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
     handleFileUpload: function (jsonData) {
         this._handleFileUpload(jsonData).then(x => {
             this.runScheduledTask('ApplyRRConfig');
-            this.showMsg(this._V('ui', 'rr_config_applied'));
+            this.showMsg(this.helper.V('ui', 'rr_config_applied'));
             this.appWin.clearStatusBusy();
         });
     },
@@ -109,8 +106,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             var sharesList = x.shares;
             var downloadsShareMetadata = sharesList.find(x => x.path.toLowerCase() == shareName.toLowerCase());
             if (!downloadsShareMetadata) {
-                var msg = this.formatString(this._V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
-                self.appWin.setStatusBusy({ text: this._V('ui', 'checking_dependencies_loader') });
+                var msg = this.formatString(this.helper.V('ui', 'share_notfound_msg'), config['SHARE_NAME']);
+                self.appWin.setStatusBusy({ text: this.helper.V('ui', 'checking_dependencies_loader') });
                 self.showMsg(msg);
                 return;
             }
@@ -161,19 +158,19 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                         }
                     }
                     // After all tasks have been created, you might want to notify the user.
-                    self.showMsg(self._V('ui', 'tasks_created_msg'));
+                    self.showMsg(self.helper.V('ui', 'tasks_created_msg'));
                     self.owner.clearStatusBusy();
                 }
                 self.appWin.getMsgBox().confirm(
                     "Confirmation",
                     self.formatString(
-                        self.formatString(self._V('ui', 'required_tasks_is_missing'), tasksNames),
-                        self._V('ui', 'required_components_missing')),
+                        self.formatString(self.helper.V('ui', 'required_tasks_is_missing'), tasksNames),
+                        self.helper.V('ui', 'required_components_missing')),
                     (userResponse) => {
                         if ("yes" === userResponse) {
                             craeteTasks();
                         } else {
-                            Ext.getCmp(self.id).getEl().mask(self.formatString(self._V('ui', 'required_components_missing_spinner_msg'), tasksNames), "x-mask-loading");
+                            Ext.getCmp(self.id).getEl().mask(self.formatString(self.helper.V('ui', 'required_components_missing_spinner_msg'), tasksNames), "x-mask-loading");
                         }
                     }, self,
                     {
@@ -382,13 +379,13 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             modal: true,
             title: title,
             buttons: [{
-                text: _T("common", "alt_cancel"),
+                text: this.helper.T("common", "alt_cancel"),
                 // Handle Cancel
                 handler: function () {
                     window.close();
                 }
             }, {
-                text: _V("ui", "alt_confirm"),
+                text: this.helper.V("ui", "alt_confirm"),
                 itemId: "confirm",
                 btnStyle: "blue",
                 // Handle Confirm
@@ -468,8 +465,8 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
             if (self?.rrCheckVersion?.status == "update available"
                 && self?.rrCheckVersion?.tag != "null"
                 && self.rrConfig.rr_version !== self?.rrCheckVersion?.tag) {
-                self.showPrompt(self._V('ui', 'prompt_update_available_title'),
-                    self.formatString(self._V('ui', 'prompt_update_available_message'), self.rrCheckVersion.tag), self.rrCheckVersion.notes, donwloadUpdate);
+                self.showPrompt(self.helper.V('ui', 'prompt_update_available_title'),
+                    self.formatString(self.helper.V('ui', 'prompt_update_available_message'), self.rrCheckVersion.tag), self.rrCheckVersion.notes, donwloadUpdate);
             }
         })();
         self.__checkDownloadFolder(self.__checkRequiredTasks.bind(self));
@@ -519,7 +516,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
         this.getUpdateFileInfo(url).then((responseText) => {
             if (!responseText.success) {
                 self.owner.getEl()?.unmask();
-                this.showMsg(self.formatString(self._V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
+                this.showMsg(self.formatString(self.helper.V('ui', 'unable_update_rr_msg'), responseText?.error ?? "No response from the readUpdateFile.cgi script."));
                 return;
             }
             const configName = 'rrUpdateFileVersion';
@@ -542,22 +539,22 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.Main", {
                         self.showMsg(checksStatusResponse?.status);
                     }
                     const response = checksStatusResponse.result;
-                    self.owner.getEl()?.mask(self.formatString(self._V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
+                    self.owner.getEl()?.mask(self.formatString(self.helper.V('ui', 'update_rr_progress_msg'), response?.progress ?? "--", response?.progressmsg ?? "--"), 'x-mask-loading');
                     countUpdatesStatusAttemp++;
                     if (countUpdatesStatusAttemp == maxCountOfRefreshUpdateStatus || response?.progress?.startsWith('-')) {
                         clearInterval(updateStatusInterval);
                         self.owner.getEl()?.unmask();
-                        self.showMsg(self.formatString(self._V('ui'), response?.progress, response?.progressmsg));
+                        self.showMsg(self.formatString(self.helper.V('ui'), response?.progress, response?.progressmsg));
                     } else if (response?.progress == '100') {
                         self.owner.getEl()?.unmask();
                         clearInterval(updateStatusInterval);
-                        self.showMsg(self._V('ui', 'update_rr_completed'));
+                        self.showMsg(self.helper.V('ui', 'update_rr_completed'));
                     }
                 }, 1500);
             }
             self.appWin.getMsgBox().confirmDelete(
                 "Confirmation",
-                self.formatString(self._V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
+                self.formatString(self.helper.V('ui', 'update_rr_confirmation'), currentRrVersion, updateRrVersion),
                 (userResponse) => {
                     if ("yes" === userResponse) {
                         runUpdate();

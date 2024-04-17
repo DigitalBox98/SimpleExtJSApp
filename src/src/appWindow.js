@@ -1,11 +1,8 @@
+import helper from './utils/updateWizardHelper';
 export default
 // Window definition
 Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
-    // Translator
-    _V: function (category, element) {
-        return _TT("SYNOCOMMUNITY.RRManager.AppInstance", category, element)
-    },
-
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
     formatString: function (str, ...args) {
         return str.replace(/{(\d+)}/g, function (match, number) {
             return typeof args[number] !== 'undefined' ? args[number] : match;
@@ -36,25 +33,25 @@ Ext.define('SYNOCOMMUNITY.RRManager.AppWindow', {
     getListItems: function () {
         return [
             {
-                text: this._V('ui', 'tab_general'),
+                text: this.helper.V('ui', 'tab_general'),
                 iconCls: "icon-overview",
                 fn: "SYNOCOMMUNITY.RRManager.Overview.Main",
                 // help: "overview.html",
             },
             {
-                text: this._V('ui', 'tab_addons'),
+                text: this.helper.V('ui', 'tab_addons'),
                 iconCls: "icon-log",
                 fn: "SYNOCOMMUNITY.RRManager.Addons.Main",
                 // help: "overview.html",
             },
             {
-                text: this._V('ui', 'tab_configuration'),
+                text: this.helper.V('ui', 'tab_configuration'),
                 iconCls: "icon-settings",
                 fn: "SYNOCOMMUNITY.RRManager.Setting.Main",
                 // help: "setting.html",
             },
             {
-                text: this._V('ui', 'tab_debug'),
+                text: this.helper.V('ui', 'tab_debug'),
                 iconCls: "icon-debug",
                 fn: "SYNOCOMMUNITY.RRManager.Debug.Main",
                 // help: "setting.html",

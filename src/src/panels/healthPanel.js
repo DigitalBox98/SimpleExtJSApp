@@ -1,9 +1,6 @@
 Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     extend: "SYNO.ux.Panel",
-    _V: function (category, element) {
-        return _TT("SYNOCOMMUNITY.RRManager.AppInstance", category, element)
-    },
-
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
     formatString: function (str, ...args) {
         return str.replace(/{(\d+)}/g, function (match, number) {
             return typeof args[number] !== 'undefined' ? args[number] : match;
@@ -28,14 +25,14 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     },
     createUploadPannel: function () {
         var myFormPanel = new Ext.form.FormPanel({
-            title: this._V("ui", "lb_select_update_file"),
+            title: this.helper.V("ui", "lb_select_update_file"),
             fileUpload: true,
             name: 'upload_form',
             border: !1,
             bodyPadding: 10,
             items: [{
                 xtype: 'syno_filebutton',
-                text: this._V('ui', 'select_file'),
+                text: this.helper.V('ui', 'select_file'),
                 name: 'filename',
                 allowBlank: false,
             }],
@@ -91,7 +88,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                     self.appWin.clearStatusBusy();
                     self.appWin.getMsgBox().confirmDelete(
                         self.appWin.title,
-                        self._V('ui', 'file_uploading_succesfull_msg'),
+                        self.helper.V('ui', 'file_uploading_succesfull_msg'),
                         (result) => {
                             if (result === "yes") {
                                 self.owner.onRunRrUpdateManuallyClick();
@@ -109,14 +106,14 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                 },
                 failure: (response) => {
                     self.appWin.clearStatusBusy();
-                    self.showMsg(self._V('ui', 'file_uploading_failed_msg'));
-                    console.error(self._V('ui', 'file_uploading_failed_msg'));
+                    self.showMsg(self.helper.V('ui', 'file_uploading_failed_msg'));
+                    console.error(self.helper.V('ui', 'file_uploading_failed_msg'));
                     console.log(response);
                 },
                 progress: (progressEvent) => {
                     const percentage = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2);
                     self.appWin.clearStatusBusy();
-                    self.appWin.setStatusBusy({ text: `${_T("common", "loading")}. ${self._V("ui", "completed")} ${percentage}%.` }, percentage);
+                    self.appWin.setStatusBusy({ text: `${_T("common", "loading")}. ${self.helper.V("ui", "completed")} ${percentage}%.` }, percentage);
                 },
             });
         }
@@ -130,7 +127,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         that = this;
         var window = new SYNO.SDS.ModalWindow({
             id: "upload_file_dialog",
-            title: this._V("ui", "upload_file_dialog_title"),
+            title: this.helper.V("ui", "upload_file_dialog_title"),
             width: 500,
             height: 400,
             resizable: false,
@@ -153,7 +150,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                         const form = that["upload_form"].getForm();
                         var fileObject = form.el.dom[1].files[0];
                         if (!form.isValid()) {
-                            that.showMsg(this._V('ui', 'upload_update_file_form_validation_invalid_msg'));
+                            that.showMsg(this.helper.V('ui', 'upload_update_file_form_validation_invalid_msg'));
                             return;
                         }
                         this.appWin.setStatusBusy();
@@ -316,7 +313,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
     },
     createActionsSection: function () {
         return new SYNO.ux.FieldSet({
-            title: this._V('ui', 'section_rr_actions'),
+            title: this.helper.V('ui', 'section_rr_actions'),
             items: [
                 {
                     xtype: 'syno_panel',
@@ -329,12 +326,12 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
                             hideLabel: true,
                             items: [{
                                 xtype: 'syno_displayfield',
-                                value: this._V('ui', 'run_update'),
+                                value: this.helper.V('ui', 'run_update'),
                                 width: 140
                             }, {
                                 xtype: 'syno_button',
                                 btnStyle: 'green',
-                                text: this._V('ui', 'upload_file_dialog_title'),
+                                text: this.helper.V('ui', 'upload_file_dialog_title'),
                                 handler: this.showUpdateUploadDialog.bind(this)
                             }, {
                                 xtype: 'syno_button',
@@ -374,7 +371,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Overview.HealthPanel", {
         this.lowerPanel = this.createLowerPanel();
 
         this.descriptionMapping = {
-            normal: this._V('ui', 'greetings_text'),
+            normal: this.helper.V('ui', 'greetings_text'),
             target_abnormal: []
         };
 

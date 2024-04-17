@@ -1,6 +1,7 @@
 export default
 Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
     extend: "SYNO.SDS.Utils.TabPanel",
+    helper: SYNOCOMMUNITY.RRManager.UpdateWizard.Helper,
     API: {},// SYNO.SDS.iSCSI.Utils.API,
     constructor: function (e) {
         (this.appWin = e.appWin),
@@ -120,7 +121,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
         if (!this.isAnyFormDirty())
             return (
                 this.setStatusError({
-                    text: this._V("ui", "frm_validation_no_change"),
+                    text: this.helper.V("ui", "frm_validation_no_change"),
                     clear: !0,
                 }),
                 !1
@@ -130,7 +131,7 @@ Ext.define("SYNOCOMMUNITY.RRManager.Setting.Main", {
             !e ||
             (this.setActiveTab(e.itemId),
                 this.setStatusError({
-                    text: this._V("ui", "frm_validation_fill_required_fields"),
+                    text: this.helper.V("ui", "frm_validation_fill_required_fields"),
                 }),
                 !1)
         );
