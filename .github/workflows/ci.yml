@@ -17,6 +17,18 @@ jobs:
           dsm_ver: 7.0
     steps:
       - uses: actions/checkout@v4
+      # Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Specify the Node.js version you need
+      # Install npm dependencies (including Webpack)
+      - name: Install Dependencies
+        run: npm install
+      # Run Webpack build
+      - name: Webpack Build
+        run: npm run build
+
       - name: Checkout SynoCommunity Source and Docker Image
         run: |
           git clone https://github.com/SynoCommunity/spksrc.git /home/runner/work/spksrc
