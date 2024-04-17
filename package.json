@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/T-REX-XP/RRManager#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.24.4",
     "terser-webpack-plugin": "^5.3.10",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
