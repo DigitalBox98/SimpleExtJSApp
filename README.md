@@ -30,7 +30,7 @@ Two shortcuts are available under DSM :
 Current application features : 
 
 - Server calls demo : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
-<img width="859" alt="simpleextjsapp" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/b970f4df-a779-4dc4-a57d-1ab42c55bfdd"
+![call](https://user-images.githubusercontent.com/57635141/117197233-dce55600-ade7-11eb-949b-0dd2eeba4b8f.png)
 <br>
 
 - Widgets samples accessible via several tabs : <br>
