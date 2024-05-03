@@ -54,8 +54,9 @@ This page is a work in progress and is to be considered for advanced users : ) <
 
 # Demo Widget
 
+The demo widget is available in a dedicated package.
 
-Once installed this demo widget is available under the name "Customized" in the widget menu : <br>
+Once installed this widget is available under the name "Customized" in the widget menu : <br>
 ![widget-access](https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/f91da440-c8e3-4fbc-a9be-d2626bd69521)
 <br>
 
