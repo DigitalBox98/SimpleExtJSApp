@@ -1,7 +1,7 @@
 # SimpleExtJSApp
 The aim of this sample application is to demonstrate the usage of the DSM framework based on ExtJS<br><br>
 This part includes :
-- A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide)
+- A test.cgi : it will verify the authentication of the current user under DSM before executing itself (inspired from the DSM Developper's Guide). Note that this part is now no more included in the package to have a NOARCH package instead (demo on Python, Perl, Bash CGI still exist in the package)
 - A tar of the API docs : to document the usage of each UI component under DSM (in the docs folder)
 
 This repo doesn't include :
@@ -30,7 +30,7 @@ Two shortcuts are available under DSM :
 Current application features : 
 
 - Server calls demo : CGI (C, Perl, Python or Bash) or API (Syno, External) : <br>
-![call](https://user-images.githubusercontent.com/57635141/117197233-dce55600-ade7-11eb-949b-0dd2eeba4b8f.png)
+<img width="859" alt="simpleextjsapp" src="https://github.com/DigitalBox98/SimpleExtJSApp/assets/57635141/b970f4df-a779-4dc4-a57d-1ab42c55bfdd"
 <br>
 
 - Widgets samples accessible via several tabs : <br>
