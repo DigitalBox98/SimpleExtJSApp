@@ -66,6 +66,12 @@ This widget is only displaying a message and the name of your NAS :<br>
 
 Details of the widget code is available at : <br>
 
+# From ExtJS to DSM 
+
+Check this <a href="https://github.com/DigitalBox98/ExtJSDemo">ExtJSDemo repo</a> for a project example
+
+
+
 https://github.com/DigitalBox98/spksrc/tree/simpleextjswidget/spk/simpleextjswidget/src/app
 
 
